@@ -1,0 +1,656 @@
+@use 'variables' as *;
+
+$mobile: 640px;
+$sheet-w: 380px;
+$ease: cubic-bezier(0.65, 0, 0.35, 1);
+
+// ---- Switching between the explorer and the tree ----
+
+.gnr-app__view {
+	transition: opacity 0.22s ease, transform 0.22s ease;
+
+	&[hidden] {
+		display: none;
+	}
+
+	&.is-entering,
+	&.is-leaving {
+		opacity: 0;
+		transform: scale(0.985);
+	}
+}
+
+// ---- Chips (shared by the explorer panel and the tree) ----
+
+.gnr-chip {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	padding: 4px 10px;
+	border: 1px solid $gnr-color-accent;
+	border-radius: 999px;
+	background: $gnr-color-accent;
+	color: #fff;
+	font: inherit;
+	font-size: 0.8rem;
+	font-weight: 600;
+	line-height: 1.3;
+	cursor: pointer;
+	transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+
+	&:hover,
+	&:focus-visible {
+		background: #74492f;
+	}
+
+	&:focus-visible {
+		outline: 2px solid $gnr-color-accent;
+		outline-offset: 2px;
+	}
+}
+
+.gnr-chip--soft {
+	border-color: $gnr-color-line;
+	background: $gnr-color-card-bg;
+	color: $gnr-color-ink;
+	font-weight: 500;
+
+	&:hover,
+	&:focus-visible {
+		border-color: $gnr-color-accent;
+		background: #fffaf3;
+		color: $gnr-color-accent;
+	}
+}
+
+.gnr-chip--lit {
+	box-shadow: $gnr-shadow;
+
+	// The focused person belongs to this group.
+	&.is-match {
+		border-color: $gnr-color-focus;
+		outline: 2px solid $gnr-color-focus;
+		outline-offset: 1px;
+		box-shadow: $gnr-focus-glow;
+	}
+}
+
+.gnr-chip__count {
+	min-width: 18px;
+	padding: 0 5px;
+	border-radius: 999px;
+	background: $gnr-color-bg;
+	color: $gnr-color-muted;
+	font-size: 0.72rem;
+	text-align: center;
+}
+
+// ---- Explorer ----
+
+.gnr-groups {
+	position: relative;
+	overflow: hidden;
+	min-height: 420px;
+	color: $gnr-color-ink;
+	-webkit-tap-highlight-color: transparent;
+}
+
+.gnr-groups__bar {
+	position: absolute;
+	top: 12px;
+	left: 12px;
+	right: 12px;
+	z-index: 5;
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 8px 12px;
+	pointer-events: none;
+
+	> * {
+		pointer-events: auto;
+	}
+
+	[hidden] {
+		display: none !important;
+	}
+}
+
+.gnr-groups__home {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	padding: 7px 14px;
+	border: 1px solid $gnr-color-line;
+	border-radius: 999px;
+	background: $gnr-color-card-bg;
+	box-shadow: $gnr-shadow;
+	color: $gnr-color-ink;
+	font: inherit;
+	font-size: 0.9rem;
+	font-weight: 600;
+	cursor: pointer;
+
+	&:hover,
+	&:focus-visible {
+		border-color: $gnr-color-accent;
+		color: $gnr-color-accent;
+	}
+}
+
+.gnr-groups__filter {
+	width: min(280px, 100%);
+	padding: 8px 14px;
+	border: 1px solid $gnr-color-line;
+	border-radius: 999px;
+	background: $gnr-color-card-bg;
+	box-shadow: $gnr-shadow;
+	font: inherit;
+	font-size: 0.95rem;
+
+	&:focus {
+		outline: 2px solid $gnr-color-accent;
+		outline-offset: 1px;
+	}
+}
+
+.gnr-groups__small {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	padding: 6px 12px;
+	border-radius: 999px;
+	background: rgba(255, 255, 255, 0.85);
+	color: $gnr-color-muted;
+	font-size: 0.85rem;
+	cursor: pointer;
+
+	input {
+		accent-color: $gnr-color-accent;
+	}
+}
+
+.gnr-groups__svg {
+	display: block;
+	width: 100%;
+	height: 100%;
+	cursor: grab;
+	touch-action: none;
+
+	&:active {
+		cursor: grabbing;
+	}
+}
+
+.gnr-groups__circle {
+	fill: rgba(138, 90, 60, 0.1);
+	stroke: rgba(138, 90, 60, 0.55);
+	stroke-width: 1.5px;
+	cursor: pointer;
+	outline: none;
+	transition: fill 0.2s ease, stroke 0.2s ease, stroke-width 0.2s ease;
+
+	&:hover,
+	&:focus-visible {
+		fill: rgba(138, 90, 60, 0.18);
+		stroke: $gnr-color-accent;
+		stroke-width: 2.5px;
+	}
+
+	&.is-center {
+		fill: rgba(138, 90, 60, 0.16);
+		stroke: $gnr-color-accent;
+		stroke-width: 2.5px;
+	}
+}
+
+// Shared members: the surrounding circle clipped to the centre circle.
+.gnr-groups__lens {
+	fill: rgba(138, 90, 60, 0.38);
+	stroke: none;
+	cursor: pointer;
+	outline: none;
+	transition: fill 0.2s ease;
+
+	&:hover,
+	&:focus-visible {
+		fill: rgba(138, 90, 60, 0.55);
+	}
+
+	&.is-selected {
+		fill: rgba(138, 90, 60, 0.78);
+	}
+}
+
+.gnr-groups__labels {
+	position: absolute;
+	inset: 0;
+	pointer-events: none;
+}
+
+.gnr-groups__label,
+.gnr-groups__lens-label {
+	position: absolute;
+	top: 0;
+	left: 0;
+	will-change: transform;
+}
+
+.gnr-groups__label {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	max-width: 160px;
+	text-align: center;
+	text-shadow: 0 0 3px $gnr-color-bg, 0 0 6px $gnr-color-bg;
+}
+
+.gnr-groups__label-name {
+	max-width: 100%;
+	overflow: hidden;
+	font-size: 0.95rem;
+	font-weight: 600;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+}
+
+.gnr-groups__label-count {
+	font-size: 0.75rem;
+	color: $gnr-color-muted;
+}
+
+.gnr-groups__lens-label {
+	padding: 2px 8px;
+	border-radius: 999px;
+	background: $gnr-color-card-bg;
+	color: $gnr-color-accent;
+	font-size: 0.75rem;
+	font-weight: 700;
+	white-space: nowrap;
+	box-shadow: 0 1px 3px rgba(43, 36, 32, 0.2);
+
+	&.is-selected {
+		background: $gnr-color-accent;
+		color: #fff;
+	}
+}
+
+.gnr-groups__empty {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	margin: 0;
+	transform: translate(-50%, -50%);
+	color: $gnr-color-muted;
+
+	&[hidden] {
+		display: none;
+	}
+}
+
+.gnr-groups__hint {
+	position: absolute;
+	bottom: 16px;
+	left: 50%;
+	z-index: 4;
+	margin: 0;
+	padding: 6px 14px;
+	transform: translateX(-50%);
+	border-radius: 999px;
+	background: rgba(43, 36, 32, 0.78);
+	color: #fff;
+	font-size: 0.8rem;
+	white-space: nowrap;
+	pointer-events: none;
+	transition: opacity 0.4s ease;
+
+	&.is-dismissed {
+		opacity: 0;
+	}
+}
+
+// ---- Member panel: right-hand panel on desktop, bottom sheet on phones ----
+
+.gnr-groups__sheet {
+	position: absolute;
+	top: 12px;
+	right: 12px;
+	bottom: 12px;
+	z-index: 6;
+	display: flex;
+	flex-direction: column;
+	width: $sheet-w;
+	max-width: calc(100% - 24px);
+	overflow: hidden;
+	border: 1px solid $gnr-color-line;
+	border-radius: $gnr-radius;
+	background: $gnr-color-card-bg;
+	box-shadow: 0 10px 30px rgba(43, 36, 32, 0.16);
+	transform: translateX(calc(100% + 24px));
+	visibility: hidden;
+	transition: transform 0.45s $ease, visibility 0s linear 0.45s;
+
+	.has-sheet & {
+		transform: none;
+		visibility: visible;
+		transition: transform 0.45s $ease, visibility 0s;
+	}
+
+	@media (max-width: $mobile) {
+		top: auto;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		width: auto;
+		max-width: none;
+		height: 56%;
+		border-width: 1px 0 0;
+		border-radius: 16px 16px 0 0;
+		transform: translateY(100%);
+	}
+}
+
+.gnr-sheet__head {
+	flex: none;
+	padding: 16px 16px 10px;
+	border-bottom: 1px solid $gnr-color-card-border;
+}
+
+.gnr-sheet__chips {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 6px;
+}
+
+.gnr-sheet__title {
+	margin: 10px 0 0;
+	font-size: 1.2rem;
+	line-height: 1.25;
+}
+
+.gnr-sheet__amp {
+	color: $gnr-color-accent;
+	font-weight: 400;
+}
+
+.gnr-sheet__count {
+	margin: 2px 0 10px;
+	color: $gnr-color-muted;
+	font-size: 0.85rem;
+}
+
+.gnr-sheet__search {
+	width: 100%;
+	padding: 8px 12px;
+	border: 1px solid $gnr-color-line;
+	border-radius: $gnr-radius;
+	font: inherit;
+	font-size: 0.95rem;
+
+	&:focus {
+		outline: 2px solid $gnr-color-accent;
+		outline-offset: 1px;
+	}
+}
+
+.gnr-sheet__related {
+	flex: none;
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 6px;
+	padding: 10px 16px;
+	border-bottom: 1px solid $gnr-color-card-border;
+	background: $gnr-color-bg;
+}
+
+.gnr-sheet__related-title {
+	margin-right: 2px;
+	color: $gnr-color-muted;
+	font-size: 0.8rem;
+}
+
+.gnr-sheet__list {
+	flex: 1;
+	min-height: 0;
+	margin: 0;
+	padding: 6px 0;
+	overflow-y: auto;
+	list-style: none;
+	overscroll-behavior: contain;
+	transition: opacity 0.2s ease;
+
+	&.is-loading {
+		opacity: 0.4;
+	}
+}
+
+.gnr-sheet__none {
+	padding: 16px;
+	color: $gnr-color-muted;
+}
+
+.gnr-sheet__more {
+	flex: none;
+	margin: 8px 16px 14px;
+	padding: 8px;
+	border: 1px solid $gnr-color-line;
+	border-radius: $gnr-radius;
+	background: $gnr-color-card-bg;
+	color: $gnr-color-accent;
+	font: inherit;
+	font-weight: 600;
+	cursor: pointer;
+
+	&[hidden] {
+		display: none;
+	}
+}
+
+// Rows cascade in when a new group or overlap loads.
+.gnr-member {
+	animation: gnr-member-in 0.35s ease both;
+	animation-delay: calc(var(--i, 0) * 25ms);
+}
+
+@keyframes gnr-member-in {
+	from {
+		opacity: 0;
+		transform: translateY(6px);
+	}
+}
+
+.gnr-member__button {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	width: 100%;
+	padding: 8px 16px;
+	border: 0;
+	background: transparent;
+	color: inherit;
+	font: inherit;
+	text-align: left;
+	cursor: pointer;
+
+	&:hover,
+	&:focus-visible {
+		background: $gnr-color-bg;
+	}
+
+	&:focus-visible {
+		outline: 2px solid $gnr-color-accent;
+		outline-offset: -2px;
+	}
+
+	&:hover .gnr-member__go {
+		opacity: 1;
+		transform: none;
+	}
+}
+
+.gnr-member__avatar {
+	display: grid;
+	flex: none;
+	place-items: center;
+	width: 34px;
+	height: 34px;
+	border-radius: 50%;
+	background: $gnr-color-card-unknown;
+	color: #fff;
+	font-weight: 700;
+}
+
+.gnr-member__avatar img {
+	width: 100%;
+	height: 100%;
+	border-radius: 50%;
+	object-fit: cover;
+}
+
+.gnr-member__avatar--m {
+	background: $gnr-color-card-male;
+}
+
+.gnr-member__avatar--f {
+	background: $gnr-color-card-female;
+}
+
+.gnr-member__text {
+	display: flex;
+	flex: 1;
+	flex-direction: column;
+	min-width: 0;
+}
+
+.gnr-member__name {
+	overflow: hidden;
+	font-weight: 600;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+}
+
+.gnr-member__surname {
+	color: $gnr-color-muted;
+	font-weight: 400;
+}
+
+.gnr-member__meta {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 4px 8px;
+	color: $gnr-color-muted;
+	font-size: 0.8rem;
+}
+
+.gnr-member__tag {
+	padding: 0 6px;
+	border: 1px solid $gnr-color-card-border;
+	border-radius: 999px;
+	font-size: 0.72rem;
+}
+
+.gnr-member__go {
+	flex: none;
+	color: $gnr-color-accent;
+	opacity: 0;
+	transform: translateX(-4px);
+	transition: opacity 0.15s ease, transform 0.15s ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.gnr-app__view,
+	.gnr-groups__sheet,
+	.gnr-member {
+		transition: none;
+		animation: none;
+	}
+}
+
+.gnr-groups__label.is-compact .gnr-groups__label-count {
+	display: none;
+}
+
+.gnr-groups__label.is-compact .gnr-groups__label-name {
+	font-size: 0.8rem;
+}
+
+.gnr-groups__label-count {
+	max-width: 100%;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+}
+
+// Members' portraits behind a circle: faint and toned, so the label reads first.
+.gnr-groups__photos {
+	pointer-events: none;
+}
+
+.gnr-groups__photo {
+	opacity: 0;
+	filter: grayscale(0.6) sepia(0.25);
+	transition: opacity 1.6s ease;
+
+	&.is-shown {
+		opacity: 0.32;
+	}
+}
+
+// First-visit tip: points down at the member list.
+.gnr-sheet__tip {
+	position: relative;
+	flex: none;
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	margin: 10px 16px 6px;
+	padding: 8px 10px 8px 12px;
+	border-radius: 8px;
+	background: $gnr-color-accent;
+	color: #fff;
+	font-size: 0.82rem;
+	font-weight: 600;
+	line-height: 1.3;
+	box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+
+	span {
+		flex: 1;
+	}
+
+	&::after {
+		content: '';
+		position: absolute;
+		left: 22px;
+		bottom: -6px;
+		border: 6px solid transparent;
+		border-bottom: 0;
+		border-top-color: $gnr-color-accent;
+	}
+
+	@media (prefers-reduced-motion: no-preference) {
+		animation: gnr-tip-nudge 1.4s ease-in-out 0.6s 2;
+	}
+}
+
+.gnr-sheet__tip-close {
+	flex: none;
+	padding: 2px 4px;
+	border: 0;
+	background: none;
+	color: inherit;
+	font-size: 0.8rem;
+	opacity: 0.8;
+	cursor: pointer;
+
+	&:hover,
+	&:focus-visible {
+		opacity: 1;
+	}
+}
+
+@keyframes gnr-tip-nudge {
+	0%, 100% { transform: translateY(0); }
+	50% { transform: translateY(3px); }
+}

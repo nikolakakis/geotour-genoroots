@@ -1,0 +1,27 @@
+$gnr-breakpoint-desktop: 1024px;
+
+// A site theme can set --gnr-* to match its identity (e.g. the Kamilari
+// theme maps them to its tokens); otherwise these defaults apply.
+$gnr-color-bg: var(--gnr-bg, #faf8f5);
+$gnr-color-ink: var(--gnr-ink, #2b2420);
+$gnr-color-muted: var(--gnr-muted, #7a6f63);
+$gnr-color-accent: var(--gnr-accent, #8a5a3c);
+$gnr-color-line: var(--gnr-line, #c9b8a3);
+$gnr-color-focus: #c0392b; // "this is the one you picked" while groups are highlighted
+$gnr-focus-glow: 0 0 0 3px rgba(192, 57, 43, 0.22), 0 0 16px rgba(192, 57, 43, 0.45);
+
+$gnr-color-dim-bg: #f1ede7; // deactivated cards: solid, so links don't show through
+$gnr-color-dim-ink: #b8ada1;
+$gnr-color-dim-line: #e3dbd0;
+
+$gnr-color-card-bg: #ffffff;
+$gnr-color-card-border: #d8cdbe;
+$gnr-color-card-male: #6f8a9c;
+$gnr-color-card-female: #a5738a;
+$gnr-color-card-unknown: #a89f92;
+
+$gnr-radius: 10px;
+$gnr-shadow: 0 2px 8px rgba(43, 36, 32, 0.12);
+
+$gnr-sheet-peek: 64px;
+$gnr-sheet-full: 85dvh;

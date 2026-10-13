@@ -1,0 +1,1004 @@
+# Greek translation of GeoTour GenoRoots.
+# Source strings are English; edit here, then: wp i18n make-mo languages
+msgid ""
+msgstr ""
+"Project-Id-Version: GeoTour GenoRoots\n"
+"Language: el\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Domain: geotour-genoroots\n"
+
+msgid "Person details"
+msgstr "Στοιχεία προσώπου"
+
+msgid "ID"
+msgstr "Κωδικός"
+
+msgid "not assigned yet"
+msgstr "δεν έχει ακόμα"
+
+msgid "Photo keyword"
+msgstr "Λέξη-κλειδί για φωτογραφίες"
+
+msgid "Copy"
+msgstr "Αντιγραφή"
+
+msgid "Photos"
+msgstr "Φωτογραφίες"
+
+msgid "none in the archive"
+msgstr "καμία στο αρχείο"
+
+msgid "Parents"
+msgstr "Γονείς"
+
+msgid "Spouses"
+msgstr "Σύζυγοι"
+
+msgid "Children"
+msgstr "Τέκνα"
+
+msgid "Families (edit links)"
+msgstr "Οικογένειες (επεξεργασία δεσμών)"
+
+msgid "View in the tree"
+msgstr "Προβολή στο δέντρο"
+
+msgid "Copied"
+msgstr "Αντιγράφηκε"
+
+msgid "Relations"
+msgstr "Σχέσεις"
+
+msgid "Father"
+msgstr "Πατέρας"
+
+msgid "Mother"
+msgstr "Μητέρα"
+
+msgid "Siblings:"
+msgstr "Αδέρφια:"
+
+msgid "none — siblings are people with the same parents"
+msgstr "κανένα — αδέρφια είναι όσοι έχουν τους ίδιους γονείς"
+
+msgid "Marriages"
+msgstr "Γάμοι"
+
+msgid "None yet."
+msgstr "Κανένας ακόμα."
+
+msgid "Spouse"
+msgstr "Σύζυγος"
+
+msgid "Marriage date"
+msgstr "Ημερομηνία γάμου"
+
+msgid "Marriage place"
+msgstr "Τόπος γάμου"
+
+msgid "remove"
+msgstr "αφαίρεση"
+
+msgid "Add a child"
+msgstr "Προσθήκη παιδιού"
+
+msgid "Delete this marriage (the people stay)"
+msgstr "Διαγραφή αυτού του γάμου (τα πρόσωπα μένουν)"
+
+msgid "New marriage with"
+msgstr "Νέος γάμος με"
+
+msgid "Changes are saved when you press Update."
+msgstr "Οι αλλαγές αποθηκεύονται με την Ενημέρωση."
+
+msgid "Families"
+msgstr "Οικογένειες"
+
+msgid "Family"
+msgstr "Οικογένεια"
+
+msgid "New family"
+msgstr "Νέα οικογένεια"
+
+msgid "Edit family"
+msgstr "Επεξεργασία οικογένειας"
+
+msgid "View family"
+msgstr "Προβολή οικογένειας"
+
+msgid "Search families"
+msgstr "Αναζήτηση οικογενειών"
+
+msgid "No families found"
+msgstr "Δεν βρέθηκαν οικογένειες"
+
+msgid "No families found in Trash"
+msgstr "Δεν βρέθηκαν οικογένειες στα διαγραμμένα"
+
+msgid "All families"
+msgstr "Όλες οι οικογένειες"
+
+msgid "Groups"
+msgstr "Ομάδες"
+
+msgid "Group"
+msgstr "Ομάδα"
+
+msgid "Search groups"
+msgstr "Αναζήτηση ομάδων"
+
+msgid "All groups"
+msgstr "Όλες οι ομάδες"
+
+msgid "Edit group"
+msgstr "Επεξεργασία ομάδας"
+
+msgid "Update group"
+msgstr "Ενημέρωση ομάδας"
+
+msgid "New group"
+msgstr "Νέα ομάδα"
+
+msgid "New group name"
+msgstr "Όνομα νέας ομάδας"
+
+msgid "People"
+msgstr "Πρόσωπα"
+
+msgid "Person"
+msgstr "Πρόσωπο"
+
+msgid "New person"
+msgstr "Νέο πρόσωπο"
+
+msgid "Edit person"
+msgstr "Επεξεργασία προσώπου"
+
+msgid "View person"
+msgstr "Προβολή προσώπου"
+
+msgid "Search people"
+msgstr "Αναζήτηση προσώπων"
+
+msgid "No people found"
+msgstr "Δεν βρέθηκαν πρόσωπα"
+
+msgid "No people found in Trash"
+msgstr "Δεν βρέθηκαν πρόσωπα στα διαγραμμένα"
+
+msgid "All people"
+msgstr "Όλα τα πρόσωπα"
+
+msgid "Portrait"
+msgstr "Πορτρέτο"
+
+msgid "Set portrait"
+msgstr "Ορισμός πορτρέτου"
+
+msgid "Remove portrait"
+msgstr "Αφαίρεση πορτρέτου"
+
+msgid "Use as portrait"
+msgstr "Χρήση ως πορτρέτο"
+
+msgid "Family Tree"
+msgstr "Οικογενειακό Δέντρο"
+
+msgid "Browse alphabetically"
+msgstr "Αλφαβητική περιήγηση"
+
+msgid "Search for a name…"
+msgstr "Αναζήτηση ονόματος…"
+
+msgid "Photos in the archive (%d)"
+msgstr "Φωτογραφίες στο αρχείο (%d)"
+
+msgid "Photos in the archive"
+msgstr "Φωτογραφίες στο αρχείο"
+
+msgid "Born"
+msgstr "Γεννήθηκε"
+
+msgid "Died"
+msgstr "Απεβίωσε"
+
+msgid "Family tree"
+msgstr "Οικογενειακό δέντρο"
+
+msgid "Details"
+msgstr "Στοιχεία"
+
+msgid "Sex"
+msgstr "Φύλο"
+
+msgid "Male"
+msgstr "Άνδρας"
+
+msgid "Female"
+msgstr "Γυναίκα"
+
+msgid "Unknown"
+msgstr "Άγνωστο"
+
+msgid "Name in Latin characters"
+msgstr "Όνομα με λατινικούς χαρακτήρες"
+
+msgid "e.g. Manolis Charkiotakis — for the English version"
+msgstr "π.χ. Manolis Charkiotakis — για την αγγλική έκδοση"
+
+msgid "Birth"
+msgstr "Γέννηση"
+
+msgid "Date"
+msgstr "Ημερομηνία"
+
+msgid "e.g. 1908 or December 1936"
+msgstr "π.χ. 1908 ή Δεκέμβριος 1936"
+
+msgid "Place"
+msgstr "Τόπος"
+
+msgid "Place (English)"
+msgstr "Τόπος (αγγλικά)"
+
+msgid "Death"
+msgstr "Θάνατος"
+
+msgid "Notes"
+msgstr "Σημειώσεις"
+
+msgctxt "of a marriage"
+msgid "Children"
+msgstr "Παιδιά"
+
+msgid "%d photo"
+msgid_plural "%d photos"
+msgstr[0] "%d φωτογραφία"
+msgstr[1] "%d φωτογραφίες"
+
+msgid "Full profile →"
+msgstr "Πλήρες προφίλ →"
+
+msgid "Open in the full tree →"
+msgstr "Άνοιγμα στο πλήρες δέντρο →"
+
+msgid "Photos ↗"
+msgstr "Φωτογραφίες ↗"
+
+msgid "Photos (%d) ↗"
+msgstr "Φωτογραφίες (%d) ↗"
+
+msgid "Zoom in"
+msgstr "Μεγέθυνση"
+
+msgid "Zoom out"
+msgstr "Σμίκρυνση"
+
+msgid "Back to the main person"
+msgstr "Επιστροφή στο κεντρικό πρόσωπο"
+
+msgid "Show the whole tree"
+msgstr "Προβολή όλου του δέντρου"
+
+msgid "Tap a person to bring them to the centre"
+msgstr "Πατήστε ένα πρόσωπο για να το φέρετε στο κέντρο"
+
+msgid "Parents not shown"
+msgstr "Γονείς που δεν εμφανίζονται"
+
+msgid "Spouses or children not shown"
+msgstr "Σύζυγοι ή παιδιά που δεν εμφανίζονται"
+
+msgid "There are relatives not shown — tap to see them"
+msgstr "Υπάρχουν συγγενείς που δεν εμφανίζονται — πατήστε για να τους δείτε"
+
+msgid "Could not load. Please try again."
+msgstr "Δεν ήταν δυνατή η φόρτωση. Δοκιμάστε ξανά."
+
+msgid "Remove highlight: %s"
+msgstr "Αφαίρεση επισήμανσης: %s"
+
+msgid "belongs to this group: %s"
+msgstr "σε αυτή την ομάδα ανήκει: %s"
+
+msgid "Find a group…"
+msgstr "Βρείτε ομάδα…"
+
+msgid "Small groups"
+msgstr "Μικρές ομάδες"
+
+msgid "There are no groups yet."
+msgstr "Δεν υπάρχουν ακόμη ομάδες."
+
+msgid "No group matches."
+msgstr "Καμία ομάδα δεν ταιριάζει."
+
+msgid "Click a person to open their family tree"
+msgstr "Πατήστε ένα πρόσωπο για να ανοίξει το οικογενειακό του δέντρο"
+
+msgid "Tap a group to see its members"
+msgstr "Πατήστε μια ομάδα για να δείτε τα μέλη της"
+
+msgid "Members shared with"
+msgstr "Κοινά μέλη με"
+
+msgid "Search members…"
+msgstr "Αναζήτηση μελών…"
+
+msgid "More"
+msgstr "Περισσότερα"
+
+msgid "No members."
+msgstr "Κανένα μέλος."
+
+msgid "Remove: %s"
+msgstr "Αφαίρεση: %s"
+
+msgid "Close"
+msgstr "Κλείσιμο"
+
+msgid "%d member"
+msgid_plural "%d members"
+msgstr[0] "%d μέλος"
+msgstr[1] "%d μέλη"
+
+msgid "%d shared member"
+msgid_plural "%d shared members"
+msgstr[0] "%d κοινό μέλος"
+msgstr[1] "%d κοινά μέλη"
+
+msgctxt "lens label, one"
+msgid "%d shared"
+msgstr "%d κοινό"
+
+msgctxt "lens label, many"
+msgid "%d shared"
+msgstr "%d κοινά"
+
+msgid "Collections"
+msgstr "Συλλογές"
+
+msgid "Collection"
+msgstr "Συλλογή"
+
+msgid "Search collections"
+msgstr "Αναζήτηση συλλογών"
+
+msgid "All collections"
+msgstr "Όλες οι συλλογές"
+
+msgid "Edit collection"
+msgstr "Επεξεργασία συλλογής"
+
+msgid "Update collection"
+msgstr "Ενημέρωση συλλογής"
+
+msgid "New collection"
+msgstr "Νέα συλλογή"
+
+msgid "New collection name"
+msgstr "Όνομα νέας συλλογής"
+
+msgid "Family Trees"
+msgstr "Οικογενειακά Δέντρα"
+
+msgid "%d person"
+msgid_plural "%d people"
+msgstr[0] "%d πρόσωπο"
+msgstr[1] "%d πρόσωπα"
+
+msgid "Related article"
+msgstr "Σχετικό άρθρο"
+
+msgid "A page on this site about this person, e.g. a biography. Its link follows the language of the page."
+msgstr "Μια σελίδα του ιστότοπου για αυτό το πρόσωπο, π.χ. βιογραφία. Ο σύνδεσμος ακολουθεί τη γλώσσα της σελίδας."
+
+msgid "Read more →"
+msgstr "Διαβάστε περισσότερα →"
+
+msgid "Family tree: %s"
+msgstr "Οικογενειακό δέντρο: %s"
+
+msgid "between %1$s and %2$s"
+msgstr "μεταξύ %1$s και %2$s"
+
+msgid "after %s"
+msgstr "μετά το %s"
+
+msgid "before %s"
+msgstr "πριν από το %s"
+
+msgid "c. %s"
+msgstr "περ. %s"
+
+msgid "Burial place"
+msgstr "Τόπος ταφής"
+
+msgid "Historical period"
+msgstr "Ιστορική περίοδος"
+
+msgid "e.g. Cretan State / Interwar Republic"
+msgstr "π.χ. Κρητική Πολιτεία / Μεσοπόλεμος"
+
+msgid "Sources"
+msgstr "Πηγές"
+
+msgid "Where the information comes from: documents, books, archives, testimonies. One per line."
+msgstr "Από πού προέρχονται τα στοιχεία: έγγραφα, βιβλία, αρχεία, μαρτυρίες. Μία ανά γραμμή."
+
+msgid "Buried"
+msgstr "Τάφηκε"
+
+msgid "Period"
+msgstr "Περίοδος"
+
+msgid "probable"
+msgstr "πιθανό"
+
+msgid "claimed by family tradition"
+msgstr "κατά την οικογενειακή παράδοση"
+
+msgid "b. %s"
+msgstr "γ. %s"
+
+msgid "Export GEDCOM"
+msgstr "Εξαγωγή GEDCOM"
+
+msgid "Download published people and families as a GEDCOM 5.5 (.ged) file, readable by genealogy programs and by Import GEDCOM on this or another site. Choose a collection, a group, or both (the group's members within the collection). A family is included when at least two of its members are."
+msgstr "Λήψη των δημοσιευμένων προσώπων και οικογενειών σε αρχείο GEDCOM 5.5 (.ged), που διαβάζεται από προγράμματα γενεαλογίας και από την Εισαγωγή GEDCOM σε αυτόν ή σε άλλο ιστότοπο. Επιλέξτε συλλογή, ομάδα ή και τα δύο (τα μέλη της ομάδας μέσα στη συλλογή). Μια οικογένεια περιλαμβάνεται όταν περιλαμβάνονται τουλάχιστον δύο μέλη της."
+
+msgid "The file contains personal data. Keep it private."
+msgstr "Το αρχείο περιέχει προσωπικά δεδομένα. Μην το δημοσιεύετε."
+
+msgid "All"
+msgstr "Όλες"
+
+msgid "Download .ged"
+msgstr "Λήψη .ged"
+
+msgid "Nobody matches this selection."
+msgstr "Κανένα πρόσωπο δεν αντιστοιχεί σε αυτή την επιλογή."
+
+# Admin pages (import, export, settings)
+
+msgid "Import GEDCOM"
+msgstr "Εισαγωγή GEDCOM"
+
+msgid "You do not have permission to do this."
+msgstr "Δεν έχετε δικαίωμα για αυτή την ενέργεια."
+
+msgid "Please choose a .ged file to upload."
+msgstr "Επιλέξτε ένα αρχείο .ged για μεταφόρτωση."
+
+msgid "Import failed: %s"
+msgstr "Η εισαγωγή απέτυχε: %s"
+
+msgid "Upload a GEDCOM 5.5 (.ged) file. Re-importing the same file updates existing people and families instead of duplicating them."
+msgstr "Μεταφορτώστε ένα αρχείο GEDCOM 5.5 (.ged). Η επανεισαγωγή του ίδιου αρχείου ενημερώνει τα υπάρχοντα πρόσωπα και τις οικογένειες, χωρίς να δημιουργεί διπλότυπα."
+
+msgid "GEDCOM file"
+msgstr "Αρχείο GEDCOM"
+
+msgid "Import"
+msgstr "Εισαγωγή"
+
+msgid "Import report"
+msgstr "Αναφορά εισαγωγής"
+
+msgid "People: %1$d created, %2$d updated (%3$d total in file)"
+msgstr "Πρόσωπα: %1$d νέα, %2$d ενημερώθηκαν (%3$d συνολικά στο αρχείο)"
+
+msgid "Families: %1$d created, %2$d updated (%3$d total in file)"
+msgstr "Οικογένειες: %1$d νέες, %2$d ενημερώθηκαν (%3$d συνολικά στο αρχείο)"
+
+msgid "Unparseable lines (skipped)"
+msgstr "Γραμμές που δεν διαβάστηκαν (παραλείφθηκαν)"
+
+msgid "Missing references"
+msgstr "Αναφορές που λείπουν"
+
+msgid "GenoRoots settings"
+msgstr "Ρυθμίσεις GenoRoots"
+
+msgid "Settings"
+msgstr "Ρυθμίσεις"
+
+msgid "Piwigo photo archive"
+msgstr "Φωτογραφικό αρχείο Piwigo"
+
+msgid "Gallery address"
+msgstr "Διεύθυνση αρχείου"
+
+msgid "People are matched to Piwigo tags by the number in brackets, e.g. \"Maria Papadaki [384]\" → GenoRoots ID I384."
+msgstr "Τα πρόσωπα αντιστοιχίζονται στις ετικέτες του Piwigo με τον αριθμό σε αγκύλες, π.χ. «Μαρία Παπαδάκη [384]» → αριθμός GenoRoots I384."
+
+msgid "Save"
+msgstr "Αποθήκευση"
+
+msgid "Link people to their photos"
+msgstr "Σύνδεση προσώπων με τις φωτογραφίες τους"
+
+msgid "Last sync: %1$s — %2$d of %3$d people have photos."
+msgstr "Τελευταίος συγχρονισμός: %1$s — %2$d από %3$d πρόσωπα έχουν φωτογραφίες."
+
+msgid "Not synced yet."
+msgstr "Δεν έχει γίνει συγχρονισμός ακόμη."
+
+msgid "Also available as: wp genoroots piwigo-sync"
+msgstr "Διαθέσιμο και ως: wp genoroots piwigo-sync"
+
+msgid "Preview"
+msgstr "Προεπισκόπηση"
+
+msgid "Sync now"
+msgstr "Συγχρονισμός τώρα"
+
+msgid "%1$d of %2$d people have a Piwigo tag. %3$d need updating."
+msgstr "%1$d από %2$d πρόσωπα έχουν ετικέτα στο Piwigo. %3$d χρειάζονται ενημέρωση."
+
+msgid "Saved."
+msgstr "Αποθηκεύτηκε."
+
+msgid "Several tags for one person"
+msgstr "Πολλές ετικέτες για ένα πρόσωπο"
+
+msgid "Tags with a number that is not in the tree"
+msgstr "Ετικέτες με αριθμό που δεν υπάρχει στο δέντρο"
+
+msgid "Changes"
+msgstr "Αλλαγές"
+
+msgid "Piwigo tag"
+msgstr "Ετικέτα Piwigo"
+
+msgid "Downloads people and families as a GEDCOM 5.5 file: to keep a backup, to open the tree in a genealogy program, or to move it to another site that uses GenoRoots."
+msgstr "Κατεβάζει πρόσωπα και οικογένειες σε αρχείο GEDCOM 5.5: για αντίγραφο ασφαλείας, για να ανοίξετε το δέντρο σε πρόγραμμα γενεαλογίας ή για να το μεταφέρετε σε άλλον ιστότοπο που χρησιμοποιεί το GenoRoots."
+
+msgid "What to export"
+msgstr "Τι θα εξαχθεί"
+
+msgid "With both chosen, you get the group's members within that collection."
+msgstr "Αν επιλέξετε και τα δύο, παίρνετε τα μέλη της ομάδας μέσα σε αυτή τη συλλογή."
+
+msgid "Whole collections"
+msgstr "Ολόκληρες συλλογές"
+
+msgid "Download"
+msgstr "Λήψη"
+
+msgid "Step by step"
+msgstr "Βήμα βήμα"
+
+msgid "<strong>Choose what to export:</strong> a collection, a group, or both. \"All\" in both exports everyone."
+msgstr "<strong>Επιλέξτε τι θα εξαχθεί:</strong> μια συλλογή, μια ομάδα ή και τα δύο. Με «Όλες» και στα δύο εξάγονται όλοι."
+
+msgid "<strong>Download.</strong> The file is named after your choice and today's date, e.g. <code>genoroots-venizelos-2026-10-04.ged</code>."
+msgstr "<strong>Λήψη.</strong> Το αρχείο παίρνει το όνομα της επιλογής σας και τη σημερινή ημερομηνία, π.χ. <code>genoroots-venizelos-2026-10-04.ged</code>."
+
+msgid "<strong>Open it</strong> in a genealogy program, keep it as a backup, or import it on another site with Import GEDCOM."
+msgstr "<strong>Ανοίξτε το</strong> σε πρόγραμμα γενεαλογίας, κρατήστε το ως αντίγραφο ασφαλείας ή εισαγάγετέ το σε άλλον ιστότοπο με την Εισαγωγή GEDCOM."
+
+msgid "<strong>Keep it private.</strong> It contains personal data, including about living people. Do not publish it or send it openly."
+msgstr "<strong>Κρατήστε το ιδιωτικό.</strong> Περιέχει προσωπικά δεδομένα, και για πρόσωπα που ζουν. Μην το δημοσιεύετε και μην το στέλνετε ανοιχτά."
+
+msgid "Help"
+msgstr "Βοήθεια"
+
+msgid "What the file contains"
+msgstr "Τι περιέχει το αρχείο"
+
+msgid "Published people and families only; drafts and the trash are left out. For each person:"
+msgstr "Μόνο δημοσιευμένα πρόσωπα και οικογένειες· τα πρόχειρα και ο κάδος δεν περιλαμβάνονται. Για κάθε πρόσωπο:"
+
+msgid "name, sex, birth, death and burial (dates exactly as stored);"
+msgstr "όνομα, φύλο, γέννηση, θάνατος και ταφή (οι ημερομηνίες όπως είναι καταχωρισμένες)·"
+
+msgid "notes (one NOTE per paragraph) and sources (one SOUR per line);"
+msgstr "σημειώσεις (μία NOTE ανά παράγραφο) και πηγές (μία SOUR ανά γραμμή)·"
+
+msgid "period, groups and related article, as <code>_PERIOD</code>, <code>_GROUP</code> and <code>_ARTICLE</code>;"
+msgstr "περίοδος, ομάδες και σχετικό άρθρο, ως <code>_PERIOD</code>, <code>_GROUP</code> και <code>_ARTICLE</code>·"
+
+msgid "the name in Latin characters, if filled in, as a second NAME;"
+msgstr "το όνομα με λατινικούς χαρακτήρες, αν έχει συμπληρωθεί, ως δεύτερο NAME·"
+
+msgid "the portrait, as a link to the image (<code>OBJE</code>/<code>FILE</code>), not the image itself."
+msgstr "το πορτρέτο, ως σύνδεσμος προς την εικόνα (<code>OBJE</code>/<code>FILE</code>), όχι η ίδια η εικόνα."
+
+msgid "For each family: the spouses, the children, the marriage, and how certain the link is (<code>_STATUS</code>). Photo-archive links and translations are not included."
+msgstr "Για κάθε οικογένεια: οι σύζυγοι, τα παιδιά, ο γάμος και πόσο βέβαιη είναι η σχέση (<code>_STATUS</code>). Οι συνδέσεις με το φωτογραφικό αρχείο και οι μεταφράσεις δεν περιλαμβάνονται."
+
+msgid "Choosing a collection or a group"
+msgstr "Επιλογή συλλογής ή ομάδας"
+
+msgid "<strong>A collection:</strong> everyone in that tree."
+msgstr "<strong>Μια συλλογή:</strong> όλα τα πρόσωπα του δέντρου."
+
+msgid "<strong>A group:</strong> its members, from every collection."
+msgstr "<strong>Μια ομάδα:</strong> τα μέλη της, από όλες τις συλλογές."
+
+msgid "<strong>Both:</strong> the group's members within that collection, e.g. the Mitsotakis group within the Venizelos collection."
+msgstr "<strong>Και τα δύο:</strong> τα μέλη της ομάδας μέσα σε αυτή τη συλλογή, π.χ. η ομάδα Μητσοτάκη μέσα στη συλλογή Βενιζέλου."
+
+msgid "A family is included when at least two of its members are in the selection, and it lists only those members. So a group export keeps the marriages and parent–child links among its members, and the file never points to someone who is not in it."
+msgstr "Μια οικογένεια περιλαμβάνεται όταν τουλάχιστον δύο μέλη της είναι στην επιλογή, και αναφέρει μόνο αυτά τα μέλη. Έτσι η εξαγωγή μιας ομάδας κρατά τους γάμους και τις σχέσεις γονέα–παιδιού ανάμεσα στα μέλη της, και το αρχείο δεν παραπέμπει ποτέ σε πρόσωπο που δεν περιέχει."
+
+msgid "IDs and importing the file again"
+msgstr "Αριθμοί και επανεισαγωγή του αρχείου"
+
+msgid "People and families keep their GenoRoots IDs. When everyone in the file belongs to the same collection, its prefix is left out (<code>venizelos:I08</code> is written as <code>@I08@</code>)."
+msgstr "Πρόσωπα και οικογένειες κρατούν τους αριθμούς τους στο GenoRoots. Όταν όλοι στο αρχείο ανήκουν στην ίδια συλλογή, το πρόθεμά της παραλείπεται (το <code>venizelos:I08</code> γράφεται <code>@I08@</code>)."
+
+msgid "Importing the file back into the same collection updates the same people; nothing is duplicated and nothing changes. On another site, import it into a collection with the same address (slug), so that later imports update the same people there too."
+msgstr "Αν εισαγάγετε το αρχείο ξανά στην ίδια συλλογή, ενημερώνονται τα ίδια πρόσωπα· τίποτα δεν διπλασιάζεται και τίποτα δεν αλλάζει. Σε άλλον ιστότοπο, εισαγάγετέ το σε συλλογή με την ίδια διεύθυνση (slug), ώστε και εκεί οι επόμενες εισαγωγές να ενημερώνουν τα ίδια πρόσωπα."
+
+msgid "Opening the file in genealogy programs"
+msgstr "Άνοιγμα του αρχείου σε προγράμματα γενεαλογίας"
+
+msgid "The file is standard GEDCOM 5.5 in UTF-8, which genealogy programs (desktop or online) can open. They read names, dates, places, families, notes and sources."
+msgstr "Το αρχείο είναι τυπικό GEDCOM 5.5 σε UTF-8 και ανοίγει σε προγράμματα γενεαλογίας (εγκατεστημένα ή διαδικτυακά). Διαβάζουν ονόματα, ημερομηνίες, τόπους, οικογένειες, σημειώσεις και πηγές."
+
+msgid "The GenoRoots tags (<code>_PERIOD</code>, <code>_GROUP</code>, <code>_ARTICLE</code>, <code>_STATUS</code>) are not standard: most programs ignore them or keep them as notes. The portrait is a link to the image on this site."
+msgstr "Οι ετικέτες του GenoRoots (<code>_PERIOD</code>, <code>_GROUP</code>, <code>_ARTICLE</code>, <code>_STATUS</code>) δεν είναι τυπικές: τα περισσότερα προγράμματα τις αγνοούν ή τις κρατούν ως σημειώσεις. Το πορτρέτο είναι σύνδεσμος προς την εικόνα σε αυτόν τον ιστότοπο."
+
+msgid "Personal data"
+msgstr "Προσωπικά δεδομένα"
+
+msgid "The file contains names, dates and family relations, including of living people. Store it privately, do not upload it to a public folder of the website, and delete copies you no longer need. Only administrators can download it."
+msgstr "Το αρχείο περιέχει ονόματα, ημερομηνίες και οικογενειακές σχέσεις, και προσώπων που ζουν. Φυλάξτε το ιδιωτικά, μην το ανεβάζετε σε δημόσιο φάκελο του ιστότοπου και σβήστε τα αντίγραφα που δεν χρειάζεστε. Μόνο οι διαχειριστές μπορούν να το κατεβάσουν."
+
+msgid "From the command line"
+msgstr "Από τη γραμμή εντολών"
+
+msgid "The same export runs with WP-CLI; without a file name it prints to the screen:"
+msgstr "Η ίδια εξαγωγή γίνεται με το WP-CLI· χωρίς όνομα αρχείου, εμφανίζεται στην οθόνη:"
+
+msgid "Adds people and families from a GEDCOM file, the standard exchange format of genealogy programs. Importing the same file again updates the people and families it created; it never makes duplicates."
+msgstr "Προσθέτει πρόσωπα και οικογένειες από αρχείο GEDCOM, το κοινό πρότυπο ανταλλαγής των προγραμμάτων γενεαλογίας. Αν εισαγάγετε ξανά το ίδιο αρχείο, ενημερώνονται τα πρόσωπα και οι οικογένειες που δημιούργησε· δεν δημιουργούνται ποτέ διπλότυπα."
+
+msgid "<strong>Prepare the file.</strong> GEDCOM 5.5 or 5.5.1, saved as UTF-8. Most genealogy programs have an \"Export → GEDCOM\" command."
+msgstr "<strong>Ετοιμάστε το αρχείο.</strong> GEDCOM 5.5 ή 5.5.1, αποθηκευμένο σε UTF-8. Τα περισσότερα προγράμματα γενεαλογίας έχουν εντολή «Εξαγωγή → GEDCOM»."
+
+msgid "<strong>Choose the collection.</strong> One collection per separate family network (e.g. one family tree). Choose \"No collection\" for a single shared tree, such as the families of one village. Import the same file into the same collection every time."
+msgstr "<strong>Επιλέξτε τη συλλογή.</strong> Μία συλλογή για κάθε ξεχωριστό δίκτυο οικογενειών (π.χ. ένα οικογενειακό δέντρο). Επιλέξτε «Χωρίς συλλογή» για ένα ενιαίο κοινό δέντρο, όπως οι οικογένειες ενός χωριού. Εισάγετε το ίδιο αρχείο πάντα στην ίδια συλλογή."
+
+msgid "<strong>Check the file first.</strong> Leave \"Only check the file\" ticked: you will see how many people and families it has, how many already exist here, and any problems. Nothing is saved."
+msgstr "<strong>Ελέγξτε πρώτα το αρχείο.</strong> Αφήστε επιλεγμένο το «Μόνο έλεγχος του αρχείου»: θα δείτε πόσα πρόσωπα και οικογένειες έχει, πόσα υπάρχουν ήδη εδώ και τυχόν προβλήματα. Δεν αποθηκεύεται τίποτα."
+
+msgid "<strong>Import.</strong> Untick the box and upload the file again."
+msgstr "<strong>Εισαγωγή.</strong> Αποεπιλέξτε το κουτί και μεταφορτώστε ξανά το αρχείο."
+
+msgid "<strong>Review.</strong> Open a few people, give the collection a description, and add portraits in each person's Portrait box."
+msgstr "<strong>Έλεγχος.</strong> Ανοίξτε μερικά πρόσωπα, γράψτε μια περιγραφή για τη συλλογή και προσθέστε πορτρέτα στο πλαίσιο «Πορτρέτο» κάθε προσώπου."
+
+msgid "File and collection"
+msgstr "Αρχείο και συλλογή"
+
+msgid "No collection (one shared tree)"
+msgstr "Χωρίς συλλογή (ένα κοινό δέντρο)"
+
+msgid "New collection…"
+msgstr "Νέα συλλογή…"
+
+msgid "Name"
+msgstr "Όνομα"
+
+msgid "Address (slug)"
+msgstr "Διεύθυνση (slug)"
+
+msgid "Short, in Latin letters. Used in the page address and as the prefix of every ID (venizelos:I08). Leave empty to make one from the name."
+msgstr "Σύντομη, με λατινικούς χαρακτήρες. Χρησιμοποιείται στη διεύθυνση της σελίδας και ως πρόθεμα κάθε αριθμού (venizelos:I08). Αφήστε την κενή για να δημιουργηθεί από το όνομα."
+
+msgid "Check first"
+msgstr "Πρώτα έλεγχος"
+
+msgid "Only check the file (nothing is saved)"
+msgstr "Μόνο έλεγχος του αρχείου (δεν αποθηκεύεται τίποτα)"
+
+msgid "Upload"
+msgstr "Μεταφόρτωση"
+
+msgid "The file must be a GEDCOM file ending in .ged."
+msgstr "Το αρχείο πρέπει να είναι GEDCOM, με κατάληξη .ged."
+
+msgid "Give the new collection a name."
+msgstr "Δώστε όνομα στη νέα συλλογή."
+
+msgid "That collection no longer exists."
+msgstr "Αυτή η συλλογή δεν υπάρχει πια."
+
+msgid "No collection"
+msgstr "Χωρίς συλλογή"
+
+msgid "Person %1$s: related article \"%2$s\" was not found on this site; the person will be imported without the link."
+msgstr "Πρόσωπο %1$s: το σχετικό άρθρο «%2$s» δεν βρέθηκε σε αυτόν τον ιστότοπο· το πρόσωπο θα εισαχθεί χωρίς τον σύνδεσμο."
+
+msgid "Family %1$s names %2$s, who is not in the file or on this site; that link will be skipped."
+msgstr "Η οικογένεια %1$s αναφέρει το %2$s, που δεν υπάρχει ούτε στο αρχείο ούτε στον ιστότοπο· αυτή η σύνδεση θα παραλειφθεί."
+
+msgid "File check: %s"
+msgstr "Έλεγχος αρχείου: %s"
+
+msgid "Nothing has been saved."
+msgstr "Δεν αποθηκεύτηκε τίποτα."
+
+msgid "People: %1$d in the file: %2$d already here (will be updated), %3$d new."
+msgstr "Πρόσωπα: %1$d στο αρχείο: %2$d υπάρχουν ήδη εδώ (θα ενημερωθούν), %3$d νέα."
+
+msgid "Families: %1$d in the file: %2$d already here (will be updated), %3$d new."
+msgstr "Οικογένειες: %1$d στο αρχείο: %2$d υπάρχουν ήδη εδώ (θα ενημερωθούν), %3$d νέες."
+
+msgid "The collection will be created on import."
+msgstr "Η συλλογή θα δημιουργηθεί κατά την εισαγωγή."
+
+msgid "new"
+msgstr "νέα"
+
+msgid "Groups: %s"
+msgstr "Ομάδες: %s"
+
+msgid "None of these people are in this collection yet. If you imported this file before, check that you chose the same collection; otherwise you will get a second copy."
+msgstr "Κανένα από αυτά τα πρόσωπα δεν υπάρχει ακόμη σε αυτή τη συλλογή. Αν έχετε εισαγάγει αυτό το αρχείο στο παρελθόν, ελέγξτε ότι επιλέξατε την ίδια συλλογή· αλλιώς θα δημιουργηθεί δεύτερο αντίγραφο."
+
+msgid "No problems found. Untick \"Only check the file\" and upload it again to import."
+msgstr "Δεν βρέθηκαν προβλήματα. Αποεπιλέξτε το «Μόνο έλεγχος του αρχείου» και μεταφορτώστε το ξανά για εισαγωγή."
+
+msgid "Imported: %s"
+msgstr "Εισήχθη: %s"
+
+msgid "See the people"
+msgstr "Δείτε τα πρόσωπα"
+
+msgid "Edit the collection's description"
+msgstr "Επεξεργασία της περιγραφής της συλλογής"
+
+msgid "View the tree"
+msgstr "Δείτε το δέντρο"
+
+msgid "Problems"
+msgstr "Προβλήματα"
+
+msgid "Lines that are not GEDCOM (skipped): %d"
+msgstr "Γραμμές που δεν είναι GEDCOM (παραλείφθηκαν): %d"
+
+msgid "Collections and IDs"
+msgstr "Συλλογές και αριθμοί"
+
+msgid "Every person and family keeps the ID it has in the file (<code>@I08@</code> becomes <code>I08</code>). Imported into a collection, the ID gets the collection's prefix (<code>venizelos:I08</code>), so two files that both number their people I1, I2… never overwrite each other."
+msgstr "Κάθε πρόσωπο και οικογένεια κρατά τον αριθμό που έχει στο αρχείο (το <code>@I08@</code> γίνεται <code>I08</code>). Όταν εισάγεται σε συλλογή, ο αριθμός παίρνει το πρόθεμα της συλλογής (<code>venizelos:I08</code>), ώστε δύο αρχεία που αριθμούν και τα δύο τα πρόσωπά τους I1, I2… να μην αντικαθιστούν το ένα το άλλο."
+
+msgid "A re-import finds people and families by these IDs and updates them. So import a file into the <strong>same collection every time</strong>. Importing it into another collection, or without one, creates a second copy."
+msgstr "Η επανεισαγωγή βρίσκει πρόσωπα και οικογένειες από αυτούς τους αριθμούς και τα ενημερώνει. Γι’ αυτό εισάγετε ένα αρχείο <strong>πάντα στην ίδια συλλογή</strong>. Αν το εισαγάγετε σε άλλη συλλογή ή χωρίς συλλογή, δημιουργείται δεύτερο αντίγραφο."
+
+msgid "Use a collection for each separate family network; each gets its own page and its own groups explorer. A site with one tree (e.g. the families of one village) can do without collections."
+msgstr "Χρησιμοποιήστε μία συλλογή για κάθε ξεχωριστό δίκτυο οικογενειών· η καθεμία έχει δική της σελίδα και δικό της εξερευνητή ομάδων. Ένας ιστότοπος με ένα δέντρο (π.χ. τις οικογένειες ενός χωριού) μπορεί να λειτουργεί χωρίς συλλογές."
+
+msgid "On sites linked to a photo archive, the numbers are the ones written in photo captions (\"Name [384]\"). They never change."
+msgstr "Σε ιστότοπους που συνδέονται με φωτογραφικό αρχείο, οι αριθμοί είναι αυτοί που γράφονται στις λεζάντες των φωτογραφιών («Όνομα [384]»). Δεν αλλάζουν ποτέ."
+
+msgid "What is read from the file"
+msgstr "Τι διαβάζεται από το αρχείο"
+
+msgid "GEDCOM"
+msgstr "GEDCOM"
+
+msgid "Stored as"
+msgstr "Αποθηκεύεται ως"
+
+msgid "Name: the first NAME line; slashes around the surname are removed. Later NAME lines are ignored."
+msgstr "Όνομα: η πρώτη γραμμή NAME· οι κάθετοι γύρω από το επώνυμο αφαιρούνται. Οι επόμενες γραμμές NAME αγνοούνται."
+
+msgid "Sex: M, F; anything else is Unknown."
+msgstr "Φύλο: M, F· οτιδήποτε άλλο θεωρείται Άγνωστο."
+
+msgid "Birth and death: date and place."
+msgstr "Γέννηση και θάνατος: ημερομηνία και τόπος."
+
+msgid "Burial place."
+msgstr "Τόπος ταφής."
+
+msgid "Notes. Several NOTE lines become paragraphs."
+msgstr "Σημειώσεις. Πολλές γραμμές NOTE γίνονται παράγραφοι."
+
+msgid "Sources, one per line. Only written citations; pointers to source records (<code>@S1@</code>) are not followed."
+msgstr "Πηγές, μία ανά γραμμή. Μόνο γραπτές αναφορές· οι παραπομπές σε εγγραφές πηγών (<code>@S1@</code>) δεν ακολουθούνται."
+
+msgid "Families: the two spouses and the children."
+msgstr "Οικογένειες: οι δύο σύζυγοι και τα παιδιά."
+
+msgid "Marriage date and place."
+msgstr "Ημερομηνία και τόπος γάμου."
+
+msgid "Any other tag (occupations, residences, media…) is skipped without error."
+msgstr "Κάθε άλλη ετικέτα (επαγγέλματα, κατοικίες, πολυμέσα…) παραλείπεται χωρίς σφάλμα."
+
+msgid "GenoRoots tags"
+msgstr "Ετικέτες του GenoRoots"
+
+msgid "Four extra tags carry what standard GEDCOM has no place for. Genealogy programs ignore them; GenoRoots reads them."
+msgstr "Τέσσερις πρόσθετες ετικέτες μεταφέρουν όσα δεν χωρούν στο τυπικό GEDCOM. Τα προγράμματα γενεαλογίας τις αγνοούν· το GenoRoots τις διαβάζει."
+
+msgid "<code>_GROUP</code> on a person: a group they belong to, created if missing. One line per group; a person can be in the family they were born into and the one they married into."
+msgstr "<code>_GROUP</code> σε πρόσωπο: μια ομάδα στην οποία ανήκει, που δημιουργείται αν δεν υπάρχει. Μία γραμμή ανά ομάδα· ένα πρόσωπο μπορεί να ανήκει στην οικογένεια όπου γεννήθηκε και σε εκείνη όπου παντρεύτηκε."
+
+msgid "<code>_PERIOD</code> on a person: the historical period of their life, e.g. \"Late Ottoman period / Cretan insurrections\"."
+msgstr "<code>_PERIOD</code> σε πρόσωπο: η ιστορική περίοδος της ζωής του, π.χ. «Late Ottoman period / Cretan insurrections»."
+
+msgid "<code>_ARTICLE</code> on a person: a page on this site about them, as an address without the domain (<code>people/eleftherios-venizelos</code>). The person's page then links to it."
+msgstr "<code>_ARTICLE</code> σε πρόσωπο: μια σελίδα αυτού του ιστότοπου για το πρόσωπο, ως διεύθυνση χωρίς το domain (<code>people/eleftherios-venizelos</code>). Η σελίδα του προσώπου οδηγεί τότε σε αυτήν."
+
+msgid "<code>_STATUS</code> on a family: how certain the link is: <code>confirmed</code>, <code>probable</code> or <code>claimed</code> (family tradition). The last two are shown next to the relation."
+msgstr "<code>_STATUS</code> σε οικογένεια: πόσο βέβαιη είναι η σχέση: <code>confirmed</code> (τεκμηριωμένη), <code>probable</code> (πιθανή) ή <code>claimed</code> (κατά την οικογενειακή παράδοση). Οι δύο τελευταίες εμφανίζονται δίπλα στη σχέση."
+
+msgid "Dates and names"
+msgstr "Ημερομηνίες και ονόματα"
+
+msgid "Dates are kept exactly as written: <code>1908</code>, <code>DEC 1936</code>, <code>ABT 1850</code>, <code>BET 1850 AND 1855</code>. Nothing is guessed. On the site they are shown in the page language (\"c. 1850\", \"Δεκέμβριος 1936\")."
+msgstr "Οι ημερομηνίες κρατιούνται ακριβώς όπως γράφτηκαν: <code>1908</code>, <code>DEC 1936</code>, <code>ABT 1850</code>, <code>BET 1850 AND 1855</code>. Τίποτα δεν συμπληρώνεται με εικασία. Στον ιστότοπο εμφανίζονται στη γλώσσα της σελίδας («περ. 1850», «Δεκέμβριος 1936»)."
+
+msgid "Names are shown as written. A good pattern: given name, any nickname in parentheses, surname; for a married woman, her married surname and her maiden surname in parentheses: <code>Eleni Venizelou (Nostraki)</code>. Use initials to tell namesakes apart: <code>Giorgos N. Xylouris</code>."
+msgstr "Τα ονόματα εμφανίζονται όπως γράφτηκαν. Ένα καλό σχήμα: όνομα, τυχόν παρατσούκλι σε παρένθεση, επώνυμο· για παντρεμένη γυναίκα, το επώνυμο του συζύγου και το πατρικό της σε παρένθεση: <code>Ελένη Βενιζέλου (Νοστράκη)</code>. Χρησιμοποιήστε αρχικά για να ξεχωρίζουν οι συνονόματοι: <code>Γιώργος Ν. Ξυλούρης</code>."
+
+msgid "What a re-import changes"
+msgstr "Τι αλλάζει μια επανεισαγωγή"
+
+msgid "<strong>Always rewritten from the file:</strong> name, sex, birth, death, and each family's spouses, children and marriage."
+msgstr "<strong>Ξαναγράφονται πάντα από το αρχείο:</strong> όνομα, φύλο, γέννηση, θάνατος, και για κάθε οικογένεια οι σύζυγοι, τα παιδιά και ο γάμος."
+
+msgid "<strong>Written only when the file has them:</strong> burial place, notes, sources, period, related article, certainty. A value you added by hand survives a re-import of a file that doesn't have it."
+msgstr "<strong>Γράφονται μόνο όταν υπάρχουν στο αρχείο:</strong> τόπος ταφής, σημειώσεις, πηγές, περίοδος, σχετικό άρθρο, βεβαιότητα. Μια τιμή που προσθέσατε με το χέρι διατηρείται, αν το αρχείο δεν την περιέχει."
+
+msgid "<strong>Groups</strong> are added, never removed. Take someone out of a group by hand."
+msgstr "<strong>Οι ομάδες</strong> προστίθενται, δεν αφαιρούνται ποτέ. Βγάλτε κάποιον από μια ομάδα με το χέρι."
+
+msgid "<strong>Never touched:</strong> portraits, and people who are no longer in the file (delete those by hand)."
+msgstr "<strong>Δεν αγγίζονται ποτέ:</strong> τα πορτρέτα και τα πρόσωπα που δεν υπάρχουν πια στο αρχείο (αυτά διαγράφονται με το χέρι)."
+
+msgid "Imported people and families are published straight away."
+msgstr "Τα πρόσωπα και οι οικογένειες που εισάγονται δημοσιεύονται αμέσως."
+
+msgid "After importing"
+msgstr "Μετά την εισαγωγή"
+
+msgid "Open a few people and check names, dates and relations."
+msgstr "Ανοίξτε μερικά πρόσωπα και ελέγξτε ονόματα, ημερομηνίες και σχέσεις."
+
+msgid "Give the collection a description (Collections, in this menu); it is shown on the tree's page."
+msgstr "Γράψτε μια περιγραφή για τη συλλογή (Συλλογές, σε αυτό το μενού)· εμφανίζεται στη σελίδα του δέντρου."
+
+msgid "Add portraits in each person's Portrait box. They appear on the tree cards and inside the group circles."
+msgstr "Προσθέστε πορτρέτα στο πλαίσιο «Πορτρέτο» κάθε προσώπου. Εμφανίζονται στις κάρτες του δέντρου και μέσα στους κύκλους των ομάδων."
+
+msgid "If the site is multilingual, translate the new people with the site's translation tool."
+msgstr "Αν ο ιστότοπος είναι πολύγλωσσος, μεταφράστε τα νέα πρόσωπα με το εργαλείο μετάφρασης του ιστότοπου."
+
+msgid "Problems and what they mean"
+msgstr "Προβλήματα και τι σημαίνουν"
+
+msgid "<strong>A family names someone who is not in the file:</strong> that link is skipped. Add the person to the file, or import the file that has them first, then import again."
+msgstr "<strong>Μια οικογένεια αναφέρει πρόσωπο που δεν υπάρχει στο αρχείο:</strong> η σύνδεση παραλείπεται. Προσθέστε το πρόσωπο στο αρχείο ή εισαγάγετε πρώτα το αρχείο που το περιέχει, και μετά κάντε ξανά την εισαγωγή."
+
+msgid "<strong>Related article not found:</strong> the <code>_ARTICLE</code> address does not exist on this site. The person is imported without the link; add it later on the person's page."
+msgstr "<strong>Δεν βρέθηκε το σχετικό άρθρο:</strong> η διεύθυνση του <code>_ARTICLE</code> δεν υπάρχει σε αυτόν τον ιστότοπο. Το πρόσωπο εισάγεται χωρίς τον σύνδεσμο· προσθέστε τον αργότερα στη σελίδα του προσώπου."
+
+msgid "<strong>Lines that are not GEDCOM:</strong> usually harmless (empty or stray lines). If there are many, the file may be damaged."
+msgstr "<strong>Γραμμές που δεν είναι GEDCOM:</strong> συνήθως αβλαβείς (κενές ή άσχετες γραμμές). Αν είναι πολλές, το αρχείο μπορεί να είναι κατεστραμμένο."
+
+msgid "<strong>Greek or other letters appear as symbols:</strong> the file is not UTF-8. Export it again as UTF-8."
+msgstr "<strong>Τα ελληνικά ή άλλα γράμματα εμφανίζονται ως σύμβολα:</strong> το αρχείο δεν είναι σε UTF-8. Εξαγάγετέ το ξανά σε UTF-8."
+
+msgid "<strong>Everyone appears twice:</strong> the file was imported earlier into another collection or without one. Delete the copy you don't want and always use the same collection."
+msgstr "<strong>Όλοι εμφανίζονται δύο φορές:</strong> το αρχείο είχε εισαχθεί νωρίτερα σε άλλη συλλογή ή χωρίς συλλογή. Διαγράψτε το αντίγραφο που δεν θέλετε και χρησιμοποιείτε πάντα την ίδια συλλογή."
+
+msgid "For large files, or on a server, the same import runs with WP-CLI:"
+msgstr "Για μεγάλα αρχεία ή σε διακομιστή, η ίδια εισαγωγή γίνεται με το WP-CLI:"
+
+msgid "Keep GEDCOM files outside the website's folders: they contain personal data."
+msgstr "Κρατήστε τα αρχεία GEDCOM έξω από τους φακέλους του ιστότοπου: περιέχουν προσωπικά δεδομένα."
+
+# Admin pages (import, export, settings)
+
+msgid "Existing records"
+msgstr "Υπάρχουσες εγγραφές"
+
+msgid "Add only: don't change people and families already here"
+msgstr "Μόνο προσθήκη: να μην αλλάξουν τα πρόσωπα και οι οικογένειες που υπάρχουν ήδη"
+
+msgid "For extending a tree. People already here are left exactly as they are; families already here only gain new children and fields that are empty. Leave unticked to update the tree from the file."
+msgstr "Για επέκταση ενός δέντρου. Τα πρόσωπα που υπάρχουν ήδη μένουν ακριβώς όπως είναι· οι οικογένειες που υπάρχουν ήδη αποκτούν μόνο νέα παιδιά και πεδία που είναι κενά. Αφήστε το μη επιλεγμένο για να ενημερωθεί το δέντρο από το αρχείο."
+
+msgid "Person %1$s is \"%2$s\" in the file but \"%3$s\" on this site. Check the ID: with the same ID they are treated as the same person."
+msgstr "Το πρόσωπο %1$s είναι «%2$s» στο αρχείο αλλά «%3$s» σε αυτόν τον ιστότοπο. Ελέγξτε τον αριθμό: με τον ίδιο αριθμό θεωρούνται το ίδιο πρόσωπο."
+
+msgid "child %s"
+msgstr "παιδί %s"
+
+msgid "spouse %s"
+msgstr "σύζυγος %s"
+
+msgid "marriage date"
+msgstr "ημερομηνία γάμου"
+
+msgid "marriage place"
+msgstr "τόπος γάμου"
+
+msgid "%1$s: adds %2$s"
+msgstr "%1$s: προστίθεται %2$s"
+
+msgid "People: %1$d in the file: %2$d already here (left unchanged), %3$d new."
+msgstr "Πρόσωπα: %1$d στο αρχείο: %2$d υπάρχουν ήδη εδώ (μένουν όπως είναι), %3$d νέα."
+
+msgid "Families: %1$d in the file: %2$d already here (only gain what they lack), %3$d new."
+msgstr "Οικογένειες: %1$d στο αρχείο: %2$d υπάρχουν ήδη εδώ (αποκτούν μόνο ό,τι τους λείπει), %3$d νέες."
+
+msgid "Families already here that will gain"
+msgstr "Οικογένειες που υπάρχουν ήδη και θα αποκτήσουν"
+
+msgid "People: %1$d created, %2$d already here (left unchanged)"
+msgstr "Πρόσωπα: %1$d νέα, %2$d υπήρχαν ήδη (έμειναν όπως ήταν)"
+
+msgid "Families: %1$d created, %2$d extended, %3$d unchanged"
+msgstr "Οικογένειες: %1$d νέες, %2$d επεκτάθηκαν, %3$d έμειναν όπως ήταν"
+
+msgid "Extending a tree without changing it (add only)"
+msgstr "Επέκταση δέντρου χωρίς αλλαγές (μόνο προσθήκη)"
+
+msgid "Tick \"Add only\" to add new people to a tree that is already here, e.g. a new generation or a branch found later, while leaving everything already here exactly as it is, including corrections made by hand."
+msgstr "Επιλέξτε «Μόνο προσθήκη» για να προσθέσετε νέα πρόσωπα σε δέντρο που υπάρχει ήδη, π.χ. μια νέα γενιά ή έναν κλάδο που βρέθηκε αργότερα, αφήνοντας ό,τι υπάρχει ήδη ακριβώς όπως είναι, μαζί με τις διορθώσεις που έγιναν με το χέρι."
+
+msgid "<strong>People already here</strong> (same ID in the same collection) are left unchanged. The file only needs their ID and name, so the new people can be attached to them."
+msgstr "<strong>Τα πρόσωπα που υπάρχουν ήδη</strong> (ίδιος αριθμός στην ίδια συλλογή) μένουν αμετάβλητα. Στο αρχείο αρκούν ο αριθμός και το όνομά τους, ώστε να συνδεθούν μαζί τους τα νέα πρόσωπα."
+
+msgid "<strong>Families already here</strong> only gain what they lack: new children, a spouse where the place is empty, a marriage date or place where it is empty. Nothing is removed or overwritten; a different spouse in the file is reported, not applied."
+msgstr "<strong>Οι οικογένειες που υπάρχουν ήδη</strong> αποκτούν μόνο ό,τι τους λείπει: νέα παιδιά, σύζυγο όπου η θέση είναι κενή, ημερομηνία ή τόπο γάμου όπου είναι κενά. Τίποτα δεν αφαιρείται ούτε αντικαθίσταται· αν το αρχείο αναφέρει διαφορετικό σύζυγο, αυτό αναφέρεται και δεν εφαρμόζεται."
+
+msgid "<strong>New people and families</strong> are created as usual."
+msgstr "<strong>Τα νέα πρόσωπα και οι νέες οικογένειες</strong> δημιουργούνται κανονικά."
+
+msgid "Use new IDs for new people, above the highest ID in the tree. The check lists what each existing family will gain, and warns when an ID in the file belongs to someone with a different name here: that usually means a numbering mistake."
+msgstr "Δώστε στα νέα πρόσωπα νέους αριθμούς, μεγαλύτερους από τον μεγαλύτερο του δέντρου. Ο έλεγχος δείχνει τι θα αποκτήσει κάθε υπάρχουσα οικογένεια και προειδοποιεί όταν ένας αριθμός του αρχείου ανήκει εδώ σε πρόσωπο με άλλο όνομα: συνήθως αυτό σημαίνει λάθος στην αρίθμηση."
+
+msgid "To correct existing people, edit them in the admin, or import without \"Add only\"."
+msgstr "Για να διορθώσετε υπάρχοντα πρόσωπα, επεξεργαστείτε τα στη διαχείριση ή κάντε εισαγωγή χωρίς το «Μόνο προσθήκη»."
+
+# Family-tree card ([genoroots_family_link]) and badge
+msgid "Family tree of %s"
+msgstr "Οικογενειακό δέντρο: %s"
+
+msgid "Explore the tree"
+msgstr "Εξερευνήστε το δέντρο"
+
+msgid "%d family group"
+msgid_plural "%d family groups"
+msgstr[0] "%d οικογενειακή ομάδα"
+msgstr[1] "%d οικογενειακές ομάδες"
+
+msgid "Each address word must be different. Nothing was changed."
+msgstr "Κάθε λέξη διεύθυνσης πρέπει να είναι διαφορετική. Δεν άλλαξε τίποτα."
+
+msgid "Family tree page"
+msgstr "Σελίδα γενεαλογικού δέντρου"
+
+msgid "Person pages"
+msgstr "Σελίδες προσώπων"
+
+msgid "Group pages"
+msgstr "Σελίδες ομάδων"
+
+msgid "Collection pages"
+msgstr "Σελίδες συλλογών"
+
+msgid "Addresses"
+msgstr "Διευθύνσεις"
+
+msgid "The words in the public web addresses. Changing one moves those pages, and links to the old address stop working."
+msgstr "Οι λέξεις στις δημόσιες διευθύνσεις. Αν αλλάξετε μία, οι σελίδες μετακινούνται και οι σύνδεσμοι στην παλιά διεύθυνση σταματούν να λειτουργούν."
+
+msgid "A theme or plugin changes these words with the genoroots_slugs filter, so the addresses in use may differ from the ones below."
+msgstr "Ένα θέμα ή πρόσθετο αλλάζει αυτές τις λέξεις με το φίλτρο genoroots_slugs, οπότε οι διευθύνσεις σε χρήση μπορεί να διαφέρουν από τις παρακάτω."
+
+msgid "Save addresses"
+msgstr "Αποθήκευση διευθύνσεων"

@@ -1,0 +1,50 @@
+@use 'variables' as *;
+
+.gnr-search {
+	position: relative;
+	max-width: 320px;
+	margin-top: 0.75rem;
+}
+
+.gnr-search__input {
+	width: 100%;
+	padding: 0.5rem 0.75rem;
+	border: 1px solid $gnr-color-line;
+	border-radius: $gnr-radius;
+	font-size: 1rem;
+
+	&:focus {
+		outline: 2px solid $gnr-color-accent;
+		outline-offset: 1px;
+	}
+}
+
+.gnr-search__results {
+	position: absolute;
+	top: 100%;
+	left: 0;
+	right: 0;
+	z-index: 10;
+	margin: 0.25rem 0 0;
+	padding: 0.25rem 0;
+	list-style: none;
+	background: $gnr-color-card-bg;
+	border: 1px solid $gnr-color-line;
+	border-radius: $gnr-radius;
+	box-shadow: $gnr-shadow;
+	max-height: 260px;
+	overflow-y: auto;
+
+	&[hidden] {
+		display: none;
+	}
+}
+
+.gnr-search__result {
+	padding: 0.5rem 0.75rem;
+	cursor: pointer;
+
+	&:hover {
+		background: $gnr-color-bg;
+	}
+}

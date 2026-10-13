@@ -1,0 +1,268 @@
+@use 'variables' as *;
+@use 'tree';
+@use 'groups';
+@use 'search';
+
+.gnr-person,
+.gnr-archive {
+	max-width: 960px;
+	margin: 0 auto;
+	padding: 2rem 1.25rem 4rem;
+	color: $gnr-color-ink;
+}
+
+.gnr-person__header {
+	display: flex;
+	align-items: center;
+	gap: 1.25rem;
+	margin-bottom: 1.5rem;
+}
+
+.gnr-person__portrait {
+	flex: none;
+	width: 120px;
+	height: 120px;
+	object-fit: cover;
+	border-radius: 50%;
+	box-shadow: $gnr-shadow;
+}
+
+.gnr-person__name {
+	margin: 0;
+	font-size: 2rem;
+}
+
+.gnr-person__certainty {
+	margin: -0.25rem 0 0.4rem;
+	font-size: 0.8rem;
+	font-style: italic;
+	color: $gnr-color-muted;
+}
+
+.gnr-person__sources {
+	margin-top: 1.5rem;
+	font-size: 0.875rem;
+	color: $gnr-color-muted;
+
+	h2 {
+		font-size: 0.8rem;
+		text-transform: uppercase;
+		letter-spacing: 0.06em;
+	}
+}
+
+.gnr-person__photos,
+.gnr-person__related {
+	display: inline-flex;
+	gap: 0.35rem;
+	margin-top: 0.5rem;
+	padding: 0.35rem 0.9rem;
+	border: 1px solid $gnr-color-accent;
+	border-radius: 999px;
+	color: $gnr-color-accent;
+	font-weight: 600;
+	text-decoration: none;
+
+	&:hover {
+		background: $gnr-color-accent;
+		color: #fff;
+	}
+}
+
+.gnr-person__notes {
+	max-width: 68ch;
+	margin: 0 0 2rem;
+	line-height: 1.65;
+}
+
+.gnr-person__name-latin {
+	margin: 0.25rem 0 1.5rem;
+	color: $gnr-color-muted;
+	font-style: italic;
+}
+
+.gnr-person__facts {
+	display: grid;
+	gap: 0.75rem;
+	margin: 0 0 2rem;
+}
+
+.gnr-person__fact dt {
+	font-weight: 600;
+	display: inline;
+}
+
+.gnr-person__fact dd {
+	display: inline;
+	margin: 0 0 0 0.35rem;
+}
+
+.gnr-person__fact-en {
+	color: $gnr-color-muted;
+}
+
+.gnr-person__relatives {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+	gap: 1.5rem;
+	margin: 0 0 2.5rem;
+}
+
+.gnr-person__relatives-group h2 {
+	font-size: 0.9rem;
+	text-transform: uppercase;
+	letter-spacing: 0.04em;
+	color: $gnr-color-muted;
+	margin: 0 0 0.5rem;
+}
+
+.gnr-person__relatives-group ul {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+.gnr-person__relatives-group a {
+	color: $gnr-color-accent;
+	text-decoration: none;
+
+	&:hover {
+		text-decoration: underline;
+	}
+}
+
+.gnr-person__widget h2 {
+	font-size: 1.1rem;
+	margin-bottom: 0.75rem;
+}
+
+.gnr-archive__header h1 {
+	margin: 0 0 0.25rem;
+}
+
+.gnr-archive__intro {
+	max-width: 42rem;
+	margin: 0.5rem 0 1.5rem;
+	color: $gnr-color-muted;
+}
+
+// /mele/ with several collections: one card per collection.
+.gnr-collections {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+	gap: 1rem;
+	margin: 1.5rem 0 0;
+	padding: 0;
+	list-style: none;
+}
+
+.gnr-collection__link {
+	display: flex;
+	flex-direction: column;
+	gap: 0.4rem;
+	height: 100%;
+	padding: 1.25rem 1.35rem;
+	border: 1px solid $gnr-color-line;
+	border-radius: $gnr-radius;
+	background: $gnr-color-card-bg;
+	color: $gnr-color-ink;
+	text-decoration: none;
+	transition: box-shadow 0.2s ease, border-color 0.2s ease;
+
+	&:hover,
+	&:focus-visible {
+		border-color: $gnr-color-accent;
+		box-shadow: $gnr-shadow;
+	}
+}
+
+.gnr-collection__name {
+	font-size: 1.25rem;
+	font-weight: 600;
+	color: $gnr-color-accent;
+}
+
+.gnr-collection__description {
+	color: $gnr-color-ink;
+	line-height: 1.5;
+}
+
+.gnr-collection__count {
+	margin-top: auto;
+	font-size: 0.85rem;
+	color: $gnr-color-muted;
+}
+
+.gnr-landing {
+	padding: 3rem 0;
+	text-align: center;
+}
+
+.gnr-landing__hint {
+	color: $gnr-color-muted;
+	margin-bottom: 1.5rem;
+}
+
+.gnr-landing__groups {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	gap: 0.75rem;
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+.gnr-landing__groups a {
+	display: inline-block;
+	padding: 0.5rem 1.25rem;
+	border: 1px solid $gnr-color-line;
+	border-radius: 999px;
+	color: $gnr-color-ink;
+	text-decoration: none;
+	background: $gnr-color-card-bg;
+
+	&:hover {
+		border-color: $gnr-color-accent;
+		color: $gnr-color-accent;
+	}
+}
+
+.gnr-alpha-list {
+	margin-top: 2.5rem;
+}
+
+.gnr-alpha-list h2 {
+	font-size: 1rem;
+	text-transform: uppercase;
+	letter-spacing: 0.04em;
+	color: $gnr-color-muted;
+}
+
+.gnr-alpha-list ul {
+	columns: 3;
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	column-gap: 2rem;
+}
+
+.gnr-alpha-list li {
+	break-inside: avoid;
+	margin-bottom: 0.35rem;
+}
+
+.gnr-alpha-list a {
+	color: $gnr-color-accent;
+	text-decoration: none;
+
+	&:hover {
+		text-decoration: underline;
+	}
+}
+
+@media (max-width: $gnr-breakpoint-desktop) {
+	.gnr-alpha-list ul {
+		columns: 1;
+	}
+}

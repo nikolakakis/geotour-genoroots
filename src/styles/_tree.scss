@@ -1,0 +1,715 @@
+@use 'variables' as *;
+
+$card-w: 196px;
+$card-h: 74px;
+$card-w-mobile: 150px;
+$card-h-mobile: 66px;
+$mobile: 640px;
+
+.gnr-tree-shell,
+.gnr-focus-chart-wrap,
+.gnr-app-shell {
+	position: relative;
+	width: 100%;
+	border: 1px solid $gnr-color-line;
+	border-radius: $gnr-radius;
+	overflow: hidden;
+	background: $gnr-color-bg;
+}
+
+// The archive page's views are the page: give them most of the viewport.
+.gnr-tree-shell .gnr-tree,
+.gnr-app-shell .gnr-tree,
+.gnr-app-shell .gnr-groups {
+	height: min(82dvh, 960px);
+}
+
+.gnr-focus-chart-wrap .gnr-tree {
+	height: 480px;
+}
+
+// Person page: the tree runs the full width of the window, edge to edge.
+// --gnr-page-width is the window width without the scrollbar (set in JS).
+.gnr-person__widget .gnr-focus-chart-wrap {
+	width: var(--gnr-page-width, 100vw);
+	// Themes that cap elements at max-width: 100% (GeoTour) would pull it back
+	// into the content column.
+	max-width: none;
+	margin-left: calc(50% - var(--gnr-page-width, 100vw) / 2);
+	border-width: 1px 0;
+	border-radius: 0;
+
+	.gnr-tree {
+		height: min(75dvh, 760px);
+	}
+}
+
+.gnr-tree {
+	position: relative;
+	min-height: 420px;
+	color: $gnr-color-ink;
+	-webkit-tap-highlight-color: transparent;
+
+	// Re-theme the library (it ships dark) with the plugin palette.
+	.f3 {
+		--background-color: #{$gnr-color-bg};
+		--text-color: #{$gnr-color-ink};
+		--male-color: #{$gnr-color-card-male};
+		--female-color: #{$gnr-color-card-female};
+		--genderless-color: #{$gnr-color-card-unknown};
+		font-family: inherit;
+	}
+}
+
+.gnr-tree__canvas {
+	width: 100%;
+	height: 100%;
+	background: $gnr-color-bg;
+	cursor: grab;
+
+	&:active {
+		cursor: grabbing;
+	}
+
+	.link {
+		stroke: $gnr-color-line;
+		stroke-width: 1.5px;
+	}
+
+	.link.f3-path-to-main {
+		stroke: $gnr-color-accent;
+		stroke-width: 3px;
+	}
+
+	// Marriage year on spouse links.
+	.link-text text,
+	text.link-text {
+		fill: $gnr-color-muted;
+		font-size: 11px;
+	}
+}
+
+// ---- Cards ----
+
+.gnr-tree .f3 div.card {
+	color: $gnr-color-ink;
+	outline: none;
+
+	&:hover > div,
+	&:focus-visible > div {
+		transform: translate(0, -2px);
+	}
+}
+
+.gnr-tree .f3 div.card .gnr-card {
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	gap: 1px;
+	width: $card-w;
+	height: $card-h;
+	padding: 8px 12px 8px 16px;
+	border: 1px solid $gnr-color-card-border;
+	border-radius: $gnr-radius;
+	background: $gnr-color-card-bg;
+	box-shadow: 0 1px 2px rgba(43, 36, 32, 0.08);
+	transition: box-shadow 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+
+	// Sex as a quiet accent bar, not a whole-card fill.
+	&::before {
+		content: '';
+		position: absolute;
+		left: 0;
+		top: 8px;
+		bottom: 8px;
+		width: 4px;
+		border-radius: 0 3px 3px 0;
+		background: $gnr-color-card-unknown;
+	}
+
+	&.gnr-card--m::before {
+		background: $gnr-color-card-male;
+	}
+
+	&.gnr-card--f::before {
+		background: $gnr-color-card-female;
+	}
+
+	@media (max-width: $mobile) {
+		width: $card-w-mobile;
+		height: $card-h-mobile;
+		padding: 6px 8px 6px 12px;
+	}
+}
+
+.gnr-tree .f3 div.card:hover .gnr-card,
+.gnr-tree .f3 div.card:focus-visible .gnr-card {
+	border-color: $gnr-color-accent;
+	box-shadow: $gnr-shadow;
+}
+
+.gnr-tree .f3 div.card:focus-visible .gnr-card {
+	outline: 2px solid $gnr-color-accent;
+	outline-offset: 2px;
+}
+
+// The focus person anchors the chart and must stand out at a glance:
+// larger, tinted with the site's accent, a thick border and an outer ring,
+// drawn above its neighbours. The ring pulses once when the focus changes.
+.gnr-tree .f3 div.card-main {
+	z-index: 2;
+}
+
+// div.card.card-main: outranks the hover rule, so hovering keeps the emphasis.
+.gnr-tree .f3 div.card.card-main .gnr-card {
+	border: 3px solid $gnr-color-accent;
+	background: $gnr-color-card-bg;
+	background: color-mix(in srgb, #{$gnr-color-accent} 9%, #{$gnr-color-card-bg});
+	box-shadow:
+		0 0 0 5px rgba(43, 36, 32, 0.08),
+		0 12px 28px rgba(43, 36, 32, 0.22);
+	box-shadow:
+		0 0 0 5px color-mix(in srgb, #{$gnr-color-accent} 22%, transparent),
+		0 12px 28px rgba(43, 36, 32, 0.22);
+	transform: scale(1.08);
+
+	.gnr-card__given {
+		font-weight: 700;
+		color: $gnr-color-accent;
+	}
+
+	@media (prefers-reduced-motion: no-preference) {
+		animation: gnr-focus-pulse 1.1s ease-out 1;
+	}
+}
+
+@keyframes gnr-focus-pulse {
+	0% {
+		box-shadow:
+			0 0 0 0 color-mix(in srgb, #{$gnr-color-accent} 55%, transparent),
+			0 12px 28px rgba(43, 36, 32, 0.22);
+	}
+
+	100% {
+		box-shadow:
+			0 0 0 5px color-mix(in srgb, #{$gnr-color-accent} 22%, transparent),
+			0 12px 28px rgba(43, 36, 32, 0.22);
+	}
+}
+
+.gnr-tree .f3 div.card .gnr-card.f3-path-to-main {
+	outline: none;
+	border-color: $gnr-color-accent;
+}
+
+.gnr-card__text {
+	display: flex;
+	flex-direction: column;
+	gap: 1px;
+	min-width: 0;
+}
+
+.gnr-card__given,
+.gnr-card__surname,
+.gnr-card__years {
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+}
+
+// Portrait on the card, when the person has one.
+.gnr-tree .f3 div.card .gnr-card.has-photo {
+	flex-direction: row;
+	align-items: center;
+	justify-content: flex-start;
+	gap: 10px;
+	padding-left: 12px;
+}
+
+.gnr-card__photo {
+	flex: none;
+	width: 50px;
+	height: 50px;
+	border: 2px solid #fff;
+	border-radius: 50%;
+	object-fit: cover;
+	box-shadow: 0 1px 3px rgba(43, 36, 32, 0.25);
+	pointer-events: none;
+
+	@media (max-width: $mobile) {
+		width: 40px;
+		height: 40px;
+	}
+}
+
+.gnr-tree .f3 div.card .gnr-card.is-dimmed .gnr-card__photo {
+	filter: grayscale(1);
+	opacity: 0.45;
+}
+
+.gnr-card__given {
+	font-size: 15px;
+	font-weight: 600;
+	line-height: 1.2;
+
+	@media (max-width: $mobile) {
+		font-size: 13px;
+	}
+}
+
+.gnr-card__surname {
+	font-size: 11px;
+	letter-spacing: 0.03em;
+	text-transform: uppercase;
+	color: $gnr-color-muted;
+
+	@media (max-width: $mobile) {
+		font-size: 10px;
+	}
+}
+
+.gnr-card__years {
+	margin-top: 2px;
+	font-size: 12px;
+	font-variant-numeric: tabular-nums;
+	color: $gnr-color-muted;
+
+	@media (max-width: $mobile) {
+		font-size: 11px;
+	}
+}
+
+// Group highlight: members stay bright, everyone else looks deactivated.
+// Solid, not transparent, so the links behind don't show through.
+.gnr-tree .f3 div.card .gnr-card.is-dimmed {
+	border-color: $gnr-color-dim-line;
+	background: $gnr-color-dim-bg;
+	box-shadow: none;
+	color: $gnr-color-dim-ink;
+
+	&::before {
+		background: $gnr-color-dim-line;
+	}
+
+	.gnr-card__surname,
+	.gnr-card__years {
+		color: $gnr-color-dim-ink;
+	}
+
+	.gnr-card__more {
+		background: $gnr-color-dim-ink;
+		box-shadow: none;
+	}
+}
+
+.gnr-tree .f3 div.card:hover .gnr-card.is-dimmed,
+.gnr-tree .f3 div.card:focus-visible .gnr-card.is-dimmed {
+	border-color: $gnr-color-line;
+	color: $gnr-color-muted;
+}
+
+.gnr-tree .f3 div.card .gnr-card.is-lit {
+	background: #fffaf3;
+	border-color: $gnr-color-accent;
+}
+
+// The person you clicked, while groups are highlighted: a red ring with a
+// glow, and full-strength text even if they're outside the groups.
+.gnr-tree.has-lens .f3 div.card-main .gnr-card,
+.gnr-tree.has-lens .f3 div.card-main .gnr-card.is-dimmed {
+	border: 2px solid $gnr-color-focus;
+	box-shadow: $gnr-focus-glow;
+	color: $gnr-color-ink;
+
+	.gnr-card__surname,
+	.gnr-card__years {
+		color: $gnr-color-muted;
+	}
+}
+
+.gnr-tree.has-lens .f3 div.card-main .gnr-card.is-dimmed {
+	background: $gnr-color-card-bg;
+
+	&::before {
+		background: $gnr-color-card-unknown;
+	}
+
+	&.gnr-card--m::before {
+		background: $gnr-color-card-male;
+	}
+
+	&.gnr-card--f::before {
+		background: $gnr-color-card-female;
+	}
+}
+
+// "+N" chips: relatives that exist but aren't on screen. Click the card to go there.
+.gnr-card__more {
+	position: absolute;
+	left: 50%;
+	transform: translateX(-50%);
+	min-width: 26px;
+	padding: 1px 7px;
+	border-radius: 999px;
+	background: $gnr-color-accent;
+	color: #fff;
+	font-size: 11px;
+	font-weight: 600;
+	line-height: 16px;
+	text-align: center;
+	box-shadow: 0 1px 3px rgba(43, 36, 32, 0.25);
+}
+
+.gnr-card__more--up {
+	top: -9px;
+}
+
+.gnr-card__more--down {
+	bottom: -9px;
+}
+
+// "More family here" marker on the top-right edge (as in the WikiTree demo).
+.gnr-card__mini {
+	position: absolute;
+	top: -15px;
+	right: 14px;
+	display: block;
+	width: 30px;
+	height: 15px;
+	line-height: 0;
+
+	svg {
+		display: block;
+		overflow: visible;
+	}
+
+	@media (max-width: $mobile) {
+		right: 8px;
+		transform: scale(0.85);
+		transform-origin: bottom right;
+	}
+}
+
+.gnr-card__mini-line {
+	stroke: $gnr-color-line;
+	stroke-width: 1.5px;
+}
+
+.gnr-card__mini-m {
+	fill: $gnr-color-card-male;
+}
+
+.gnr-card__mini-f {
+	fill: $gnr-color-card-female;
+}
+
+.gnr-tree .f3 div.card .gnr-card.is-dimmed {
+	.gnr-card__mini-m,
+	.gnr-card__mini-f {
+		fill: $gnr-color-dim-ink;
+	}
+
+	.gnr-card__mini-line {
+		stroke: $gnr-color-dim-line;
+	}
+}
+
+// ---- Overlays ----
+
+.gnr-tree__zoom {
+	position: absolute;
+	top: 12px;
+	right: 12px;
+	z-index: 5;
+	display: flex;
+	flex-direction: column;
+	overflow: hidden;
+	border: 1px solid $gnr-color-line;
+	border-radius: $gnr-radius;
+	background: $gnr-color-card-bg;
+	box-shadow: $gnr-shadow;
+
+	button {
+		display: grid;
+		place-items: center;
+		width: 40px;
+		height: 40px;
+		padding: 0;
+		border: 0;
+		border-bottom: 1px solid $gnr-color-card-border;
+		background: transparent;
+		color: $gnr-color-ink;
+		cursor: pointer;
+
+		&:last-child {
+			border-bottom: 0;
+		}
+
+		&:hover {
+			background: $gnr-color-bg;
+			color: $gnr-color-accent;
+		}
+
+		&:focus-visible {
+			outline: 2px solid $gnr-color-accent;
+			outline-offset: -2px;
+		}
+	}
+
+	svg {
+		width: 18px;
+		height: 18px;
+	}
+}
+
+// Top-left column: the groups bar, then the focus panel. On phones the
+// panel drops to a strip along the bottom.
+.gnr-tree__top {
+	position: absolute;
+	top: 12px;
+	left: 12px;
+	z-index: 5;
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	gap: 8px;
+	max-width: min(360px, calc(100% - 80px));
+	pointer-events: none;
+
+	> * {
+		pointer-events: auto;
+	}
+
+	@media (max-width: $mobile) {
+		bottom: 12px;
+		right: 12px;
+		max-width: none;
+		justify-content: space-between;
+	}
+}
+
+.gnr-tree__lens {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 6px;
+
+	&[hidden] {
+		display: none;
+	}
+}
+
+.gnr-tree__back {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	padding: 6px 12px;
+	border: 1px solid $gnr-color-line;
+	border-radius: 999px;
+	background: $gnr-color-card-bg;
+	box-shadow: $gnr-shadow;
+	color: $gnr-color-ink;
+	font: inherit;
+	font-size: 0.85rem;
+	font-weight: 600;
+	cursor: pointer;
+
+	&:hover,
+	&:focus-visible {
+		border-color: $gnr-color-accent;
+		color: $gnr-color-accent;
+	}
+}
+
+.gnr-tree__panel-groups {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 4px;
+	margin-top: 8px;
+}
+
+.gnr-tree__panel {
+	position: relative;
+	width: 100%;
+	padding: 12px 16px;
+	border: 1px solid $gnr-color-line;
+	border-radius: $gnr-radius;
+	background: rgba(255, 255, 255, 0.94);
+	backdrop-filter: blur(6px);
+	box-shadow: $gnr-shadow;
+
+	&:empty {
+		display: none;
+	}
+
+	@media (max-width: $mobile) {
+		padding: 10px 14px;
+	}
+}
+
+.gnr-tree__panel-head {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+}
+
+.gnr-tree__panel-photo {
+	flex: none;
+	width: 48px;
+	height: 48px;
+	border-radius: 50%;
+	object-fit: cover;
+}
+
+.gnr-tree__panel-name {
+	font-size: 1.05rem;
+	font-weight: 600;
+}
+
+.gnr-tree__panel-meta {
+	margin-top: 2px;
+	font-size: 0.85rem;
+	color: $gnr-color-muted;
+}
+
+.gnr-tree__panel-links {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 4px 16px;
+	margin-top: 6px;
+}
+
+.gnr-tree__panel-link {
+	font-size: 0.85rem;
+	font-weight: 600;
+	color: $gnr-color-accent;
+	text-decoration: none;
+
+	&:hover {
+		text-decoration: underline;
+	}
+}
+
+.gnr-tree__hint {
+	position: absolute;
+	bottom: 16px;
+	left: 50%;
+	z-index: 4;
+	margin: 0;
+	padding: 6px 14px;
+	transform: translateX(-50%);
+	border-radius: 999px;
+	background: rgba(43, 36, 32, 0.78);
+	color: #fff;
+	font-size: 0.8rem;
+	white-space: nowrap;
+	pointer-events: none;
+	transition: opacity 0.4s ease;
+
+	&.is-dismissed {
+		opacity: 0;
+	}
+
+	@media (max-width: $mobile) {
+		top: 12px;
+		bottom: auto;
+		left: 12px;
+		right: 64px;
+		transform: none;
+		white-space: normal;
+		text-align: center;
+	}
+}
+
+// With the groups bar showing, the phone hint would sit on top of it.
+@media (max-width: $mobile) {
+	.gnr-tree__top:has(.gnr-tree__lens:not([hidden])) ~ .gnr-tree__hint {
+		display: none;
+	}
+}
+
+.gnr-tree__toast {
+	position: absolute;
+	left: 50%;
+	top: 12px;
+	z-index: 6;
+	margin: 0;
+	padding: 8px 14px;
+	transform: translateX(-50%);
+	border-radius: $gnr-radius;
+	background: #7f1d1d;
+	color: #fff;
+	font-size: 0.85rem;
+
+	&[hidden] {
+		display: none;
+	}
+}
+
+// Thin progress bar along the top while a branch loads.
+.gnr-tree__loading {
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	z-index: 6;
+	height: 3px;
+	overflow: hidden;
+	opacity: 0;
+	transition: opacity 0.2s ease;
+
+	&::after {
+		content: '';
+		position: absolute;
+		top: 0;
+		bottom: 0;
+		width: 30%;
+		background: $gnr-color-accent;
+		animation: gnr-tree-loading 1s ease-in-out infinite;
+	}
+
+	.is-busy & {
+		opacity: 1;
+	}
+}
+
+@keyframes gnr-tree-loading {
+	from {
+		left: -30%;
+	}
+
+	to {
+		left: 100%;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.gnr-tree .f3 div.card > div,
+	.gnr-tree .gnr-card {
+		transition: none;
+	}
+
+	.gnr-tree__loading::after {
+		animation-duration: 3s;
+	}
+}
+
+// On the archive page the tree breaks out of the 960px text column: width
+// is what a family tree needs most.
+.gnr-archive .gnr-app {
+	width: min(1400px, calc(100vw - 32px));
+	margin-left: calc(50% - min(700px, 50vw - 16px));
+	margin-top: 1rem;
+}
+
+// [genoroots_app] inside a page: the page layout decides the width.
+.gnr-archive--embedded {
+	max-width: none;
+	padding: 0;
+
+	.gnr-app {
+		width: 100%;
+		margin-left: 0;
+	}
+}

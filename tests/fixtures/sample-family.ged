@@ -1,0 +1,176 @@
+0 HEAD
+1 SOUR GenoRoots
+2 NAME GeoTour GenoRoots
+1 GEDC
+2 VERS 5.5
+2 FORM LINEAGE-LINKED
+1 CHAR UTF-8
+1 NOTE An invented family for tests and demos. Every person, date and place is made up.
+0 @I1@ INDI
+1 NAME Γεώργιος /Παπαδάκης/
+1 NAME Georgios /Papadakis/
+1 SEX M
+1 BIRT
+2 DATE ABT 1820
+2 PLAC Ανώγεια
+1 DEAT
+2 DATE 12 MAR 1889
+2 PLAC Ανώγεια
+1 _PERIOD Οθωμανική περίοδος
+1 _GROUP Παπαδάκης
+1 NOTE Shepherd on the slopes above the village.
+2 CONT He kept a flock of about two hundred sheep.
+1 SOUR Invented parish register, page 12
+1 FAMS @F1@
+0 @I2@ INDI
+1 NAME Ελένη /Μαρκάκη/
+1 NAME Eleni /Markaki/
+1 SEX F
+1 BIRT
+2 DATE 1825
+2 PLAC Ζωνιανά
+1 DEAT
+2 DATE BET 1890 AND 1895
+1 _GROUP Μαρκάκης
+1 _GROUP Παπαδάκης
+1 NOTE Belongs to her birth group and her husband's.
+1 FAMC @F0@
+1 FAMS @F1@
+0 @I3@ INDI
+1 NAME Μιχαήλ /Μαρκάκης/
+1 SEX M
+1 BIRT
+2 DATE ABT 1795
+1 DEAT
+2 DATE 1860
+1 _GROUP Μαρκάκης
+1 FAMS @F0@
+0 @I4@ INDI
+1 NAME Νικόλαος /Παπαδάκης/
+1 NAME Nikolaos /Papadakis/
+1 SEX M
+1 BIRT
+2 DATE 23 AUG 1848
+2 PLAC Ανώγεια
+1 DEAT
+2 DATE 2 FEB 1921
+2 PLAC Ηράκλειο
+1 BURI
+2 PLAC Ηράκλειο
+1 _GROUP Παπαδάκης
+1 FAMC @F1@
+1 FAMS @F2@
+0 @I5@ INDI
+1 NAME Αικατερίνη /Παπαδάκη/
+1 SEX F
+1 BIRT
+2 DATE 1852
+2 PLAC Ανώγεια
+1 DEAT
+2 DATE 1930
+1 _GROUP Παπαδάκης
+1 FAMC @F1@
+0 @I6@ INDI
+1 NAME Μαρία /Σπανάκη/
+1 SEX F
+1 BIRT
+2 DATE ABT 1855
+2 PLAC Ρέθυμνο
+1 DEAT
+2 DATE 1934
+1 _GROUP Σπανάκης
+1 _GROUP Παπαδάκης
+1 FAMC @F4@
+1 FAMS @F2@
+0 @I7@ INDI
+1 NAME Ιωάννης /Παπαδάκης/
+1 SEX M
+1 BIRT
+2 DATE 1878
+2 PLAC Ηράκλειο
+1 DEAT
+2 DATE 1944
+1 _GROUP Παπαδάκης
+1 FAMC @F2@
+1 FAMS @F3@
+0 @I8@ INDI
+1 NAME Ζαχαρίας /Παπαδάκης/
+1 SEX M
+1 BIRT
+2 DATE 1881
+1 DEAT
+2 DATE 1912
+2 PLAC Θεσσαλονίκη
+1 _GROUP Παπαδάκης
+1 NOTE Unmarried.
+1 FAMC @F2@
+0 @I9@ INDI
+1 NAME Ευαγγελία /Δασκαλάκη/
+1 SEX F
+1 BIRT
+2 DATE 1884
+1 DEAT
+2 DATE 1960
+1 _GROUP Δασκαλάκης
+1 FAMS @F3@
+0 @I10@ INDI
+1 NAME Στυλιανός /Παπαδάκης/
+1 SEX M
+1 BIRT
+2 DATE 1905
+1 DEAT
+2 DATE 1975
+1 _GROUP Παπαδάκης
+1 FAMC @F3@
+0 @I11@ INDI
+1 NAME Άννα /Παπαδάκη/
+1 SEX F
+1 BIRT
+2 DATE 1908
+1 DEAT
+2 DATE 1990
+1 _GROUP Παπαδάκης
+1 FAMC @F3@
+0 @I12@ INDI
+1 NAME Εμμανουήλ /Σπανάκης/
+1 SEX M
+1 BIRT
+2 DATE ABT 1830
+1 DEAT
+2 DATE 1899
+1 _GROUP Σπανάκης
+1 FAMS @F4@
+0 @F0@ FAM
+1 HUSB @I3@
+1 CHIL @I2@
+0 @F1@ FAM
+1 HUSB @I1@
+1 WIFE @I2@
+1 MARR
+2 DATE ABT 1845
+2 PLAC Ανώγεια
+1 _STATUS confirmed
+1 CHIL @I4@
+1 CHIL @I5@
+0 @F2@ FAM
+1 HUSB @I4@
+1 WIFE @I6@
+1 MARR
+2 DATE 14 OCT 1876
+2 PLAC Ηράκλειο
+1 _STATUS confirmed
+1 CHIL @I7@
+1 CHIL @I8@
+0 @F3@ FAM
+1 HUSB @I7@
+1 WIFE @I9@
+1 MARR
+2 DATE 1903
+1 _STATUS probable
+1 CHIL @I10@
+1 CHIL @I11@
+0 @F4@ FAM
+1 HUSB @I12@
+1 _STATUS claimed
+1 CHIL @I6@
+0 TRLR
