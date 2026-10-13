@@ -7,6 +7,10 @@ Built for a Cretan village archive ([kamilari.org.gr](https://kamilari.org.gr))
 and a regional site ([geotour.gr](https://www.geotour.gr)), but nothing in it
 is tied to either: it runs on any WordPress site.
 
+![The family tree, centred on one person, with the members of the chosen group highlighted](docs/images/family-tree.png)
+
+*The tree for the invented sample family in [`tests/fixtures/sample-family.ged`](tests/fixtures/sample-family.ged), on a plain Twenty Twenty-Five site.*
+
 - **Groups explorer.** Every family group is a bubble. Pick one and the
   groups that share members with it gather around it, overlaps drawn to
   scale. Pick a group or an overlap to list its members.
