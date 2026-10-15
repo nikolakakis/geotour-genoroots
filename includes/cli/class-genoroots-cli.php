@@ -616,4 +616,60 @@ class GenoRoots_CLI {
 	}
 }
 
+/**
+ * The change log of the field editor and the admin Relations box.
+ */
+class GenoRoots_Changes_CLI {
+
+	/**
+	 * List recent changes, newest first.
+	 *
+	 * ## OPTIONS
+	 *
+	 * [--person=<id>]
+	 * : Only changes that touched this person (post ID).
+	 *
+	 * [--limit=<n>]
+	 * : How many. Default 30, at most 100.
+	 *
+	 * ## EXAMPLES
+	 *
+	 *     wp genoroots changes list --person=1180
+	 *
+	 * @subcommand list
+	 */
+	public function list_( $args, $assoc_args ) {
+		$rows = GenoRoots_Changes::history( (int) ( $assoc_args['person'] ?? 0 ), (int) ( $assoc_args['limit'] ?? 30 ) );
+		$rows = array_map( function ( $row ) {
+			return array(
+				'id'      => $row['id'],
+				'time'    => $row['time'],
+				'user'    => $row['user'],
+				'summary' => $row['summary'],
+				'state'   => $row['undone'] ? 'undone' : ( $row['undone_by'] ? '' : 'latest' ),
+			);
+		}, $rows );
+		\WP_CLI\Utils\format_items( 'table', $rows, array( 'id', 'time', 'user', 'summary', 'state' ) );
+	}
+
+	/**
+	 * Undo a change (or redo, when the change is an undo). Refused when the
+	 * people or families it touched have changed since.
+	 *
+	 * ## OPTIONS
+	 *
+	 * <id>
+	 * : The change ID, from `wp genoroots changes list`.
+	 */
+	public function undo( $args ) {
+		try {
+			$result = GenoRoots_Changes::undo( (int) $args[0] );
+			\WP_CLI::success( sprintf( 'Undone as change %d.', $result['change_id'] ) );
+		} catch ( GenoRoots_Edit_Error $error ) {
+			\WP_CLI::error( $error->getMessage() );
+		}
+	}
+}
+
 \WP_CLI::add_command( 'genoroots', 'GenoRoots_CLI' );
+\WP_CLI::add_command( 'genoroots changes', 'GenoRoots_Changes_CLI' );

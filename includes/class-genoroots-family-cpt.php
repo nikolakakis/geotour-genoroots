@@ -35,7 +35,8 @@ class GenoRoots_Family_CPT {
 			'supports'        => array( 'title' ),
 			'has_archive'     => false,
 			'rewrite'         => false,
-			'capability_type' => 'post',
+			'capability_type' => GenoRoots_Capabilities::TYPE,
+			'map_meta_cap'    => true,
 		) );
 	}
 }

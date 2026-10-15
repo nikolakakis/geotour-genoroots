@@ -43,7 +43,8 @@ class GenoRoots_Person_CPT {
 			'supports'            => array( 'title', 'thumbnail' ), // thumbnail = portrait
 			'has_archive'         => GenoRoots_Slugs::get( 'people' ),
 			'rewrite'             => array( 'slug' => GenoRoots_Slugs::get( 'person' ), 'with_front' => false ),
-			'capability_type'     => 'post',
+			'capability_type'     => GenoRoots_Capabilities::TYPE,
+			'map_meta_cap'        => true,
 		) );
 	}
 }

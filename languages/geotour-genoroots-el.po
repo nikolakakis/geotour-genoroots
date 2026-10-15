@@ -1002,3 +1002,444 @@ msgstr "Ένα θέμα ή πρόσθετο αλλάζει αυτές τις λ�
 
 msgid "Save addresses"
 msgstr "Αποθήκευση διευθύνσεων"
+
+msgid "Genealogy editor"
+msgstr "Συντάκτης γενεαλογίας"
+
+msgid "Only administrators and editors can create groups."
+msgstr "Μόνο οι διαχειριστές και οι αρχισυντάκτες μπορούν να δημιουργούν ομάδες."
+
+# 1.2.0: field editor, change log, father's name and nickname.
+
+msgid "Sign in to edit the family tree."
+msgstr "Συνδεθείτε για να επεξεργαστείτε το γενεαλογικό δέντρο."
+
+msgid "Sign in"
+msgstr "Σύνδεση"
+
+msgid "Your account cannot edit the family tree. Ask the site’s administrator for access."
+msgstr "Ο λογαριασμός σας δεν μπορεί να επεξεργαστεί το δέντρο. Ζητήστε πρόσβαση από τον διαχειριστή του ιστότοπου."
+
+msgid "Loading…"
+msgstr "Φόρτωση…"
+
+msgid "May edit"
+msgstr "Μπορεί να επεξεργάζεται"
+
+msgid "Leave all unticked to allow every collection."
+msgstr "Αφήστε τα όλα κενά για να επιτρέπονται όλες οι συλλογές."
+
+msgid "Family tree editor"
+msgstr "Επεξεργασία δέντρου"
+
+msgid "Search by name, father’s name or nickname…"
+msgstr "Αναζήτηση με όνομα, πατρώνυμο ή παρατσούκλι…"
+
+msgid "Search"
+msgstr "Αναζήτηση"
+
+msgid "Recently opened"
+msgstr "Πρόσφατα"
+
+msgid "Nobody found."
+msgstr "Δεν βρέθηκε κανείς."
+
+msgid "+ New person"
+msgstr "+ Νέο πρόσωπο"
+
+msgid "Back"
+msgstr "Πίσω"
+
+msgid "Cancel"
+msgstr "Άκυρο"
+
+msgid "Saving…"
+msgstr "Αποθήκευση…"
+
+msgid "Saved"
+msgstr "Αποθηκεύτηκε"
+
+msgid "Edit"
+msgstr "Επεξεργασία"
+
+msgid "History"
+msgstr "Ιστορικό"
+
+msgid "All recent changes"
+msgstr "Όλες οι πρόσφατες αλλαγές"
+
+msgid "Undo"
+msgstr "Αναίρεση"
+
+msgid "Redo"
+msgstr "Επανάληψη"
+
+msgid "Undone"
+msgstr "Αναιρέθηκε"
+
+msgid "Undo this change?"
+msgstr "Να αναιρεθεί αυτή η αλλαγή;"
+
+msgid "No changes yet."
+msgstr "Καμία αλλαγή ακόμη."
+
+msgid "Public page ↗"
+msgstr "Δημόσια σελίδα ↗"
+
+msgid "Open in the admin ↗"
+msgstr "Άνοιγμα στη διαχείριση ↗"
+
+msgid "Sign out"
+msgstr "Αποσύνδεση"
+
+msgid "draft"
+msgstr "πρόχειρο"
+
+msgid "Siblings"
+msgstr "Αδέλφια"
+
+msgid "Spouses and children"
+msgstr "Σύζυγοι και παιδιά"
+
+msgid "Other parent unknown"
+msgstr "Άγνωστος ο άλλος γονιός"
+
+msgid "No parents recorded."
+msgstr "Δεν έχουν καταχωριστεί γονείς."
+
+msgid "No spouse recorded."
+msgstr "Δεν έχει καταχωριστεί σύζυγος."
+
+#, php-format
+msgid "child of %s"
+msgstr "παιδί των %s"
+
+#, php-format
+msgid "married to %s"
+msgstr "σύζυγος: %s"
+
+msgid "+ Spouse"
+msgstr "+ Σύζυγος"
+
+msgid "+ Child"
+msgstr "+ Παιδί"
+
+msgid "+ Parent"
+msgstr "+ Γονιός"
+
+msgid "+ Sibling"
+msgstr "+ Αδελφός/ή"
+
+msgid "Marriage details"
+msgstr "Στοιχεία γάμου"
+
+msgid "Remove link"
+msgstr "Αφαίρεση σύνδεσης"
+
+#, php-format
+msgid "Remove %1$s from this family? Nobody is deleted; only the link goes."
+msgstr "Να αφαιρεθεί ο/η %1$s από αυτή την οικογένεια; Δεν διαγράφεται κανείς· φεύγει μόνο η σύνδεση."
+
+msgid "Take or choose a portrait"
+msgstr "Τραβήξτε ή διαλέξτε πορτρέτο"
+
+msgid "Uploading…"
+msgstr "Ανέβασμα…"
+
+#, php-format
+msgid "Spouse of %s"
+msgstr "Σύζυγος: %s"
+
+#, php-format
+msgid "Child of %s"
+msgstr "Παιδί: %s"
+
+#, php-format
+msgid "Parent of %s"
+msgstr "Γονιός: %s"
+
+#, php-format
+msgid "Sibling of %s"
+msgstr "Αδέλφι: %s"
+
+msgid "First look for them in the tree"
+msgstr "Πρώτα αναζητήστε το πρόσωπο στο δέντρο"
+
+msgid "Not in the tree?"
+msgstr "Δεν υπάρχει στο δέντρο;"
+
+msgid "Create a new person"
+msgstr "Νέο πρόσωπο"
+
+msgid "With which spouse?"
+msgstr "Με ποιον/ποια σύζυγο;"
+
+msgid "Is it one of these?"
+msgstr "Είναι κάποιο από αυτά τα πρόσωπα;"
+
+msgid "No, create a new person"
+msgstr "Όχι, νέο πρόσωπο"
+
+msgid "Yes, move them"
+msgstr "Ναι, μετακίνηση"
+
+msgid "Surname and given name, as in the rest of the tree"
+msgstr "Επώνυμο και όνομα, όπως στο υπόλοιπο δέντρο"
+
+msgid "Father’s name"
+msgstr "Πατρώνυμο"
+
+msgid "Nickname"
+msgstr "Παρατσούκλι"
+
+msgid "Marriage"
+msgstr "Γάμος"
+
+msgid "e.g. 1908 or 12 MAR 1908"
+msgstr "π.χ. 1908 ή 12 MAR 1908"
+
+msgid "What people remember, who told you, when"
+msgstr "Τι θυμούνται, ποιος το είπε, πότε"
+
+msgid "How sure"
+msgstr "Βεβαιότητα"
+
+msgid "Confirmed by sources"
+msgstr "Επιβεβαιωμένο από πηγές"
+
+msgid "Probable"
+msgstr "Πιθανό"
+
+msgid "Claimed (family tradition)"
+msgstr "Κατά την οικογενειακή παράδοση"
+
+msgid "Exact"
+msgstr "Ακριβής"
+
+msgid "About"
+msgstr "Περίπου"
+
+msgid "Before"
+msgstr "Πριν"
+
+msgid "After"
+msgstr "Μετά"
+
+msgid "More details"
+msgstr "Περισσότερα στοιχεία"
+
+msgid "No connection. The change is kept on this phone."
+msgstr "Χωρίς σύνδεση. Η αλλαγή φυλάχτηκε σε αυτή τη συσκευή."
+
+msgid "Send now"
+msgstr "Αποστολή τώρα"
+
+msgid "Discard"
+msgstr "Απόρριψη"
+
+msgid "Throw this change away?"
+msgstr "Να απορριφθεί αυτή η αλλαγή;"
+
+msgid "Unsaved form restored"
+msgstr "Επαναφέρθηκε φόρμα που δεν είχε αποθηκευτεί"
+
+msgid "Something went wrong. Please try again."
+msgstr "Κάτι πήγε στραβά. Δοκιμάστε ξανά."
+
+msgid "You were signed out. Sign in again; your change is kept."
+msgstr "Αποσυνδεθήκατε. Συνδεθείτε ξανά· η αλλαγή σας έχει φυλαχτεί."
+
+msgid "Changed by someone else meanwhile. Here is the current version; your text is kept below."
+msgstr "Κάποιος άλλος το άλλαξε στο μεταξύ. Αυτή είναι η τρέχουσα μορφή· το κείμενό σας είναι από κάτω."
+
+msgid "Your version"
+msgstr "Η δική σας εκδοχή"
+
+#, php-format
+msgctxt "nickname"
+msgid "“%s”"
+msgstr "«%s»"
+
+#, php-format
+msgid "%d change not sent"
+msgid_plural "%d changes not sent"
+msgstr[0] "%d αλλαγή δεν έχει σταλεί"
+msgstr[1] "%d αλλαγές δεν έχουν σταλεί"
+
+msgid "A name is needed."
+msgstr "Χρειάζεται όνομα."
+
+msgid "A person cannot be linked to themselves."
+msgstr "Ένα πρόσωπο δεν μπορεί να συνδεθεί με τον εαυτό του."
+
+msgid "That marriage is not this person’s."
+msgstr "Αυτός ο γάμος δεν είναι αυτού του προσώπου."
+
+#, php-format
+msgid "This person already has that parent: %s. Correct it on that person first."
+msgstr "Αυτό το πρόσωπο έχει ήδη αυτόν τον γονιό: %s. Διορθώστε το πρώτα από εκεί."
+
+msgid "That person is not in this family."
+msgstr "Αυτό το πρόσωπο δεν ανήκει σε αυτή την οικογένεια."
+
+#, php-format
+msgid "%1$s is already recorded as the child of %2$s. Move them?"
+msgstr "Ο/Η %1$s είναι ήδη καταχωρισμένος/η ως παιδί των %2$s. Να μετακινηθεί;"
+
+msgid "Person not found."
+msgstr "Το πρόσωπο δεν βρέθηκε."
+
+msgid "Family not found."
+msgstr "Η οικογένεια δεν βρέθηκε."
+
+msgid "unknown parents"
+msgstr "άγνωστων γονέων"
+
+msgid "Someone else is saving a change. Please try again."
+msgstr "Κάποιος άλλος αποθηκεύει μια αλλαγή. Δοκιμάστε ξανά."
+
+msgid "That change was not found."
+msgstr "Η αλλαγή δεν βρέθηκε."
+
+msgid "That change has already been undone."
+msgstr "Η αλλαγή έχει ήδη αναιρεθεί."
+
+#, php-format
+msgid "Redid: %s"
+msgstr "Επανάληψη: %s"
+
+#, php-format
+msgid "Undid: %s"
+msgstr "Αναίρεση: %s"
+
+#, php-format
+msgid "This can no longer be undone: %s changed after it. Undo the later changes first, or correct it by hand."
+msgstr "Δεν αναιρείται πια: άλλαξε μετά %s. Αναιρέστε πρώτα τις μεταγενέστερες αλλαγές ή διορθώστε το με το χέρι."
+
+msgid "You cannot edit people in this collection."
+msgstr "Δεν μπορείτε να επεξεργαστείτε πρόσωπα αυτής της συλλογής."
+
+#, php-format
+msgid "Added %s"
+msgstr "Προστέθηκε: %s"
+
+msgid "Someone changed this person while you were editing. Check their details and save again."
+msgstr "Κάποιος άλλαξε αυτό το πρόσωπο όσο το επεξεργαζόσασταν. Ελέγξτε τα στοιχεία και αποθηκεύστε ξανά."
+
+#, php-format
+msgid "Edited %s"
+msgstr "Επεξεργασία: %s"
+
+msgid "Unknown relation."
+msgstr "Άγνωστη σχέση."
+
+#, php-format
+msgid "Added %1$s as spouse of %2$s"
+msgstr "Προστέθηκε %1$s ως σύζυγος του/της %2$s"
+
+#, php-format
+msgid "Added %1$s as child of %2$s"
+msgstr "Προστέθηκε %1$s ως παιδί του/της %2$s"
+
+#, php-format
+msgid "Added %1$s as parent of %2$s"
+msgstr "Προστέθηκε %1$s ως γονιός του/της %2$s"
+
+#, php-format
+msgid "Added %1$s as sibling of %2$s"
+msgstr "Προστέθηκε %1$s ως αδέλφι του/της %2$s"
+
+msgid "Someone changed this marriage while you were editing. Check it and save again."
+msgstr "Κάποιος άλλαξε αυτόν τον γάμο όσο τον επεξεργαζόσασταν. Ελέγξτε τον και αποθηκεύστε ξανά."
+
+#, php-format
+msgid "Edited the marriage %s"
+msgstr "Επεξεργασία γάμου: %s"
+
+msgid "That family is not this person’s."
+msgstr "Αυτή η οικογένεια δεν είναι αυτού του προσώπου."
+
+#, php-format
+msgid "Removed %1$s from the family %2$s"
+msgstr "Αφαιρέθηκε %1$s από την οικογένεια %2$s"
+
+msgid "No photo was sent."
+msgstr "Δεν στάλθηκε φωτογραφία."
+
+#, php-format
+msgid "New portrait for %s"
+msgstr "Νέο πορτρέτο: %s"
+
+msgid "You cannot undo this change."
+msgstr "Δεν μπορείτε να αναιρέσετε αυτή την αλλαγή."
+
+msgid "People with this name are already in the tree. Is it one of them?"
+msgstr "Υπάρχουν ήδη πρόσωπα με αυτό το όνομα στο δέντρο. Είναι κάποιο από αυτά;"
+
+#, php-format
+msgid "d. %s"
+msgstr "θ. %s"
+
+msgid "Field editor"
+msgstr "Επεξεργασία από το κινητό"
+
+#, php-format
+msgid "A phone-friendly editor for the tree, without the admin. Put %s on a page."
+msgstr "Επεξεργασία του δέντρου από το κινητό, χωρίς τη διαχείριση. Βάλτε το %s σε μια σελίδα."
+
+msgid "Open the editor"
+msgstr "Άνοιγμα"
+
+msgid "Editor page"
+msgstr "Σελίδα επεξεργασίας"
+
+msgid "The first page with the shortcode"
+msgstr "Η πρώτη σελίδα με το shortcode"
+
+msgid "Genealogy editors"
+msgstr "Επιμελητές γενεαλογίας"
+
+msgid "Use the field editor only: send them there after signing in and instead of the admin"
+msgstr "Μόνο η επεξεργασία από το κινητό: εκεί μετά τη σύνδεση και αντί για τη διαχείριση"
+
+msgid "Which collections an editor may change is set on their user profile."
+msgstr "Ποιες συλλογές μπορεί να αλλάζει ένας επιμελητής ορίζεται στο προφίλ χρήστη του."
+
+msgid "Save editor settings"
+msgstr "Αποθήκευση ρυθμίσεων"
+
+#, php-format
+msgid "Relations of %s edited in the admin"
+msgstr "Σχέσεις του/της %s από τη διαχείριση"
+
+msgid "As it is said in the village, e.g. “του Γεωργίου”. Tells apart people with the same name."
+msgstr "Όπως λέγεται στο χωριό, π.χ. «του Γεωργίου». Ξεχωρίζει συνονόματους."
+
+msgid "The person’s or family’s nickname."
+msgstr "Το παρατσούκλι του προσώπου ή της οικογένειας."
+
+# 1.2.0: field editor, change log, father's name and nickname.
+
+msgid "Take or choose a photo"
+msgstr "Τραβήξτε ή διαλέξτε φωτογραφία"
+
+msgid "Replace the photo"
+msgstr "Αλλαγή φωτογραφίας"
+
+msgid "Next you choose the square to keep. Only that square is saved, made small for the web."
+msgstr "Μετά διαλέγετε το τετράγωνο που θα κρατηθεί. Αποθηκεύεται μόνο αυτό, σε μικρό μέγεθος για το web."
+
+msgid "This photo could not be opened. Try another, or a JPEG."
+msgstr "Η φωτογραφία δεν άνοιξε. Δοκιμάστε άλλη ή ένα JPEG."
+
+msgid "Drag to place the face in the circle; pinch or use the slider to zoom."
+msgstr "Σύρετε για να μπει το πρόσωπο στον κύκλο· με δύο δάχτυλα ή με τη μπάρα για μεγέθυνση."
+
+msgid "Zoom"
+msgstr "Μεγέθυνση"
+
+msgid "Rotate"
+msgstr "Περιστροφή"
+
+msgid "That file is not a photo."
+msgstr "Το αρχείο δεν είναι φωτογραφία."

@@ -165,6 +165,11 @@ class GenoRoots_Gedcom_Importer {
 		if ( isset( $indi['sources'] ) ) {
 			update_field( 'sources', implode( "\n", $indi['sources'] ), $post_id );
 		}
+		foreach ( array( 'father_name', 'nickname' ) as $key ) {
+			if ( isset( $indi[ $key ] ) ) {
+				update_field( $key, $indi[ $key ], $post_id );
+			}
+		}
 		if ( isset( $indi['period'] ) ) {
 			update_field( 'period', $indi['period'], $post_id );
 		}

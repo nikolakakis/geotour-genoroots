@@ -1,16 +1,17 @@
 {
   "name": "geotour-genoroots",
-  "version": "1.0.0",
+  "version": "1.2.0",
   "private": true,
   "description": "Front-end assets for the GeoTour GenoRoots family-tree plugin",
   "license": "GPL-2.0-or-later",
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "vite build && vite build -c vite.editor.config.js",
     "preview": "vite preview",
     "watch": "vite build --watch",
-    "package": "vite build && node bin/package.mjs"
+    "package": "npm run build && node bin/package.mjs",
+    "watch:editor": "vite build -c vite.editor.config.js --watch"
   },
   "devDependencies": {
     "sass": "^1.77.4",

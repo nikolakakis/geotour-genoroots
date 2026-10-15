@@ -19,6 +19,9 @@ is tied to either: it runs on any WordPress site.
   you click, and highlights the members of the chosen groups.
 - **Person pages** with portrait, dates, places, notes, sources and links
   to relatives.
+- **Field editor for phones.** Trusted contributors add people and
+  relatives from a phone, linking someone already in the tree before
+  creating anyone new. Every change can be undone.
 - **GEDCOM 5.5 import and export**, round-trip safe, with a few extension
   tags for groups, periods and certainty.
 - **Collections:** several unrelated family networks on one site, each with
@@ -92,6 +95,7 @@ setting with the `genoroots_slugs` filter (see [Hooks](#hooks)).
 | `[genoroots_app]` | The groups explorer and tree. Use it once per page. |
 | `[genoroots_app collection="papadakis"]` | The same, for one collection only. |
 | `[genoroots_tree person="123"]` | One embedded tree around a person (post ID). Optional: `group="slug"` highlights a group; `up="2"` and `down="2"` set how many generations are shown. |
+| `[genoroots_field_editor]` | The field editor, for signed-in genealogy editors (see below). Optional: `collection="slug"` to start in one collection. |
 | `[genoroots_family_link]` | On an article about a person: a "Family tree →" link to their page. Prints nothing when no person points to the article. |
 
 ## People, families and groups
@@ -103,6 +107,9 @@ setting with the `genoroots_slugs` filter (see [Hooks](#hooks)).
   groups, e.g. a woman in the group she was born into and in her
   husband's. "Groups" rather than "families" is deliberate: membership is
   sometimes uncertain.
+- Besides the name, a person can have a **father's name** ("του Γεωργίου")
+  and a **nickname**. They tell apart people with the same name, and search
+  finds them.
 - Each person has a permanent **GenoRoots ID** (`I384`). It comes from the
   GEDCOM file or the old plugin. People added by hand get the next free
   number. Never renumber: the ID is how photos, bundles and re-imports find
@@ -111,6 +118,81 @@ setting with the `genoroots_slugs` filter (see [Hooks](#hooks)).
   them, e.g. a biography. It shows as a button on the person page and as
   "Read more →" in the tree. Any public content type can be chosen (filter:
   `genoroots_related_post_types`).
+
+## Who can do what
+
+GenoRoots has its own permissions, so you can let someone work on the tree
+without giving them the rest of the site. It adds a role, **Genealogy
+editor**. Give it to a user under **Users → Edit user → Role**.
+
+| | Genealogy editor | Editor | Administrator |
+|---|---|---|---|
+| Add, edit and publish people and families | ✓ | ✓ | ✓ |
+| Edit relations (parents, marriages, children) | ✓ | ✓ | ✓ |
+| Upload portraits | ✓ | ✓ | ✓ |
+| Put people into existing groups | ✓ | ✓ | ✓ |
+| Create, rename and delete groups and collections | | ✓ | ✓ |
+| Delete people and families | | ✓ | ✓ |
+| Posts, pages and the rest of the site | | ✓ | ✓ |
+| Import, export, Settings | | | ✓ |
+
+A Genealogy editor works in the [field editor](#field-editor) and is sent
+there instead of the admin; turn that off under **GenoRoots → Settings →
+Field editor** to let them use the admin, where they see only GenoRoots,
+Media and their profile. When an Editor or Administrator deletes someone, the person goes
+to the trash and can be restored.
+
+The capabilities, for role plugins: `edit_genoroots_people`,
+`edit_others_genoroots_people`, `publish_genoroots_people`,
+`delete_genoroots_people` (and the other `*_genoroots_people` post
+capabilities) for people and families; `manage_genoroots_groups` for groups
+and collections. Import, export and Settings need `manage_options`.
+
+## Field editor
+
+Put `[genoroots_field_editor]` on a page. Signed-in genealogy editors,
+editors and administrators can then work on the tree from a phone:
+
+1. **Search** by name, father's name, nickname or number. Each result shows
+   enough to tell namesakes apart: father's name, years, spouse or parents.
+2. **A person** shows their parents, siblings, and each marriage with its
+   children. Tap anyone to move to them.
+3. **+ Spouse, + Child, + Parent, + Sibling** first ask you to find the
+   person in the tree, so cousins and village marriages link to the person
+   who is already there. Only if they aren't do you create them, and a new
+   name that matches existing people asks "Is it one of these?" first.
+   A child is added to a chosen marriage, or with the other parent unknown.
+   Moving someone who already has other parents asks first.
+4. **Edit** a person, the marriage details, or remove a link (nobody is
+   deleted; only the link goes). Tap the photo to take or choose a portrait,
+   then crop it square (drag, pinch, rotate): only that square is uploaded,
+   800 × 800 px.
+
+Signed-in editors also get **✎ Edit** in the tree's person panel and on
+person pages, which opens that person here.
+
+Dates are free text, as in the rest of the tree. The Exact / About / Before
+/ After buttons write GEDCOM's `ABT`, `BEF` and `AFT`, shown as "c. 1908",
+"before 1908", "after 1908".
+
+**History and undo.** Every change from the field editor and from the
+admin Relations box is logged with the earlier state of everything it
+touched. History lists a person's changes (or all of them); Undo puts the
+records back exactly. It refuses when someone has changed them since,
+rather than overwrite that. An undo can be redone. Genealogy editors undo
+their own changes, editors and administrators anyone's. From the command
+line: `wp genoroots changes list` and `wp genoroots changes undo <id>`.
+
+**When the connection drops**, a change is kept on the phone ("1 change not
+sent") and sent when it is back. Each change carries an ID, so sending it
+twice never saves it twice. Half-filled forms are kept as well.
+
+**Settings** (GenoRoots → Settings → Field editor): which page the editor is
+on, and whether genealogy editors go there after signing in and instead of
+the admin (on by default). On a site with collections, an administrator can
+limit an editor to some of them under **Users → Edit user → Family tree**;
+they then see and edit only people in those collections, and the people
+they add join them.
 
 ## Collections
 
@@ -173,7 +255,8 @@ wp genoroots export spanakis.ged --collection=papadakis --group=spanakis
 ```
 
 - Everything the import reads is written back in the same tags. The export
-  also includes the Latin-script name as a second `NAME`, and the portrait
+  also includes the Latin-script name as a second `NAME`, the nickname
+  and father's name under the first one (`NICK`, `_PATR`), and the portrait
   URL as `OBJE`/`FILE`.
 - Only published people are exported. A family is kept when at least two of
   its members are selected, and it lists only them.
@@ -256,6 +339,8 @@ you're done.
 | `wp genoroots import-bundle <file>` | Read a bundle. `--dry-run`, `--rehearse`, `--skip-groups`, `--only-groups` |
 | `wp genoroots verify-bundle <file>` | Compare the site with a bundle, record by record |
 | `wp genoroots piwigo-sync` | Link people to Piwigo tags. `--piwigo=<address>`, `--dry-run` |
+| `wp genoroots changes list` | The change log. `--person=<id>`, `--limit` |
+| `wp genoroots changes undo <id>` | Undo (or redo) a change |
 
 `wp help genoroots <command>` shows every option.
 
@@ -272,6 +357,9 @@ Read-only, public, and limited to published records. Namespace
 | `GET /members?groups=a,b` | Members of all the given groups (`q`, `page`) |
 
 Every route except `/focus` accepts `collection=<slug>`.
+
+The field editor uses its own routes under `/editor/`, for signed-in users
+with `edit_genoroots_people` only.
 
 ## Hooks
 
@@ -308,7 +396,8 @@ filter.
 ```bash
 npm install
 npm run build      # build/: the JavaScript and CSS WordPress loads
-npm run watch      # rebuild on save
+npm run watch      # rebuild the public bundle on save
+npm run watch:editor  # the field editor (src/editor/ → build/editor.*)
 npm run package    # dist/geotour-genoroots/ and .zip: runtime files only
 ```
 

@@ -15,6 +15,7 @@ class GenoRoots_Settings_Page {
 	// group, so one shared group would blank the other form's option.
 	const ADDRESSES    = 'genoroots-addresses';
 	const NONCE_ACTION = 'genoroots_piwigo_sync';
+	const EDITOR       = 'genoroots-editor';
 
 	public static function init() {
 		add_action( 'admin_menu', array( __CLASS__, 'register_menu' ) );
@@ -40,11 +41,73 @@ class GenoRoots_Settings_Page {
 			},
 			'default'           => '',
 		) );
+		register_setting( self::EDITOR, GenoRoots_Field_Editor::OPTION, array(
+			'type'              => 'array',
+			'sanitize_callback' => function ( $value ) {
+				$value = (array) $value;
+				return array(
+					'page_id'     => absint( $value['page_id'] ?? 0 ),
+					'editor_only' => empty( $value['editor_only'] ) ? 0 : 1,
+				);
+			},
+			'default'           => GenoRoots_Field_Editor::DEFAULTS,
+		) );
 		register_setting( self::ADDRESSES, GenoRoots_Slugs::OPTION, array(
 			'type'              => 'array',
 			'sanitize_callback' => array( 'GenoRoots_Slugs', 'sanitize' ),
 			'default'           => GenoRoots_Slugs::DEFAULTS,
 		) );
+	}
+
+	private static function render_editor() {
+		$settings = GenoRoots_Field_Editor::settings();
+		$name     = GenoRoots_Field_Editor::OPTION;
+		$url      = GenoRoots_Field_Editor::page_url();
+		?>
+		<h2><?php esc_html_e( 'Field editor', 'geotour-genoroots' ); ?></h2>
+		<p>
+			<?php
+			printf(
+				/* translators: %s: the shortcode */
+				esc_html__( 'A phone-friendly editor for the tree, without the admin. Put %s on a page.', 'geotour-genoroots' ),
+				'<code>[genoroots_field_editor]</code>'
+			);
+			?>
+			<?php if ( $url ) : ?>
+				<a href="<?php echo esc_url( $url ); ?>"><?php esc_html_e( 'Open the editor', 'geotour-genoroots' ); ?></a>
+			<?php endif; ?>
+		</p>
+		<form method="post" action="options.php">
+			<?php settings_fields( self::EDITOR ); ?>
+			<table class="form-table" role="presentation">
+				<tr>
+					<th scope="row"><label for="genoroots-editor-page"><?php esc_html_e( 'Editor page', 'geotour-genoroots' ); ?></label></th>
+					<td>
+						<?php
+						wp_dropdown_pages( array(
+							'name'              => esc_attr( $name . '[page_id]' ),
+							'id'                => 'genoroots-editor-page',
+							'selected'          => (int) $settings['page_id'],
+							'show_option_none'  => esc_html__( 'The first page with the shortcode', 'geotour-genoroots' ),
+							'option_none_value' => '0',
+						) );
+						?>
+					</td>
+				</tr>
+				<tr>
+					<th scope="row"><?php esc_html_e( 'Genealogy editors', 'geotour-genoroots' ); ?></th>
+					<td>
+						<label>
+							<input type="checkbox" name="<?php echo esc_attr( $name . '[editor_only]' ); ?>" value="1" <?php checked( (int) $settings['editor_only'], 1 ); ?>>
+							<?php esc_html_e( 'Use the field editor only: send them there after signing in and instead of the admin', 'geotour-genoroots' ); ?>
+						</label>
+						<p class="description"><?php esc_html_e( 'Which collections an editor may change is set on their user profile.', 'geotour-genoroots' ); ?></p>
+					</td>
+				</tr>
+			</table>
+			<?php submit_button( __( 'Save editor settings', 'geotour-genoroots' ) ); ?>
+		</form>
+		<?php
 	}
 
 	private static function render_addresses() {
@@ -106,6 +169,7 @@ class GenoRoots_Settings_Page {
 			<h1><?php esc_html_e( 'GenoRoots settings', 'geotour-genoroots' ); ?></h1>
 
 			<?php self::render_addresses(); ?>
+			<?php self::render_editor(); ?>
 
 			<h2><?php esc_html_e( 'Piwigo photo archive', 'geotour-genoroots' ); ?></h2>
 			<form method="post" action="options.php">

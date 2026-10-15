@@ -26,6 +26,7 @@ class GenoRoots_Relations_Admin {
 		add_action( 'add_meta_boxes_' . GenoRoots_Person_CPT::POST_TYPE, array( __CLASS__, 'add_box' ) );
 		add_action( 'save_post_' . GenoRoots_Person_CPT::POST_TYPE, array( __CLASS__, 'save' ), 20, 2 );
 		add_action( 'admin_enqueue_scripts', array( __CLASS__, 'assets' ), 20 );
+		add_action( 'admin_notices', array( __CLASS__, 'notice' ) );
 	}
 
 	public static function add_box() {
@@ -193,139 +194,82 @@ class GenoRoots_Relations_Admin {
 		if ( ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) || wp_is_post_revision( $post_id ) || ! current_user_can( 'edit_post', $post_id ) ) {
 			return;
 		}
-		$input   = isset( $_POST['gnr_rel'] ) ? wp_unslash( $_POST['gnr_rel'] ) : array(); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput -- ints/text sanitised below.
-		$id      = (int) $post_id;
-		$touched = array();
+		$input = isset( $_POST['gnr_rel'] ) ? wp_unslash( $_POST['gnr_rel'] ) : array(); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput -- ints/text sanitised below.
+		$id    = (int) $post_id;
 
+		// One logged change, so the whole box can be undone in one step.
+		try {
+			GenoRoots_Changes::run( array(
+				'action'    => 'admin_relations',
+				'person_id' => $id,
+				/* translators: %s: person name */
+				'summary'   => sprintf( __( 'Relations of %s edited in the admin', 'geotour-genoroots' ), get_the_title( $id ) ),
+			), function () use ( $id, $input ) {
+				self::apply( $id, $input );
+				return array();
+			} );
+		} catch ( GenoRoots_Edit_Error $error ) {
+			set_transient( 'genoroots_relations_error_' . get_current_user_id(), $error->getMessage(), 60 );
+		}
+	}
+
+	private static function apply( $id, array $input ) {
 		// Parents: find or create the family of that couple and move this person into it.
-		$famc       = (int) get_post_meta( $id, '_famc_family_id', true );
+		$famc       = GenoRoots_Family_Ops::famc( $id );
 		$old_father = $famc ? (int) get_field( 'spouse1', $famc, false ) : 0;
 		$old_mother = $famc ? (int) get_field( 'spouse2', $famc, false ) : 0;
 		$father     = (int) ( $input['father'] ?? 0 );
 		$mother     = (int) ( $input['mother'] ?? 0 );
 		if ( array( $father, $mother ) !== array( $old_father, $old_mother ) ) {
-			if ( $famc ) {
-				self::remove_child( $famc, $id );
-				$touched[] = $famc;
-			}
-			if ( $father || $mother ) {
-				$family    = self::find_couple( $father, $mother ) ?: self::create_family( $father, $mother );
-				self::add_child( $family, $id );
-				$touched[] = $family;
-			}
+			GenoRoots_Family_Ops::set_parents( $id, $father, $mother );
 		}
 
 		// Existing marriages.
-		$fams = array_map( 'intval', (array) get_post_meta( $id, '_fams_family_id' ) );
+		$fams = GenoRoots_Family_Ops::fams( $id );
 		foreach ( (array) ( $input['marriages'] ?? array() ) as $family_id => $marriage ) {
 			$family_id = (int) $family_id;
 			if ( ! in_array( $family_id, $fams, true ) ) {
 				continue; // not one of this person's marriages
 			}
-			$touched[] = $family_id;
-
 			if ( ! empty( $marriage['delete'] ) ) {
-				// Unlink everyone first, so their family links are rebuilt, then bin it.
-				update_field( self::F_SPOUSE1, '', $family_id );
-				update_field( self::F_SPOUSE2, '', $family_id );
-				update_field( self::F_CHILDREN, array(), $family_id );
-				GenoRoots_Relationships::rebuild_backrefs_for_family( $family_id );
-				wp_trash_post( $family_id );
+				GenoRoots_Family_Ops::dissolve( $family_id );
 				continue;
 			}
 
-			$s1     = (int) get_field( 'spouse1', $family_id, false );
-			$spouse = (int) ( $marriage['spouse'] ?? 0 );
-			update_field( $s1 === $id ? self::F_SPOUSE2 : self::F_SPOUSE1, $spouse ?: '', $family_id );
-			update_field( self::F_DATE, sanitize_text_field( $marriage['date'] ?? '' ), $family_id );
-			update_field( self::F_PLACE, sanitize_text_field( $marriage['place'] ?? '' ), $family_id );
+			$s1         = (int) get_field( 'spouse1', $family_id, false );
+			$old_spouse = $s1 === $id ? (int) get_field( 'spouse2', $family_id, false ) : $s1;
+			$spouse     = (int) ( $marriage['spouse'] ?? 0 );
+			if ( $spouse !== $old_spouse && $spouse !== $id ) {
+				GenoRoots_Family_Ops::set_spouse( $family_id, $id, $spouse );
+			}
+			GenoRoots_Family_Ops::update_family( $family_id, array(
+				'marriage_date_raw' => $marriage['date'] ?? '',
+				'marriage_place'    => $marriage['place'] ?? '',
+			) );
 
 			foreach ( array_map( 'intval', (array) ( $marriage['remove_children'] ?? array() ) ) as $child ) {
-				self::remove_child( $family_id, $child );
+				GenoRoots_Family_Ops::unlink( $family_id, $child );
 			}
 			$add = (int) ( $marriage['add_child'] ?? 0 );
-			if ( $add && $add !== $id ) {
-				$touched = array_merge( $touched, self::move_child( $add, $family_id ) );
+			if ( $add && $add !== $id && get_post_status( $family_id ) !== 'trash' ) {
+				GenoRoots_Family_Ops::add_child( $id, $add, $family_id, true );
 			}
-			self::retitle( $family_id );
 		}
 
 		// New marriage.
 		$new_spouse = (int) ( $input['new_spouse'] ?? 0 );
 		if ( $new_spouse && $new_spouse !== $id ) {
-			$is_female = get_post_meta( $id, 'sex', true ) === 'F';
-			$touched[] = $is_female ? self::create_family( $new_spouse, $id ) : self::create_family( $id, $new_spouse );
-		}
-
-		foreach ( array_unique( array_filter( $touched ) ) as $family_id ) {
-			if ( get_post_status( $family_id ) !== 'trash' ) {
-				GenoRoots_Relationships::rebuild_backrefs_for_family( $family_id );
-			}
+			GenoRoots_Family_Ops::add_spouse( $id, $new_spouse );
 		}
 	}
 
-	private static function find_couple( $father, $mother ) {
-		$found = get_posts( array(
-			'post_type'      => GenoRoots_Family_CPT::POST_TYPE,
-			'post_status'    => 'publish',
-			'posts_per_page' => 1,
-			'fields'         => 'ids',
-			'meta_query'     => array( // phpcs:ignore WordPress.DB.SlowDBQuery
-				array( 'key' => 'spouse1', 'value' => $father ?: '', 'compare' => '=' ),
-				array( 'key' => 'spouse2', 'value' => $mother ?: '', 'compare' => '=' ),
-			),
-		) );
-		return $found ? (int) $found[0] : 0;
-	}
-
-	private static function create_family( $husband, $wife ) {
-		$family_id = wp_insert_post( array(
-			'post_type'   => GenoRoots_Family_CPT::POST_TYPE,
-			'post_status' => 'publish',
-			'post_title'  => __( 'Family', 'geotour-genoroots' ),
-		) );
-		update_field( self::F_SPOUSE1, $husband ?: '', $family_id );
-		update_field( self::F_SPOUSE2, $wife ?: '', $family_id );
-		update_field( self::F_CHILDREN, array(), $family_id );
-		GenoRoots_Ids::assign( $family_id, 'F' );
-		self::retitle( $family_id );
-		return (int) $family_id;
-	}
-
-	private static function retitle( $family_id ) {
-		$names = array_filter( array(
-			get_the_title( (int) get_field( 'spouse1', $family_id, false ) ),
-			get_the_title( (int) get_field( 'spouse2', $family_id, false ) ),
-		) );
-		wp_update_post( array(
-			'ID'         => $family_id,
-			'post_title' => $names ? implode( ' – ', $names ) : __( 'Family', 'geotour-genoroots' ),
-		) );
-	}
-
-	private static function add_child( $family_id, $child ) {
-		$children = array_map( 'intval', (array) get_field( 'children', $family_id, false ) );
-		if ( ! in_array( $child, $children, true ) ) {
-			$children[] = $child;
-			update_field( self::F_CHILDREN, $children, $family_id );
+	/** A refused edit from the last save, shown once. */
+	public static function notice() {
+		$key     = 'genoroots_relations_error_' . get_current_user_id();
+		$message = get_transient( $key );
+		if ( $message ) {
+			delete_transient( $key );
+			echo '<div class="notice notice-error is-dismissible"><p>' . esc_html( $message ) . '</p></div>';
 		}
-	}
-
-	private static function remove_child( $family_id, $child ) {
-		$children = array_map( 'intval', (array) get_field( 'children', $family_id, false ) );
-		update_field( self::F_CHILDREN, array_values( array_diff( $children, array( $child ) ) ), $family_id );
-	}
-
-	/** A person has one family of birth: take them out of any other before adding. Returns families touched. */
-	private static function move_child( $child, $family_id ) {
-		$touched = array( $family_id );
-		foreach ( array_map( 'intval', (array) get_post_meta( $child, '_famc_family_id' ) ) as $old ) {
-			if ( $old && $old !== $family_id ) {
-				self::remove_child( $old, $child );
-				$touched[] = $old;
-			}
-		}
-		self::add_child( $family_id, $child );
-		return $touched;
 	}
 }

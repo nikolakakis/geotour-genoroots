@@ -8,6 +8,8 @@ get_header();
 $person_id      = get_the_ID();
 $name           = get_the_title( $person_id );
 $name_latin     = get_field( 'name_latin', $person_id );
+$nickname       = (string) get_field( 'nickname', $person_id );
+$father_name    = (string) get_field( 'father_name', $person_id );
 $birth_date     = GenoRoots_Dates::format( get_field( 'birth_date_raw', $person_id ) );
 $birth_place    = get_field( 'birth_place', $person_id );
 $birth_place_en = get_field( 'birth_place_en', $person_id );
@@ -71,6 +73,14 @@ $relative_group = static function ( $title, array $ids, $note = '' ) {
 		<?php endif; ?>
 		<div class="gnr-person__heading">
 			<h1 class="gnr-person__name"><?php echo esc_html( $name ); ?></h1>
+			<?php if ( $nickname || $father_name ) : ?>
+				<p class="gnr-person__also">
+					<?php
+					/* translators: %s: a nickname, shown in quotes */
+					echo esc_html( implode( ' · ', array_filter( array( $nickname ? sprintf( _x( '“%s”', 'nickname', 'geotour-genoroots' ), $nickname ) : '', $father_name ) ) ) );
+					?>
+				</p>
+			<?php endif; ?>
 			<?php if ( $name_latin ) : ?>
 				<p class="gnr-person__name-latin"><?php echo esc_html( $name_latin ); ?></p>
 			<?php endif; ?>
@@ -88,6 +98,12 @@ $relative_group = static function ( $title, array $ids, $note = '' ) {
 			<?php if ( $related ) : ?>
 				<a class="gnr-person__related" href="<?php echo esc_url( $related['url'] ); ?>">
 					<?php echo esc_html( $related['title'] ); ?> <span aria-hidden="true">→</span>
+				</a>
+			<?php endif; ?>
+			<?php $edit_url = GenoRoots_Field_Editor::edit_url(); ?>
+			<?php if ( $edit_url ) : ?>
+				<a class="gnr-person__related gnr-person__edit" href="<?php echo esc_url( $edit_url . $person_id ); ?>">
+					<span aria-hidden="true">✎</span> <?php esc_html_e( 'Edit', 'geotour-genoroots' ); ?>
 				</a>
 			<?php endif; ?>
 		</div>

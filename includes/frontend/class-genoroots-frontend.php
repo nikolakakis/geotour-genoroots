@@ -93,6 +93,8 @@ class GenoRoots_Frontend {
 			'nonce'      => wp_create_nonce( 'wp_rest' ),
 			'archiveUrl' => self::full_tree_url(),
 			'i18n'       => GenoRoots_I18n::script_strings(),
+			// Only for people who may edit the tree: the tree panel's "Edit" link.
+			'editUrl'    => GenoRoots_Field_Editor::edit_url(),
 			// How names are stored, so cards can show given name and surname:
 			// 'surname-first' ("Νικολακάκης Μανώλης") or 'given-first' ("Eleftherios Venizelos").
 			'nameOrder'  => apply_filters( 'genoroots_name_order', 'surname-first' ) === 'given-first' ? 'given-first' : 'surname-first',

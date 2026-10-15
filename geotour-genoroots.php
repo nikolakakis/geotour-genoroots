@@ -3,7 +3,7 @@
  * Plugin Name:       GeoTour GenoRoots
  * Plugin URI:        https://github.com/nikolakakis/geotour-genoroots
  * Description:       Family trees for WordPress: GEDCOM 5.5 import and export, a groups explorer and an interactive tree, person pages, and conversion from Genealogical Tree.
- * Version:           1.0.0
+ * Version:           1.2.0
  * Requires at least: 6.0
  * Requires PHP:      8.2
  * Author:            Manolis Nikolakakis
@@ -17,7 +17,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'GENOROOTS_VERSION', '1.0.0' );
+define( 'GENOROOTS_VERSION', '1.2.0' );
 // Bump whenever a CPT's or taxonomy's public/rewrite settings change, so
 // genoroots_maybe_flush_rewrites() re-flushes on an already-active install.
 define( 'GENOROOTS_REWRITE_VERSION', 4 ); // 4: collections
@@ -38,6 +38,7 @@ function genoroots_init() {
 
 	require_once GENOROOTS_PLUGIN_DIR . 'includes/class-genoroots-i18n.php';
 	require_once GENOROOTS_PLUGIN_DIR . 'includes/class-genoroots-slugs.php';
+	require_once GENOROOTS_PLUGIN_DIR . 'includes/class-genoroots-capabilities.php';
 	require_once GENOROOTS_PLUGIN_DIR . 'includes/class-genoroots-person-cpt.php';
 	require_once GENOROOTS_PLUGIN_DIR . 'includes/class-genoroots-family-cpt.php';
 	require_once GENOROOTS_PLUGIN_DIR . 'includes/class-genoroots-family-group-taxonomy.php';
@@ -49,6 +50,9 @@ function genoroots_init() {
 	require_once GENOROOTS_PLUGIN_DIR . 'includes/content/class-genoroots-ids.php';
 	require_once GENOROOTS_PLUGIN_DIR . 'includes/content/class-genoroots-related.php';
 	require_once GENOROOTS_PLUGIN_DIR . 'includes/content/class-genoroots-dates.php';
+	require_once GENOROOTS_PLUGIN_DIR . 'includes/content/class-genoroots-changes.php';
+	require_once GENOROOTS_PLUGIN_DIR . 'includes/content/class-genoroots-family-ops.php';
+	require_once GENOROOTS_PLUGIN_DIR . 'includes/content/class-genoroots-search.php';
 	require_once GENOROOTS_PLUGIN_DIR . 'includes/import/class-gedcom-parser.php';
 	require_once GENOROOTS_PLUGIN_DIR . 'includes/import/class-gedcom-importer.php';
 	require_once GENOROOTS_PLUGIN_DIR . 'includes/admin/class-genoroots-admin-help.php';
@@ -57,6 +61,7 @@ function genoroots_init() {
 	require_once GENOROOTS_PLUGIN_DIR . 'includes/admin/class-genoroots-export-page.php';
 	require_once GENOROOTS_PLUGIN_DIR . 'includes/rest/class-genoroots-rest-controller.php';
 	require_once GENOROOTS_PLUGIN_DIR . 'includes/rest/class-genoroots-groups-controller.php';
+	require_once GENOROOTS_PLUGIN_DIR . 'includes/rest/class-genoroots-editor-controller.php';
 	require_once GENOROOTS_PLUGIN_DIR . 'includes/sync/class-genoroots-bundle.php';
 	require_once GENOROOTS_PLUGIN_DIR . 'includes/sync/class-genoroots-legacy-gtree.php';
 	require_once GENOROOTS_PLUGIN_DIR . 'includes/integrations/class-genoroots-piwigo.php';
@@ -65,10 +70,12 @@ function genoroots_init() {
 	require_once GENOROOTS_PLUGIN_DIR . 'includes/admin/class-genoroots-relations-admin.php';
 	require_once GENOROOTS_PLUGIN_DIR . 'includes/frontend/class-genoroots-frontend.php';
 	require_once GENOROOTS_PLUGIN_DIR . 'includes/frontend/class-genoroots-shortcode.php';
+	require_once GENOROOTS_PLUGIN_DIR . 'includes/frontend/class-genoroots-field-editor.php';
 	require_once GENOROOTS_PLUGIN_DIR . 'includes/frontend/class-genoroots-legacy-redirects.php';
 	require_once GENOROOTS_PLUGIN_DIR . 'includes/template-loader.php';
 
 	GenoRoots_Slugs::seed();
+	GenoRoots_Capabilities::init();
 	GenoRoots_I18n::init();
 	GenoRoots_Person_CPT::init();
 	GenoRoots_Family_CPT::init();
@@ -81,11 +88,14 @@ function genoroots_init() {
 	GenoRoots_Person_Admin::init();
 	GenoRoots_Relations_Admin::init();
 	GenoRoots_Ids::init();
+	GenoRoots_Changes::init();
 	GenoRoots_Related::init();
 	GenoRoots_Rest_Controller::init();
 	GenoRoots_Groups_Controller::init();
+	GenoRoots_Editor_Controller::init();
 	GenoRoots_Frontend::init();
 	GenoRoots_Shortcode::init();
+	GenoRoots_Field_Editor::init();
 	GenoRoots_Legacy_Redirects::init();
 }
 add_action( 'plugins_loaded', 'genoroots_init' );

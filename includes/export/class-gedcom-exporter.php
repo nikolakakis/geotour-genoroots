@@ -244,6 +244,12 @@ class GenoRoots_Gedcom_Exporter {
 			'0 ' . $this->ref( $post_id ) . ' INDI',
 			'1 NAME ' . $this->one_line( html_entity_decode( get_the_title( $post_id ), ENT_QUOTES, 'UTF-8' ) ),
 		);
+		if ( $meta( 'nickname' ) !== '' ) {
+			$lines[] = '2 NICK ' . $this->one_line( $meta( 'nickname' ) );
+		}
+		if ( $meta( 'father_name' ) !== '' ) {
+			$lines[] = '2 _PATR ' . $this->one_line( $meta( 'father_name' ) ); // no standard GEDCOM 5.5 tag
+		}
 		if ( $meta( 'name_latin' ) !== '' ) {
 			$lines[] = '1 NAME ' . $this->one_line( $meta( 'name_latin' ) );
 			$lines[] = '2 TYPE aka';

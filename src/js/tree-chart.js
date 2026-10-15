@@ -5,8 +5,13 @@ import { t, tf } from './i18n.js';
 import { escapeHtml, yearOf, splitName, lifespan, isMobileViewport } from './format.js';
 
 // User-visible strings; translations come from the plugin's catalogue (i18n.js).
+// Set only for signed-in users who may edit the tree (GenoRoots_Field_Editor::edit_url()).
+const EDIT_URL = ( window.GenoRootsAPI && window.GenoRootsAPI.editUrl ) || '';
+
 const STRINGS = {
+	nickname: tf( 'nickname' ),
 	profile: t( 'profile' ),
+	edit: t( 'edit' ),
 	fullTree: t( 'fullTree' ),
 	readMore: t( 'readMore' ),
 	photos: ( count ) => ( count ? tf( 'photosCount' )( count ) : t( 'photos' ) ),
@@ -268,6 +273,7 @@ export function createTreeChart( mountEl, {
 				${ person.portrait ? `<img class="gnr-tree__panel-photo" src="${ escapeHtml( person.portrait ) }" alt="">` : '' }
 				<div class="gnr-tree__panel-name">${ escapeHtml( person.name ) }</div>
 			</div>
+			${ person.nickname || person.father_name ? `<div class="gnr-tree__panel-meta">${ escapeHtml( [ person.nickname ? STRINGS.nickname( person.nickname ) : '', person.father_name ].filter( Boolean ).join( ' · ' ) ) }</div>` : '' }
 			${ years ? `<div class="gnr-tree__panel-meta">${ escapeHtml( years ) }</div>` : '' }
 			${ places.length ? `<div class="gnr-tree__panel-meta">${ escapeHtml( [ ...new Set( places ) ].join( ' · ' ) ) }</div>` : '' }
 			${ groups.length ? `
@@ -280,6 +286,7 @@ export function createTreeChart( mountEl, {
 				${ person.photos_url ? `<a class="gnr-tree__panel-link" href="${ escapeHtml( person.photos_url ) }" target="_blank" rel="noopener">${ STRINGS.photos( person.photo_count ) }</a>` : '' }
 				${ person.related_url ? `<a class="gnr-tree__panel-link" href="${ escapeHtml( person.related_url ) }" title="${ escapeHtml( person.related_title ) }">${ STRINGS.readMore }</a>` : '' }
 				${ fullTreeUrlFor ? `<a class="gnr-tree__panel-link" href="${ escapeHtml( fullTreeUrlFor( person.id ) ) }">${ STRINGS.fullTree }</a>` : '' }
+				${ EDIT_URL ? `<a class="gnr-tree__panel-link gnr-tree__panel-link--edit" href="${ escapeHtml( EDIT_URL + person.id ) }">✎ ${ STRINGS.edit }</a>` : '' }
 			</div>
 		`;
 		renderLensBar(); // chip rings follow the focused person

@@ -59,25 +59,18 @@ class GenoRoots_Rest_Controller {
 			return rest_ensure_response( array() );
 		}
 
-		$args = array(
-			'post_type'      => GenoRoots_Person_CPT::POST_TYPE,
-			'post_status'    => 'publish',
-			'posts_per_page' => 20,
-			's'              => $q,
-		);
-		$in_collection = GenoRoots_Collection_Taxonomy::tax_clause( (string) $request->get_param( 'collection' ) );
-		if ( $in_collection ) {
-			$args['tax_query'] = array( $in_collection ); // phpcs:ignore -- scoped search
-		}
-		$posts = get_posts( $args );
+		$collection = GenoRoots_Collection_Taxonomy::term( (string) $request->get_param( 'collection' ) );
+		$ids        = GenoRoots_Search::people( $q, array( 'collection' => $collection ? $collection->term_id : 0 ) );
 
 		$results = array();
-		foreach ( $posts as $post ) {
+		foreach ( $ids as $id ) {
 			$results[] = array(
-				'id'         => $post->ID,
-				'name'       => self::plain_title( $post ),
-				'name_latin' => (string) get_field( 'name_latin', $post->ID ),
-				'url'        => get_permalink( $post ),
+				'id'          => $id,
+				'name'        => self::plain_title( $id ),
+				'name_latin'  => (string) get_field( 'name_latin', $id ),
+				'nickname'    => (string) get_field( 'nickname', $id ),
+				'father_name' => (string) get_field( 'father_name', $id ),
+				'url'         => get_permalink( $id ),
 			);
 		}
 		return rest_ensure_response( $results );
@@ -325,6 +318,8 @@ class GenoRoots_Rest_Controller {
 			'id'             => $id,
 			'name'           => self::plain_title( $id ),
 			'name_latin'     => (string) get_field( 'name_latin', $id ),
+			'nickname'       => (string) get_field( 'nickname', $id ),
+			'father_name'    => (string) get_field( 'father_name', $id ),
 			'sex'            => (string) ( get_field( 'sex', $id ) ?: 'U' ),
 			'birth_date'     => (string) get_field( 'birth_date_raw', $id ),
 			'birth_place'    => (string) get_field( 'birth_place', $id ),

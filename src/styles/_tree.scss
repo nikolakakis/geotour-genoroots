@@ -591,6 +591,12 @@ $mobile: 640px;
 	}
 }
 
+.gnr-tree__panel-link--edit {
+	padding: 0 0.5rem;
+	border-radius: 999px;
+	background: color-mix(in srgb, #{$gnr-color-accent} 12%, transparent);
+}
+
 .gnr-tree__hint {
 	position: absolute;
 	bottom: 16px;

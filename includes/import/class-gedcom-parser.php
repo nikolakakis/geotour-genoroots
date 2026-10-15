@@ -6,7 +6,8 @@
  * standalone with plain `php`, independent of the WordPress bootstrap.
  *
  * Reads, per record:
- *  - INDI: NAME, SEX, BIRT/DEAT/BURI (DATE, PLAC), NOTE, SOUR (as text),
+ *  - INDI: NAME (with NICK and _PATR, the father's name), SEX,
+ *    BIRT/DEAT/BURI (DATE, PLAC), NOTE, SOUR (as text),
  *    FAMC/FAMS, and GenoRoots' extension tags _PERIOD, _GROUP (repeatable),
  *    _ARTICLE (an address on the importing site).
  *  - FAM: HUSB/WIFE/CHIL, MARR (DATE, PLAC), NOTE, and _STATUS
@@ -134,6 +135,8 @@ class GenoRoots_Gedcom_Parser {
 			switch ( $tag ) {
 				case 'NAME':
 					// The first NAME is the person's name; later ones are alternatives.
+					// NICK / _PATR below it are read for the first NAME only.
+					$record['in_first_name'] = ! isset( $record['name'] );
 					if ( ! isset( $record['name'] ) ) {
 						$record['name'] = $value;
 					}
@@ -213,6 +216,15 @@ class GenoRoots_Gedcom_Parser {
 					$record[ $key ]['place'] = $value;
 				}
 				// TYPE under these blocks duplicates the level-1 tag itself; ignore.
+				return;
+			}
+
+			if ( $parent === 'NAME' && ! empty( $record['in_first_name'] ) && $value !== '' ) {
+				if ( $tag === 'NICK' ) {
+					$record['nickname'] = $value;
+				} elseif ( $tag === '_PATR' ) {
+					$record['father_name'] = $value;
+				}
 				return;
 			}
 

@@ -1,4 +1,7 @@
 import { fetchSearch } from './data.js';
+import { tf } from './i18n.js';
+
+const STRINGS = { nickname: tf( 'nickname' ) };
 
 const DEBOUNCE_MS = 250;
 
@@ -27,7 +30,11 @@ export function initSearch( { inputEl, resultsEl, onSelect } ) {
 			matches.forEach( ( person ) => {
 				const li = document.createElement( 'li' );
 				li.className = 'gnr-search__result';
-				li.textContent = person.name_latin ? `${ person.name } (${ person.name_latin })` : person.name;
+				li.textContent = [
+					person.name,
+					person.nickname ? STRINGS.nickname( person.nickname ) : '',
+					person.name_latin ? `(${ person.name_latin })` : '',
+				].filter( Boolean ).join( ' ' );
 				li.addEventListener( 'click', () => {
 					resultsEl.hidden = true;
 					inputEl.value = '';

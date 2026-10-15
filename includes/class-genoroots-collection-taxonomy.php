@@ -44,6 +44,7 @@ class GenoRoots_Collection_Taxonomy {
 			'show_ui'           => true,
 			'show_admin_column' => true,
 			'show_in_rest'      => true,
+			'capabilities'      => GenoRoots_Capabilities::taxonomy_caps(),
 			'rewrite'           => array( 'slug' => GenoRoots_Slugs::get( 'collection' ), 'with_front' => false, 'hierarchical' => false ),
 		) );
 	}

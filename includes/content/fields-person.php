@@ -56,6 +56,12 @@ add_action( 'acf/init', function () {
 			$genoroots_row( 'name_latin', __( 'Name in Latin characters', 'geotour-genoroots' ), 'name_latin', 75, array(
 				'placeholder' => __( 'e.g. Manolis Charkiotakis — for the English version', 'geotour-genoroots' ),
 			) ),
+			$genoroots_row( 'father_name', __( 'Father’s name', 'geotour-genoroots' ), 'father_name', 50, array(
+				'instructions' => __( 'As it is said in the village, e.g. “του Γεωργίου”. Tells apart people with the same name.', 'geotour-genoroots' ),
+			) ),
+			$genoroots_row( 'nickname', __( 'Nickname', 'geotour-genoroots' ), 'nickname', 50, array(
+				'instructions' => __( 'The person’s or family’s nickname.', 'geotour-genoroots' ),
+			) ),
 
 			$genoroots_section( 'birth', __( 'Birth', 'geotour-genoroots' ) ),
 			$genoroots_row( 'birth_date_raw', __( 'Date', 'geotour-genoroots' ), 'birth_date_raw', 30, array(

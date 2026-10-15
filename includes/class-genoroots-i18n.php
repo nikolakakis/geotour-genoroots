@@ -28,7 +28,10 @@ class GenoRoots_I18n {
 	public static function script_strings() {
 		return array(
 			// Tree.
+			/* translators: %s: a nickname, shown in quotes */
+			'nickname'      => _x( '“%s”', 'nickname', 'geotour-genoroots' ),
 			'profile'       => __( 'Full profile →', 'geotour-genoroots' ),
+			'edit'          => __( 'Edit', 'geotour-genoroots' ),
 			'fullTree'      => __( 'Open in the full tree →', 'geotour-genoroots' ),
 			'readMore'      => __( 'Read more →', 'geotour-genoroots' ),
 			/* translators: %s: year of birth, for people still living */
