@@ -15,8 +15,36 @@ export function escapeHtml( value ) {
 }
 
 export function yearOf( raw ) {
-	const match = /(\d{4})/.exec( raw || '' );
+	const match = /\b(\d{3,4})\b/.exec( raw || '' );
 	return match ? Number( match[ 1 ] ) : null;
+}
+
+const YEAR_QUALIFIERS = {
+	circa: tf( 'circaYear' ),
+	after: tf( 'afterYear' ),
+	before: tf( 'beforeYear' ),
+};
+
+/**
+ * The year for a card, keeping what the GEDCOM date says about it:
+ * "1321", "c. 1341" (ABT, EST, CAL, BET…AND), "after 1321", "before 1900".
+ */
+export function yearLabel( raw ) {
+	const text = String( raw || '' ).trim().toUpperCase().replace( /\s+/g, ' ' );
+	const year = yearOf( text );
+	if ( year === null ) {
+		return '';
+	}
+	if ( /^AFT /.test( text ) ) {
+		return YEAR_QUALIFIERS.after( year );
+	}
+	if ( /^BEF /.test( text ) ) {
+		return YEAR_QUALIFIERS.before( year );
+	}
+	if ( /^(ABT|ABOUT|CA|CIRCA|EST|CAL|BET|FROM) /.test( text ) ) {
+		return YEAR_QUALIFIERS.circa( year );
+	}
+	return String( year );
 }
 
 // Bracketed or quoted words: nicknames ("Gerokostis", (Katingo)) and married
@@ -52,8 +80,8 @@ export function splitName( fullName ) {
 }
 
 export function lifespan( person ) {
-	const born = yearOf( person.birth_date );
-	const died = yearOf( person.death_date );
+	const born = yearLabel( person.birth_date );
+	const died = yearLabel( person.death_date );
 	if ( born && died ) {
 		return `${ born } – ${ died }`;
 	}

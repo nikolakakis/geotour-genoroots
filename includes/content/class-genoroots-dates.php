@@ -62,6 +62,32 @@ class GenoRoots_Dates {
 	}
 
 	/**
+	 * The year for short labels (cards, lifespans), keeping what the date
+	 * says about it: "1321", "c. 1341" (ABT, EST, CAL, BET…AND),
+	 * "after 1321" (AFT), "before 1900" (BEF). '' when there is no year.
+	 */
+	public static function short_year( $raw ) {
+		$upper = strtoupper( trim( preg_replace( '/\s+/', ' ', (string) $raw ) ) );
+		if ( ! preg_match( '/\b(\d{3,4})\b/', $upper, $m ) ) {
+			return '';
+		}
+		$year = $m[1];
+		if ( strpos( $upper, 'AFT ' ) === 0 ) {
+			/* translators: %s: a date */
+			return sprintf( __( 'after %s', 'geotour-genoroots' ), $year );
+		}
+		if ( strpos( $upper, 'BEF ' ) === 0 ) {
+			/* translators: %s: a date */
+			return sprintf( __( 'before %s', 'geotour-genoroots' ), $year );
+		}
+		if ( preg_match( '/^(?:ABT|ABOUT|CA|CIRCA|EST|CAL|BET|FROM) /', $upper ) ) {
+			/* translators: %s: a date ("circa") */
+			return sprintf( __( 'c. %s', 'geotour-genoroots' ), $year );
+		}
+		return $year;
+	}
+
+	/**
 	 * "23 AUG 1864" | "AUG 1864" | "1864" in the current language, or null
 	 * when the text is not one of those forms.
 	 */

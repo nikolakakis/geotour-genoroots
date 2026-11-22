@@ -149,7 +149,7 @@ export function createFamilyStore( { up = 2, down = 2 } = {} ) {
 		for ( const family of families.values() ) {
 			const pair = [ family.spouse1, family.spouse2 ];
 			if ( pair.includes( spouseA ) && pair.includes( spouseB ) ) {
-				const match = /(\d{4})/.exec( family.marriage_date || '' );
+				const match = /\b(\d{3,4})\b/.exec( family.marriage_date || '' );
 				return match ? Number( match[ 1 ] ) : null;
 			}
 		}

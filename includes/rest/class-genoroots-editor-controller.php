@@ -618,11 +618,8 @@ class GenoRoots_Editor_Controller {
 
 	/** "1900–1975", "b. 1900", "d. 1975" or "". */
 	private static function years( $id ) {
-		$year  = function ( $raw ) {
-			return preg_match( '/(\d{3,4})/', (string) $raw, $m ) ? $m[1] : '';
-		};
-		$birth = $year( get_post_meta( $id, 'birth_date_raw', true ) );
-		$death = $year( get_post_meta( $id, 'death_date_raw', true ) );
+		$birth = GenoRoots_Dates::short_year( get_post_meta( $id, 'birth_date_raw', true ) );
+		$death = GenoRoots_Dates::short_year( get_post_meta( $id, 'death_date_raw', true ) );
 		if ( $birth && $death ) {
 			return $birth . '–' . $death;
 		}

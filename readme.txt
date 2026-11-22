@@ -4,7 +4,7 @@ Tags: genealogy, family tree, gedcom, family history, ancestry
 Requires at least: 6.0
 Tested up to: 6.8
 Requires PHP: 8.2
-Stable tag: 1.3.0
+Stable tag: 1.3.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -37,6 +37,9 @@ Full documentation: https://github.com/nikolakakis/geotour-genoroots
 4. Visit /family-tree/ on your site, or put [genoroots_app] on any page.
 
 == Changelog ==
+
+= 1.3.1 =
+Short date labels keep "c.", "after" and "before"; years before 1000 are shown.
 
 = 1.3.0 =
 Unknown generations (placeholders): link people across unrecorded generations; claimed links drawn dashed. Placeholders are never counted. See CHANGELOG.md.

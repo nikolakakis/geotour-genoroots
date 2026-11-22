@@ -310,7 +310,7 @@ class GenoRoots_Rest_Controller {
 	}
 
 	private static function extract_year( $raw ) {
-		if ( preg_match( '/(\d{4})/', (string) $raw, $matches ) ) {
+		if ( preg_match( '/\b(\d{3,4})\b/', (string) $raw, $matches ) ) {
 			return (int) $matches[1];
 		}
 		return null;

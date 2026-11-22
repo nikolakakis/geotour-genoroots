@@ -1,5 +1,15 @@
 # Changelog
 
+## 1.3.1 — 2026-11-22
+
+- **Short date labels keep their qualifier:** tree cards, the explorer,
+  the field editor and the admin relations box showed "AFT 1321" as "1321"
+  and "ABT 1341" as "1341". They now read "after 1321", "c. 1341",
+  "before 1900" (ranges show "c." and the first year), translated as in
+  the full dates.
+- Years before 1000 ("EST 961") are no longer dropped from labels and
+  from the choice of the main person.
+
 ## 1.3.0 — 2026-11-22
 
 - **Unknown generations (placeholders):** link two known people when the

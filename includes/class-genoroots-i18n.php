@@ -36,6 +36,12 @@ class GenoRoots_I18n {
 			'readMore'      => __( 'Read more →', 'geotour-genoroots' ),
 			/* translators: %s: year of birth, for people still living */
 			'bornYear'      => __( 'b. %s', 'geotour-genoroots' ),
+			/* translators: %s: a year ("circa") */
+			'circaYear'     => __( 'c. %s', 'geotour-genoroots' ),
+			/* translators: %s: a year */
+			'afterYear'     => __( 'after %s', 'geotour-genoroots' ),
+			/* translators: %s: a year */
+			'beforeYear'    => __( 'before %s', 'geotour-genoroots' ),
 			'photos'        => __( 'Photos ↗', 'geotour-genoroots' ),
 			/* translators: %d: number of photos */
 			'photosCount'   => __( 'Photos (%d) ↗', 'geotour-genoroots' ),

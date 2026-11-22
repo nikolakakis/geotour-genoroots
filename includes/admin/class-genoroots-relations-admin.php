@@ -131,7 +131,7 @@ class GenoRoots_Relations_Admin {
 			if ( (int) $person->ID === (int) $exclude ) {
 				continue;
 			}
-			$year   = preg_match( '/(\d{4})/', (string) get_post_meta( $person->ID, 'birth_date_raw', true ), $m ) ? ' (' . $m[1] . ')' : '';
+			$year   = ( $short = GenoRoots_Dates::short_year( get_post_meta( $person->ID, 'birth_date_raw', true ) ) ) !== '' ? ' (' . $short . ')' : '';
 			$gedcom = (string) get_post_meta( $person->ID, 'gedcom_id', true );
 			$number = preg_match( '/^I(\d+)$/', $gedcom, $n ) ? ' [' . $n[1] . ']' : '';
 			$name   = GenoRoots_Placeholder::is( $person->ID )
