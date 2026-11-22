@@ -58,7 +58,11 @@ $relative_group = static function ( $title, array $ids, $note = '' ) {
 		<?php endif; ?>
 		<ul>
 			<?php foreach ( $ids as $id ) : ?>
-				<li><a href="<?php echo esc_url( get_permalink( $id ) ); ?>"><?php echo esc_html( get_the_title( $id ) ); ?></a></li>
+				<?php if ( GenoRoots_Placeholder::is( $id ) ) : // unknown generations: no page to link to ?>
+					<li class="gnr-person__gap"><?php echo esc_html( get_the_title( $id ) ); ?> <span>(<?php echo esc_html( GenoRoots_Placeholder::summary( $id ) ); ?>)</span></li>
+				<?php else : ?>
+					<li><a href="<?php echo esc_url( get_permalink( $id ) ); ?>"><?php echo esc_html( get_the_title( $id ) ); ?></a></li>
+				<?php endif; ?>
 			<?php endforeach; ?>
 		</ul>
 	</div>

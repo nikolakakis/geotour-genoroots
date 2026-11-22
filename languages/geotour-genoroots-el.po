@@ -818,8 +818,8 @@ msgstr "Κάθε άλλη ετικέτα (επαγγέλματα, κατοικί
 msgid "GenoRoots tags"
 msgstr "Ετικέτες του GenoRoots"
 
-msgid "Four extra tags carry what standard GEDCOM has no place for. Genealogy programs ignore them; GenoRoots reads them."
-msgstr "Τέσσερις πρόσθετες ετικέτες μεταφέρουν όσα δεν χωρούν στο τυπικό GEDCOM. Τα προγράμματα γενεαλογίας τις αγνοούν· το GenoRoots τις διαβάζει."
+msgid "Five extra tags carry what standard GEDCOM has no place for. Genealogy programs ignore them; GenoRoots reads them."
+msgstr "Πέντε πρόσθετες ετικέτες μεταφέρουν όσα δεν χωρούν στο τυπικό GEDCOM. Τα προγράμματα γενεαλογίας τις αγνοούν· το GenoRoots τις διαβάζει."
 
 msgid "<code>_GROUP</code> on a person: a group they belong to, created if missing. One line per group; a person can be in the family they were born into and the one they married into."
 msgstr "<code>_GROUP</code> σε πρόσωπο: μια ομάδα στην οποία ανήκει, που δημιουργείται αν δεν υπάρχει. Μία γραμμή ανά ομάδα· ένα πρόσωπο μπορεί να ανήκει στην οικογένεια όπου γεννήθηκε και σε εκείνη όπου παντρεύτηκε."
@@ -830,8 +830,8 @@ msgstr "<code>_PERIOD</code> σε πρόσωπο: η ιστορική περίο
 msgid "<code>_ARTICLE</code> on a person: a page on this site about them, as an address without the domain (<code>people/eleftherios-venizelos</code>). The person's page then links to it."
 msgstr "<code>_ARTICLE</code> σε πρόσωπο: μια σελίδα αυτού του ιστότοπου για το πρόσωπο, ως διεύθυνση χωρίς το domain (<code>people/eleftherios-venizelos</code>). Η σελίδα του προσώπου οδηγεί τότε σε αυτήν."
 
-msgid "<code>_STATUS</code> on a family: how certain the link is: <code>confirmed</code>, <code>probable</code> or <code>claimed</code> (family tradition). The last two are shown next to the relation."
-msgstr "<code>_STATUS</code> σε οικογένεια: πόσο βέβαιη είναι η σχέση: <code>confirmed</code> (τεκμηριωμένη), <code>probable</code> (πιθανή) ή <code>claimed</code> (κατά την οικογενειακή παράδοση). Οι δύο τελευταίες εμφανίζονται δίπλα στη σχέση."
+msgid "<code>_STATUS</code> on a family: how certain the link is: <code>confirmed</code>, <code>probable</code> or <code>claimed</code> (family tradition). The last two are shown next to the relation; a claimed link is drawn dashed in the tree."
+msgstr "<code>_STATUS</code> σε οικογένεια: πόσο βέβαιη είναι η σχέση: <code>confirmed</code> (τεκμηριωμένη), <code>probable</code> (πιθανή) ή <code>claimed</code> (κατά την οικογενειακή παράδοση). Οι δύο τελευταίες εμφανίζονται δίπλα στη σχέση· η τελευταία σχεδιάζεται διακεκομμένη στο δέντρο."
 
 msgid "Dates and names"
 msgstr "Ημερομηνίες και ονόματα"
@@ -1443,3 +1443,159 @@ msgstr "Περιστροφή"
 
 msgid "That file is not a photo."
 msgstr "Το αρχείο δεν είναι φωτογραφία."
+
+# 1.3.0: unknown generations (placeholders)
+
+msgid "Placeholder"
+msgstr "Άγνωστο πρόσωπο"
+
+msgid "Placeholder: %s"
+msgstr "Άγνωστο πρόσωπο: %s"
+
+msgctxt "name of a person nobody recorded"
+msgid "Unknown"
+msgstr "Άγνωστος"
+
+msgid "Unknown person (placeholder)"
+msgstr "Άγνωστο πρόσωπο (κενό στο δέντρο)"
+
+msgid "Stands for one or more generations nobody has recorded, so two known people can be linked."
+msgstr "Αντιστοιχεί σε μία ή περισσότερες γενιές που δεν έχουν καταγραφεί, ώστε να συνδεθούν δύο γνωστά πρόσωπα."
+
+msgid "Drawn in the tree as a dashed “?” card; never counted, searched or given a page. The name may stay empty (“Unknown”). How sure the link is goes on the families, as Certainty."
+msgstr "Εμφανίζεται στο δέντρο ως διακεκομμένη κάρτα «?»· δεν μετράει, δεν βρίσκεται στην αναζήτηση και δεν έχει σελίδα. Το όνομα μπορεί να μείνει κενό («Άγνωστος»). Το πόσο βέβαιη είναι η σύνδεση δηλώνεται στις οικογένειες, ως Βεβαιότητα."
+
+msgid "Generations, at least"
+msgstr "Γενιές, τουλάχιστον"
+
+msgid "at most"
+msgstr "το πολύ"
+
+msgid "Based on"
+msgstr "Με βάση"
+
+msgid "About the gap"
+msgstr "Για το κενό"
+
+msgid "e.g. Descent claimed in a 16th-century charter, shown to be a forgery."
+msgstr "π.χ. Καταγωγή που δηλώνεται σε έγγραφο του 16ου αιώνα, το οποίο αποδείχθηκε πλαστό."
+
+msgid "Records"
+msgstr "Έγγραφα"
+
+msgid "Family tradition"
+msgstr "Οικογενειακή παράδοση"
+
+msgid "Forged charter"
+msgstr "Πλαστό έγγραφο"
+
+msgid "Coins"
+msgstr "Νομίσματα"
+
+msgid "Surname only"
+msgstr "Μόνο το επώνυμο"
+
+msgid "Other"
+msgstr "Άλλο"
+
+msgid "%d generation"
+msgid_plural "%d generations"
+msgstr[0] "%d γενιά"
+msgstr[1] "%d γενιές"
+
+msgid "%1$d–%2$d generations"
+msgstr "%1$d–%2$d γενιές"
+
+msgid "Shown in the tree only: not counted, not searchable, no public page."
+msgstr "Εμφανίζεται μόνο στο δέντρο: δεν μετράει, δεν βρίσκεται στην αναζήτηση, δεν έχει δημόσια σελίδα."
+
+msgid "These two already have the same parents."
+msgstr "Αυτά τα δύο πρόσωπα έχουν ήδη τους ίδιους γονείς."
+
+msgid "%1$s already has both parents (%2$s). Link the unknown generations to one of them instead."
+msgstr "%1$s: έχει ήδη και τους δύο γονείς (%2$s). Συνδέστε τις άγνωστες γενιές με έναν από αυτούς."
+
+msgid "Linked %1$s and %2$s through an unknown shared ancestor (%3$s)"
+msgstr "Σύνδεση %1$s και %2$s μέσω άγνωστου κοινού προγόνου (%3$s)"
+
+msgid "Linked %1$s to the descendant %2$s across unknown generations (%3$s)"
+msgstr "Σύνδεση %1$s με τον απόγονο %2$s μέσω άγνωστων γενεών (%3$s)"
+
+msgctxt "tag on a tree card: descent claimed, not proven"
+msgid "claimed"
+msgstr "αναπόδεικτο"
+
+msgid "Descent claimed, not proven"
+msgstr "Φερόμενη καταγωγή, αναπόδεικτη"
+
+msgid "Generations nobody has recorded"
+msgstr "Γενιές που δεν έχουν καταγραφεί"
+
+msgid "+ Unknown generations"
+msgstr "+ Άγνωστες γενιές"
+
+msgid "Unknown generations: %s"
+msgstr "Άγνωστες γενιές: %s"
+
+msgid "Link to someone already in the tree when the people in between were never recorded. The gap is drawn as a dashed “?” card and counts as nobody."
+msgstr "Σύνδεση με κάποιον που υπάρχει ήδη στο δέντρο, όταν τα πρόσωπα ανάμεσα δεν καταγράφηκαν ποτέ. Το κενό εμφανίζεται ως διακεκομμένη κάρτα «?» και δεν μετράει ως πρόσωπο."
+
+msgid "An ancestor of %s"
+msgstr "Πρόγονος: %s"
+
+msgid "Someone generations earlier, e.g. a founder the family descends from."
+msgstr "Κάποιος γενιές νωρίτερα, π.χ. ένας γενάρχης από τον οποίο κατάγεται η οικογένεια."
+
+msgid "A descendant of %s"
+msgstr "Απόγονος: %s"
+
+msgid "Someone generations later, e.g. a grandson whose parent is not known."
+msgstr "Κάποιος γενιές αργότερα, π.χ. ένας εγγονός του οποίου ο γονιός δεν είναι γνωστός."
+
+msgid "A relative of %s, kinship unknown"
+msgstr "Συγγενής: %s, άγνωστο πώς"
+
+msgid "Known to be related, but not how: they get an unknown shared ancestor."
+msgstr "Είναι γνωστό ότι συγγενεύουν, όχι πώς: αποκτούν έναν άγνωστο κοινό πρόγονο."
+
+msgid "Find the ancestor"
+msgstr "Βρείτε τον πρόγονο"
+
+msgid "Find the descendant"
+msgstr "Βρείτε τον απόγονο"
+
+msgid "Find the relative"
+msgstr "Βρείτε τον συγγενή"
+
+msgid "Not in the tree yet? Add them first as a new person, then come back here."
+msgstr "Δεν είναι ακόμα στο δέντρο; Προσθέστε το πρόσωπο πρώτα ως νέο, και μετά επιστρέψτε εδώ."
+
+msgid "Through which marriage?"
+msgstr "Από ποιον γάμο;"
+
+msgid "same"
+msgstr "ίδιο"
+
+msgid "“Claimed” draws the links dashed and tags the descendant: a legend, not a fact."
+msgstr "Το «Κατά την οικογενειακή παράδοση» σχεδιάζει τις γραμμές διακεκομμένες και σημειώνει τον απόγονο: θρύλος, όχι γεγονός."
+
+msgid "What is known, and from where"
+msgstr "Τι είναι γνωστό, και από πού"
+
+msgid "Name (optional)"
+msgstr "Όνομα (προαιρετικά)"
+
+msgid "Leave empty to show “Unknown”."
+msgstr "Αφήστε το κενό για να εμφανίζεται «Άγνωστος»."
+
+msgid "Saved. A family with other children kept its certainty."
+msgstr "Αποθηκεύτηκε. Μια οικογένεια με άλλα παιδιά κράτησε τη βεβαιότητά της."
+
+msgid "Unknown generations"
+msgstr "Άγνωστες γενιές"
+
+msgid "for a placeholder (unknown generations): <code>NAME Unknown</code> when it has no name, a <code>_PLACEHOLDER</code> block with the span, basis and note, and the same in words as a <code>NOTE</code> for other programs."
+msgstr "για άγνωστο πρόσωπο (άγνωστες γενιές): <code>NAME Unknown</code> όταν δεν έχει όνομα, ένα μπλοκ <code>_PLACEHOLDER</code> με τις γενιές, τη βάση και τη σημείωση, και τα ίδια σε λέξεις ως <code>NOTE</code> για άλλα προγράμματα."
+
+msgid "<code>_PLACEHOLDER</code> on a person: an unknown person standing for generations nobody has recorded, as <code>1</code>, <code>10</code> or <code>8-12</code>, with <code>2 _BASIS</code> (<code>records</code>, <code>tradition</code>, <code>forged_charter</code>, <code>coins</code>, <code>surname</code>, <code>other</code>) and <code>2 NOTE</code> below it. A <code>NAME</code> of <code>Unknown</code> leaves it unnamed. It is drawn in the tree but never counted, searched or given a page."
+msgstr "<code>_PLACEHOLDER</code> σε πρόσωπο: άγνωστο πρόσωπο που αντιστοιχεί σε γενιές που δεν έχουν καταγραφεί, ως <code>1</code>, <code>10</code> ή <code>8-12</code>, με <code>2 _BASIS</code> (<code>records</code>, <code>tradition</code>, <code>forged_charter</code>, <code>coins</code>, <code>surname</code>, <code>other</code>) και <code>2 NOTE</code> από κάτω. <code>NAME</code> <code>Unknown</code> το αφήνει χωρίς όνομα. Εμφανίζεται στο δέντρο αλλά δεν μετράει, δεν βρίσκεται στην αναζήτηση και δεν έχει σελίδα."

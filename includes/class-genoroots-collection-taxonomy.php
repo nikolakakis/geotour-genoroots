@@ -87,14 +87,14 @@ class GenoRoots_Collection_Taxonomy {
 
 	/** Published people in a collection. */
 	public static function people_count( WP_Term $term ) {
-		$query = new WP_Query( array(
+		$query = new WP_Query( GenoRoots_Placeholder::exclude( array(
 			'post_type'      => GenoRoots_Person_CPT::POST_TYPE,
 			'post_status'    => 'publish',
 			'posts_per_page' => 1,
 			'fields'         => 'ids',
 			'no_found_rows'  => false,
 			'tax_query'      => array( self::tax_clause( urldecode( $term->slug ) ) ), // phpcs:ignore
-		) );
+		) ) );
 		return (int) $query->found_posts;
 	}
 }

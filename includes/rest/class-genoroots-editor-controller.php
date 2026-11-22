@@ -63,6 +63,11 @@ class GenoRoots_Editor_Controller {
 			'callback'            => array( __CLASS__, 'add_relative' ),
 			'permission_callback' => $can,
 		) );
+		register_rest_route( $ns, '/editor/gap', array(
+			'methods'             => 'POST',
+			'callback'            => array( __CLASS__, 'add_gap' ),
+			'permission_callback' => $can,
+		) );
 		register_rest_route( $ns, '/editor/family/(?P<id>\d+)', array(
 			'methods'             => 'PATCH, POST',
 			'callback'            => array( __CLASS__, 'update_family' ),
@@ -152,10 +157,11 @@ class GenoRoots_Editor_Controller {
 
 	public static function search( WP_REST_Request $request ) {
 		$ids = GenoRoots_Search::people( (string) $request->get_param( 'q' ), array(
-			'statuses'    => array( 'publish', 'draft', 'pending', 'private' ),
-			'collection'  => self::chosen_collection( $request ),
-			'collections' => self::allowed_collections() ?: array(),
-			'limit'       => 25,
+			'statuses'     => array( 'publish', 'draft', 'pending', 'private' ),
+			'collection'   => self::chosen_collection( $request ),
+			'collections'  => self::allowed_collections() ?: array(),
+			'limit'        => 25,
+			'placeholders' => true, // editors find them by their name, if they have one
 		) );
 		return rest_ensure_response( array_map( array( __CLASS__, 'card' ), $ids ) );
 	}
@@ -212,12 +218,15 @@ class GenoRoots_Editor_Controller {
 			'parents'     => $parents,
 			'portrait'    => (string) get_the_post_thumbnail_url( $id, 'thumbnail' ),
 			'draft'       => get_post_status( $id ) !== 'publish',
+			// Unknown generations: span, basis and note; null for a real person.
+			'placeholder' => GenoRoots_Placeholder::info( $id ),
 		);
 	}
 
 	/** One person with the fields to edit and their close family. */
 	private static function person_view( $id ) {
-		$fields = array( 'name' => self::title( $id ) );
+		// An unnamed placeholder's name stays empty in the form (it is shown as "Unknown").
+		$fields = array( 'name' => GenoRoots_Placeholder::is( $id ) ? html_entity_decode( (string) get_post_field( 'post_title', $id, 'raw' ), ENT_QUOTES | ENT_HTML5, 'UTF-8' ) : self::title( $id ) );
 		foreach ( array_keys( GenoRoots_Family_Ops::PERSON_FIELDS ) as $name ) {
 			$fields[ $name ] = (string) get_post_meta( $id, $name, true );
 		}
@@ -233,6 +242,7 @@ class GenoRoots_Editor_Controller {
 				'family_id' => $famc,
 				'father'    => $father ? self::card( $father ) : null,
 				'mother'    => $mother ? self::card( $mother ) : null,
+				'status'    => (string) get_post_meta( $famc, 'status', true ),
 			);
 			foreach ( GenoRoots_Family_Ops::children( $famc ) as $child ) {
 				if ( $child !== $id ) {
@@ -259,7 +269,8 @@ class GenoRoots_Editor_Controller {
 			'person'    => self::card( $id ) + array(
 				'fields'      => $fields,
 				'version'     => self::version( $id, GenoRoots_Family_Ops::PERSON_FIELDS ),
-				'url'         => get_post_status( $id ) === 'publish' ? get_permalink( $id ) : '',
+				// Placeholders have no public page.
+				'url'         => get_post_status( $id ) === 'publish' && ! GenoRoots_Placeholder::is( $id ) ? get_permalink( $id ) : '',
 				'collections' => GenoRoots_Family_Ops::collections_of( $id ),
 				'portrait_l'  => (string) get_the_post_thumbnail_url( $id, 'medium' ),
 			),
@@ -309,7 +320,8 @@ class GenoRoots_Editor_Controller {
 			), function () use ( $fields, $collection ) {
 				return array( 'person' => GenoRoots_Family_Ops::create_person( $fields, $collection ? array( $collection ) : array() ) );
 			} );
-			return $result + self::person_view( $result['person'] );
+			// The view first: its "person" (the card) replaces the result's bare ID.
+			return self::person_view( $result['person'] ) + $result;
 		} );
 	}
 
@@ -333,7 +345,7 @@ class GenoRoots_Editor_Controller {
 				GenoRoots_Family_Ops::update_person( $id, $fields );
 				return array( 'person' => $id );
 			} );
-			return $result + self::person_view( $id );
+			return self::person_view( $id ) + $result; // the view's "person", not the result's bare ID
 		} );
 	}
 
@@ -392,6 +404,54 @@ class GenoRoots_Editor_Controller {
 						$family = GenoRoots_Family_Ops::add_sibling( $anchor, $relative, $confirm );
 				}
 				return array( 'relative' => $relative, 'family' => $family );
+			} );
+			return $result + self::person_view( $anchor );
+		} );
+	}
+
+	/**
+	 * Links two known people across generations nobody has recorded, with
+	 * a new placeholder between them:
+	 *  - kind "ancestor":   `other` is an ancestor of `person`;
+	 *  - kind "descendant": `other` is a descendant of `person`
+	 *    (family_id: which of `person`'s marriages, 0 = other parent unknown);
+	 *  - kind "shared":     the two share an unknown ancestor.
+	 * `placeholder` holds its fields (name, sex, placeholder_min/max/basis/note),
+	 * `status` the Certainty of the new links.
+	 */
+	public static function add_gap( WP_REST_Request $request ) {
+		return self::wrap( function () use ( $request ) {
+			$anchor = self::check_person( $request->get_param( 'person' ) );
+			$other  = self::check_person( $request->get_param( 'other' ) );
+			$kind   = (string) $request->get_param( 'kind' );
+			if ( ! in_array( $kind, array( 'ancestor', 'descendant', 'shared' ), true ) ) {
+				throw new GenoRoots_Edit_Error( 'genoroots_bad_relation', __( 'Unknown relation.', 'geotour-genoroots' ), array( 'status' => 400 ) );
+			}
+			$fields    = array_intersect_key( (array) $request->get_param( 'placeholder' ), GenoRoots_Family_Ops::PERSON_FIELDS + array( 'name' => '' ) );
+			$status    = (string) $request->get_param( 'status' );
+			$family_id = (int) $request->get_param( 'family_id' );
+
+			$result = GenoRoots_Changes::run( array(
+				'action'     => 'add_gap',
+				'person_id'  => $anchor,
+				'request_id' => $request->get_param( 'request_id' ),
+				'summary'    => function ( $result ) use ( $anchor, $other, $kind ) {
+					$span = GenoRoots_Placeholder::summary( $result['placeholder'] );
+					if ( $kind === 'shared' ) {
+						/* translators: 1, 2: people; 3: e.g. "10 generations · Tradition" */
+						return sprintf( __( 'Linked %1$s and %2$s through an unknown shared ancestor (%3$s)', 'geotour-genoroots' ), self::title( $anchor ), self::title( $other ), $span );
+					}
+					list( $up, $down ) = $kind === 'ancestor' ? array( $other, $anchor ) : array( $anchor, $other );
+					/* translators: 1: ancestor, 2: descendant, 3: e.g. "10 generations · Tradition" */
+					return sprintf( __( 'Linked %1$s to the descendant %2$s across unknown generations (%3$s)', 'geotour-genoroots' ), self::title( $up ), self::title( $down ), $span );
+				},
+			), function () use ( $anchor, $other, $kind, $fields, $status, $family_id ) {
+				if ( $kind === 'shared' ) {
+					return GenoRoots_Family_Ops::add_shared_ancestor( $anchor, $other, $fields, $status );
+				}
+				return $kind === 'ancestor'
+					? GenoRoots_Family_Ops::add_gap( $other, $anchor, $fields, $status, 0 )
+					: GenoRoots_Family_Ops::add_gap( $anchor, $other, $fields, $status, $family_id );
 			} );
 			return $result + self::person_view( $anchor );
 		} );
@@ -514,8 +574,8 @@ class GenoRoots_Editor_Controller {
 	 * father's name) who may be the same person. Skipped with confirm_new.
 	 */
 	private static function duplicate_check( array $fields, WP_REST_Request $request ) {
-		if ( $request->get_param( 'confirm_new' ) ) {
-			return;
+		if ( $request->get_param( 'confirm_new' ) || ! empty( $fields[ GenoRoots_Placeholder::FLAG ] ) ) {
+			return; // a placeholder is nobody's duplicate
 		}
 		$name = trim( (string) ( $fields['name'] ?? '' ) );
 		if ( $name === '' ) {

@@ -415,6 +415,160 @@ $mobile: 640px;
 	}
 }
 
+// ---- Unknown generations (placeholders) and claimed descent ----
+
+// A placeholder: dashed outline, a "?" disc instead of a portrait, how many
+// generations and on what basis. Same size as every card, so the layout
+// and the chips don't move.
+.gnr-tree .f3 div.card .gnr-card.gnr-card--gap {
+	flex-direction: row;
+	align-items: center;
+	justify-content: flex-start;
+	gap: 10px;
+	padding-left: 12px;
+	border: 1.5px dashed $gnr-color-card-unknown;
+	background: $gnr-color-gap-bg;
+	box-shadow: none;
+
+	&::before {
+		display: none;
+	}
+
+	.gnr-card__given {
+		font-style: italic;
+		font-weight: 500;
+		color: $gnr-color-muted;
+	}
+}
+
+.gnr-tree .f3 div.card:hover .gnr-card.gnr-card--gap,
+.gnr-tree .f3 div.card:focus-visible .gnr-card.gnr-card--gap {
+	border-color: $gnr-color-accent;
+}
+
+.gnr-tree .f3 div.card.card-main .gnr-card.gnr-card--gap {
+	border: 3px dashed $gnr-color-accent;
+	background: $gnr-color-gap-bg;
+
+	.gnr-card__given {
+		color: $gnr-color-accent;
+	}
+}
+
+.gnr-card__gap-mark {
+	flex: none;
+	display: grid;
+	place-items: center;
+	width: 44px;
+	height: 44px;
+	border: 1.5px dashed $gnr-color-card-unknown;
+	border-radius: 50%;
+	background: #fff;
+	color: $gnr-color-muted;
+	font-size: 22px;
+	font-weight: 600;
+	line-height: 1;
+
+	@media (max-width: $mobile) {
+		width: 34px;
+		height: 34px;
+		font-size: 17px;
+	}
+}
+
+.gnr-card__basis {
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	font-size: 11px;
+	font-weight: 600;
+	letter-spacing: 0.02em;
+	color: $gnr-color-muted;
+}
+
+.gnr-tree .f3 div.card .gnr-card--gap.is-claimed .gnr-card__basis {
+	color: $gnr-color-claim;
+}
+
+// "claimed" on the card of someone whose descent is only claimed.
+.gnr-card__claim {
+	position: absolute;
+	top: -9px;
+	left: 12px;
+	padding: 0 7px;
+	border-radius: 999px;
+	background: $gnr-color-claim;
+	color: #fff;
+	font-size: 10px;
+	font-weight: 700;
+	letter-spacing: 0.04em;
+	line-height: 16px;
+	text-transform: uppercase;
+	box-shadow: 0 1px 3px rgba(43, 36, 32, 0.25);
+}
+
+.gnr-tree .f3 div.card .gnr-card.is-dimmed .gnr-card__claim {
+	background: $gnr-color-dim-ink;
+	box-shadow: none;
+}
+
+// Lines: dotted through unknown generations, dashed in the claim colour
+// for a claimed link (claimed wins when both apply).
+.gnr-tree__canvas {
+	.link.is-gap {
+		stroke: $gnr-color-card-unknown;
+		stroke-dasharray: 1 6;
+		stroke-linecap: round;
+		stroke-width: 2.5px;
+	}
+
+	.link.is-claimed {
+		stroke: $gnr-color-claim;
+		stroke-dasharray: 7 5;
+		stroke-linecap: butt;
+		stroke-width: 2px;
+	}
+
+	.link.is-claimed.f3-path-to-main {
+		stroke: $gnr-color-claim;
+		stroke-width: 3px;
+	}
+}
+
+// Panel: what a placeholder stands for, or that a descent is only claimed.
+.gnr-tree__panel-gap {
+	flex: none;
+	display: grid;
+	place-items: center;
+	width: 40px;
+	height: 40px;
+	border: 1.5px dashed $gnr-color-card-unknown;
+	border-radius: 50%;
+	color: $gnr-color-muted;
+	font-size: 20px;
+	font-weight: 600;
+}
+
+.gnr-tree__panel-kind {
+	font-size: 0.75rem;
+	font-weight: 700;
+	letter-spacing: 0.06em;
+	text-transform: uppercase;
+}
+
+.gnr-tree__panel-note {
+	max-width: 36em;
+	margin: 6px 0 0;
+	font-size: 0.85rem;
+	line-height: 1.4;
+	color: $gnr-color-ink;
+}
+
+.gnr-tree__panel-claim {
+	font-weight: 600;
+	color: $gnr-color-claim;
+}
+
 // ---- Overlays ----
 
 .gnr-tree__zoom {

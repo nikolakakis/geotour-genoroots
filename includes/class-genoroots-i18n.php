@@ -53,6 +53,10 @@ class GenoRoots_I18n {
 			'removeLens'    => __( 'Remove highlight: %s', 'geotour-genoroots' ),
 			/* translators: %s: person name */
 			'focusIn'       => __( 'belongs to this group: %s', 'geotour-genoroots' ),
+			// Unknown generations and claimed descent.
+			'claimedTag'     => _x( 'claimed', 'tag on a tree card: descent claimed, not proven', 'geotour-genoroots' ),
+			'claimedDescent' => __( 'Descent claimed, not proven', 'geotour-genoroots' ),
+			'gapTitle'       => __( 'Generations nobody has recorded', 'geotour-genoroots' ),
 
 			// Groups explorer.
 			'allGroups'     => __( 'All groups', 'geotour-genoroots' ),

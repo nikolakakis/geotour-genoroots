@@ -39,6 +39,51 @@ add_action( 'acf/init', function () {
 		'title'    => __( 'Details', 'geotour-genoroots' ),
 		'position' => 'acf_after_title',
 		'fields'   => array(
+			// A placeholder stands for people nobody has recorded (GenoRoots_Placeholder).
+			array(
+				'key'          => 'field_genoroots_person_' . GenoRoots_Placeholder::FLAG,
+				'label'        => __( 'Unknown person (placeholder)', 'geotour-genoroots' ),
+				'name'         => GenoRoots_Placeholder::FLAG,
+				'type'         => 'true_false',
+				'ui'           => 1,
+				'message'      => __( 'Stands for one or more generations nobody has recorded, so two known people can be linked.', 'geotour-genoroots' ),
+				'instructions' => __( 'Drawn in the tree as a dashed “?” card; never counted, searched or given a page. The name may stay empty (“Unknown”). How sure the link is goes on the families, as Certainty.', 'geotour-genoroots' ),
+			),
+			$genoroots_row( 'placeholder_min', __( 'Generations, at least', 'geotour-genoroots' ), GenoRoots_Placeholder::MIN, 20, array(
+				'type'              => 'number',
+				'min'               => 1,
+				'max'               => GenoRoots_Placeholder::SPAN_LIMIT,
+				'default_value'     => 1,
+				'conditional_logic' => array( array( array( 'field' => 'field_genoroots_person_' . GenoRoots_Placeholder::FLAG, 'operator' => '==', 'value' => '1' ) ) ),
+			) ),
+			$genoroots_row( 'placeholder_max', __( 'at most', 'geotour-genoroots' ), GenoRoots_Placeholder::MAX, 20, array(
+				'type'              => 'number',
+				'min'               => 1,
+				'max'               => GenoRoots_Placeholder::SPAN_LIMIT,
+				'placeholder'       => __( 'same', 'geotour-genoroots' ), // empty: exactly as many as "at least"
+				'conditional_logic' => array( array( array( 'field' => 'field_genoroots_person_' . GenoRoots_Placeholder::FLAG, 'operator' => '==', 'value' => '1' ) ) ),
+			) ),
+			array(
+				'key'               => 'field_genoroots_person_placeholder_basis',
+				'label'             => __( 'Based on', 'geotour-genoroots' ),
+				'name'              => GenoRoots_Placeholder::BASIS,
+				'type'              => 'select',
+				'choices'           => GenoRoots_Placeholder::bases(),
+				'allow_null'        => 1,
+				'return_format'     => 'value',
+				'wrapper'           => array( 'width' => 60 ),
+				'conditional_logic' => array( array( array( 'field' => 'field_genoroots_person_' . GenoRoots_Placeholder::FLAG, 'operator' => '==', 'value' => '1' ) ) ),
+			),
+			array(
+				'key'               => 'field_genoroots_person_placeholder_note',
+				'label'             => __( 'About the gap', 'geotour-genoroots' ),
+				'name'              => GenoRoots_Placeholder::NOTE,
+				'type'              => 'textarea',
+				'rows'              => 2,
+				'new_lines'         => '',
+				'placeholder'       => __( 'e.g. Descent claimed in a 16th-century charter, shown to be a forgery.', 'geotour-genoroots' ),
+				'conditional_logic' => array( array( array( 'field' => 'field_genoroots_person_' . GenoRoots_Placeholder::FLAG, 'operator' => '==', 'value' => '1' ) ) ),
+			),
 			array(
 				'key'           => 'field_genoroots_person_sex',
 				'label'         => __( 'Sex', 'geotour-genoroots' ),

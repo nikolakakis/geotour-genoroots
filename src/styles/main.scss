@@ -39,6 +39,16 @@
 	color: $gnr-color-muted;
 }
 
+// An unknown-generations placeholder among the relatives: no page, so no link.
+.gnr-person__gap {
+	font-style: italic;
+	color: $gnr-color-muted;
+
+	span {
+		font-size: 0.85em;
+	}
+}
+
 .gnr-person__sources {
 	margin-top: 1.5rem;
 	font-size: 0.875rem;

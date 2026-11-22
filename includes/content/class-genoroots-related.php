@@ -65,14 +65,14 @@ class GenoRoots_Related {
 
 	/** Published people whose related article is this post. */
 	public static function people_linking_to( $post_id ) {
-		return get_posts( array(
+		return get_posts( GenoRoots_Placeholder::exclude( array(
 			'post_type'      => GenoRoots_Person_CPT::POST_TYPE,
 			'post_status'    => 'publish',
 			'posts_per_page' => 10,
 			'fields'         => 'ids',
 			'meta_key'       => self::FIELD, // phpcs:ignore -- small, indexed by post
 			'meta_value'     => (int) $post_id, // phpcs:ignore
-		) );
+		) ) );
 	}
 
 	/**
@@ -115,13 +115,13 @@ class GenoRoots_Related {
 		$title      = ( $collection && ! $several ) ? $collection->name : $name;
 
 		// The tree's size: its people and the family groups among them.
-		$ids = get_posts( array(
+		$ids = get_posts( GenoRoots_Placeholder::exclude( array(
 			'post_type'      => GenoRoots_Person_CPT::POST_TYPE,
 			'post_status'    => 'publish',
 			'posts_per_page' => -1,
 			'fields'         => 'ids',
 			'tax_query'      => $collection ? array( GenoRoots_Collection_Taxonomy::tax_clause( urldecode( $collection->slug ) ) ) : array(), // phpcs:ignore WordPress.DB.SlowDBQuery
-		) );
+		) ) );
 		$groups = $ids ? wp_get_object_terms( $ids, GenoRoots_Family_Group_Taxonomy::TAXONOMY, array( 'fields' => 'ids' ) ) : array();
 		$groups = is_wp_error( $groups ) ? 0 : count( array_unique( $groups ) );
 		/* translators: %d: number of people in the family tree */

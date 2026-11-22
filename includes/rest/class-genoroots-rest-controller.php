@@ -226,9 +226,13 @@ class GenoRoots_Rest_Controller {
 				$edges[ $spouses[1] ][] = array( $spouses[0], 0 );
 			}
 			foreach ( $spouses as $parent_id ) {
+				// A placeholder parent stands for several generations.
+				$span = ! empty( $people[ $parent_id ]['placeholder'] )
+					? (int) round( ( $people[ $parent_id ]['placeholder']['min'] + $people[ $parent_id ]['placeholder']['max'] ) / 2 )
+					: 1;
 				foreach ( $family['children'] as $child_id ) {
-					$edges[ $child_id ][]  = array( $parent_id, self::YEAR_GAP );
-					$edges[ $parent_id ][] = array( $child_id, -self::YEAR_GAP );
+					$edges[ $child_id ][]  = array( $parent_id, self::YEAR_GAP * $span );
+					$edges[ $parent_id ][] = array( $child_id, -self::YEAR_GAP * $span );
 				}
 			}
 		}
@@ -269,7 +273,7 @@ class GenoRoots_Rest_Controller {
 	}
 
 	private static function pick_default_person_in_group( $term_id ) {
-		$posts = get_posts( array(
+		$posts = get_posts( GenoRoots_Placeholder::exclude( array(
 			'post_type'      => GenoRoots_Person_CPT::POST_TYPE,
 			'post_status'    => 'publish',
 			'posts_per_page' => -1,
@@ -281,7 +285,7 @@ class GenoRoots_Rest_Controller {
 					'terms'    => $term_id,
 				),
 			),
-		) );
+		) ) );
 		if ( empty( $posts ) ) {
 			return 0;
 		}
@@ -313,7 +317,8 @@ class GenoRoots_Rest_Controller {
 	}
 
 	private static function get_person_data( $id, $role, $generation ) {
-		$related = GenoRoots_Related::of_person( $id );
+		$related     = GenoRoots_Related::of_person( $id );
+		$placeholder = GenoRoots_Placeholder::info( $id );
 		return array(
 			'id'             => $id,
 			'name'           => self::plain_title( $id ),
@@ -327,7 +332,10 @@ class GenoRoots_Rest_Controller {
 			'death_date'     => (string) get_field( 'death_date_raw', $id ),
 			'death_place'    => (string) get_field( 'death_place', $id ),
 			'death_place_en' => (string) get_field( 'death_place_en', $id ),
-			'url'            => get_permalink( $id ),
+			// A placeholder has no page of its own.
+			'url'            => $placeholder ? '' : get_permalink( $id ),
+			// Unknown generations (GenoRoots_Placeholder::info()), or null.
+			'placeholder'    => $placeholder,
 			// Photo archive (Piwigo tag page), set by the Piwigo sync.
 			'photos_url'     => (string) get_field( 'photo_archive_url', $id ),
 			'photo_count'    => (int) get_field( 'piwigo_photo_count', $id ),
@@ -359,6 +367,8 @@ class GenoRoots_Rest_Controller {
 			'marriage_date'     => (string) get_field( 'marriage_date_raw', $family_id ),
 			'marriage_place'    => (string) get_field( 'marriage_place', $family_id ),
 			'marriage_place_en' => (string) get_field( 'marriage_place_en', $family_id ),
+			// Certainty: confirmed, probable or claimed; the tree styles the last two.
+			'status'            => (string) get_field( 'status', $family_id ) ?: 'confirmed',
 		);
 	}
 

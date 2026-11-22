@@ -32,9 +32,18 @@ class GenoRoots_Person_Admin {
 		$number  = preg_match( '/^I(\d+)$/', $gedcom, $m ) ? $m[1] : '';
 		$photos  = (string) get_post_meta( $id, 'photo_archive_url', true );
 		$count   = (int) get_post_meta( $id, 'piwigo_photo_count', true );
-		$keyword = $number ? self::keyword_name( $post->post_title ) . ' [' . $number . ']' : '';
+		$gap     = GenoRoots_Placeholder::info( $id );
+		// Nobody to tag in photos.
+		$keyword = $number && ! $gap ? self::keyword_name( $post->post_title ) . ' [' . $number . ']' : '';
 		?>
 		<div class="gnr-admin-box">
+			<?php if ( $gap ) : ?>
+				<p class="gnr-admin-box__row gnr-admin-box__row--stack gnr-admin-box__gap">
+					<strong><?php esc_html_e( 'Placeholder', 'geotour-genoroots' ); ?></strong>
+					<span><?php echo esc_html( implode( ' · ', array_filter( array( $gap['span'], $gap['basis_label'] ) ) ) ); ?></span>
+					<span class="gnr-admin-box__muted"><?php esc_html_e( 'Shown in the tree only: not counted, not searchable, no public page.', 'geotour-genoroots' ); ?></span>
+				</p>
+			<?php endif; ?>
 			<p class="gnr-admin-box__row">
 				<span class="gnr-admin-box__label"><?php esc_html_e( 'ID', 'geotour-genoroots' ); ?></span>
 				<strong><?php echo $number ? esc_html( $number ) : esc_html__( 'not assigned yet', 'geotour-genoroots' ); ?></strong>
@@ -133,6 +142,7 @@ class GenoRoots_Person_Admin {
 			.gnr-admin-box__muted { color: #8c8f94; }
 			.gnr-admin-box__copy { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
 			.gnr-admin-box__copy code { padding: 2px 6px; font-size: 12px; }
+			.gnr-admin-box__gap { padding: 8px 10px; border: 1px dashed #a89f92; border-radius: 6px; background: #faf8f5; }
 		</style>
 		<?php
 	}

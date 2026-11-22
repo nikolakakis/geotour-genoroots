@@ -9,7 +9,8 @@
  *  - INDI: NAME (with NICK and _PATR, the father's name), SEX,
  *    BIRT/DEAT/BURI (DATE, PLAC), NOTE, SOUR (as text),
  *    FAMC/FAMS, and GenoRoots' extension tags _PERIOD, _GROUP (repeatable),
- *    _ARTICLE (an address on the importing site).
+ *    _ARTICLE (an address on the importing site), _PLACEHOLDER (unknown
+ *    generations: "8-12", with _BASIS and NOTE below it).
  *  - FAM: HUSB/WIFE/CHIL, MARR (DATE, PLAC), NOTE, and _STATUS
  *    (confirmed | probable | claimed).
  * NOTE and SOUR text may continue on CONT (new line) / CONC (same line).
@@ -175,6 +176,16 @@ class GenoRoots_Gedcom_Parser {
 				case '_STATUS':
 					$record['status'] = strtolower( $value );
 					break;
+				case '_PLACEHOLDER':
+					// Unknown generations: "1", "10" or "8-12" (also "8–12").
+					$span = preg_match( '/^(\d+)(?:\s*[-–]\s*(\d+))?/u', $value, $s ) ? $s : array( '', '1' );
+					$record['placeholder'] = array(
+						'min'   => (int) $span[1],
+						'max'   => isset( $span[2] ) ? (int) $span[2] : (int) $span[1],
+						'basis' => '',
+						'note'  => '',
+					);
+					break;
 				case 'FAMC':
 					$record['famc'][] = trim( $value, '@' );
 					break;
@@ -219,6 +230,15 @@ class GenoRoots_Gedcom_Parser {
 				return;
 			}
 
+			if ( $parent === '_PLACEHOLDER' && isset( $record['placeholder'] ) ) {
+				if ( $tag === '_BASIS' ) {
+					$record['placeholder']['basis'] = strtolower( $value );
+				} elseif ( $tag === 'NOTE' ) {
+					$record['placeholder']['note'] = $text;
+				}
+				return;
+			}
+
 			if ( $parent === 'NAME' && ! empty( $record['in_first_name'] ) && $value !== '' ) {
 				if ( $tag === 'NICK' ) {
 					$record['nickname'] = $value;
@@ -236,6 +256,12 @@ class GenoRoots_Gedcom_Parser {
 			}
 		}
 
-		// Deeper levels aren't relevant to person/family data.
+		// The placeholder's note may continue at level 3.
+		if ( $level === 3 && ( $level_stack[1] ?? '' ) === '_PLACEHOLDER' && ( $level_stack[2] ?? '' ) === 'NOTE'
+			&& ( $tag === 'CONT' || $tag === 'CONC' ) && isset( $record['placeholder'] ) ) {
+			$record['placeholder']['note'] .= ( $tag === 'CONT' ? "\n" : '' ) . $text;
+		}
+
+		// Other deeper levels aren't relevant to person/family data.
 	}
 }

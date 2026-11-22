@@ -128,7 +128,10 @@ export const nicknameText = ( card ) => ( card.nickname ? tf( 'nicknameQuoted', 
  * @param {Object} opts   tag (button|a|div), attrs, more (HTML after), detail.
  */
 export function cardHtml( card, { tag = 'button', attrs = '', more = '', detail = true } = {} ) {
-	const second = [ card.father_name, card.years ].filter( Boolean ).join( ' · ' );
+	const gap = card.placeholder;
+	const second = gap
+		? [ gap.span, gap.basis_label ].filter( Boolean ).join( ' · ' )
+		: [ card.father_name, card.years ].filter( Boolean ).join( ' · ' );
 	let third = '';
 	if ( detail && card.spouses && card.spouses.length ) {
 		third = tf( 'spouseOf', card.spouses.join( ', ' ) );
@@ -138,8 +141,8 @@ export function cardHtml( card, { tag = 'button', attrs = '', more = '', detail 
 	const number = /^I(\d+)$/.exec( card.gedcom_id || '' );
 	const type = tag === 'button' ? ' type="button"' : '';
 	return `
-		<${ tag }${ type } class="gnr-ed-card gnr-ed-card--${ esc( ( card.sex || 'U' ).toLowerCase() ) }" ${ attrs }>
-			<span class="gnr-ed-card__avatar">${ card.portrait ? `<img src="${ esc( card.portrait ) }" alt="" loading="lazy">` : esc( initials( card.name ) ) }</span>
+		<${ tag }${ type } class="gnr-ed-card gnr-ed-card--${ esc( ( card.sex || 'U' ).toLowerCase() ) }${ gap ? ' gnr-ed-card--gap' : '' }" ${ attrs }>
+			<span class="gnr-ed-card__avatar">${ gap ? '?' : card.portrait ? `<img src="${ esc( card.portrait ) }" alt="" loading="lazy">` : esc( initials( card.name ) ) }</span>
 			<span class="gnr-ed-card__text">
 				<span class="gnr-ed-card__name">${ esc( card.name ) }${ card.nickname ? ` <span class="gnr-ed-card__nick">${ esc( nicknameText( card ) ) }</span>` : '' }</span>
 				${ second ? `<span class="gnr-ed-card__line">${ esc( second ) }</span>` : '' }
@@ -220,6 +223,52 @@ export function personFields( values = {}, { open = false } = {} ) {
 				<span class="gnr-ed-field__label">${ esc( t( 'notes' ) ) }</span>
 				<textarea name="notes" rows="4" placeholder="${ esc( t( 'notesHint' ) ) }">${ esc( values.notes ) }</textarea>
 			</label>
+		</details>`;
+}
+
+export const BASES = [ 'records', 'tradition', 'forged_charter', 'coins', 'surname', 'other' ];
+export const STATUSES = [ 'confirmed', 'probable', 'claimed' ];
+
+function numberField( name, label, value, { min = 1, max = 99, placeholder = '' } = {} ) {
+	return `
+		<label class="gnr-ed-field gnr-ed-field--number">
+			<span class="gnr-ed-field__label">${ esc( label ) }</span>
+			<input type="number" inputmode="numeric" name="${ esc( name ) }" value="${ esc( value ) }" min="${ min }" max="${ max }" step="1"${ placeholder ? ` placeholder="${ esc( placeholder ) }"` : '' }>
+		</label>`;
+}
+
+/** Choice chips (radio buttons), one value. */
+export function choiceField( name, label, options, value, { hint = '' } = {} ) {
+	return `
+		<div class="gnr-ed-field">
+			<span class="gnr-ed-field__label">${ esc( label ) }</span>
+			<div class="gnr-ed-seg gnr-ed-seg--choice gnr-ed-seg--wrap" role="radiogroup" aria-label="${ esc( label ) }">
+				${ options.map( ( [ v, text ] ) => `<label><input type="radio" name="${ esc( name ) }" value="${ esc( v ) }"${ value === v ? ' checked' : '' }><span>${ esc( text ) }</span></label>` ).join( '' ) }
+			</div>
+			${ hint ? `<span class="gnr-ed-field__hint">${ esc( hint ) }</span>` : '' }
+		</div>`;
+}
+
+/**
+ * A placeholder (unknown generations): how many, on what basis, a note,
+ * and an optional name. With certainty: how sure the new links are.
+ */
+export function placeholderFields( values = {}, { certainty = false } = {} ) {
+	return `
+		<div class="gnr-ed-row gnr-ed-row--span">
+			${ numberField( 'placeholder_min', t( 'gapMin' ), values.placeholder_min || 1 ) }
+			${ numberField( 'placeholder_max', t( 'gapMax' ), values.placeholder_max || '', { placeholder: t( 'gapMaxHint' ) } ) }
+		</div>
+		${ choiceField( 'placeholder_basis', t( 'gapBasis' ), BASES.map( ( b ) => [ b, t( `basis_${ b }` ) ] ), values.placeholder_basis || '' ) }
+		${ certainty ? choiceField( 'status', t( 'certainty' ), STATUSES.map( ( s ) => [ s, t( s ) ] ), values.status || 'confirmed', { hint: t( 'gapCertaintyHint' ) } ) : '' }
+		<label class="gnr-ed-field">
+			<span class="gnr-ed-field__label">${ esc( t( 'gapNote' ) ) }</span>
+			<textarea name="placeholder_note" rows="3" placeholder="${ esc( t( 'gapNoteHint' ) ) }">${ esc( values.placeholder_note ) }</textarea>
+		</label>
+		<details class="gnr-ed-more"${ values.name ? ' open' : '' }>
+			<summary>${ esc( t( 'gapNameMore' ) ) }</summary>
+			${ textField( 'name', t( 'name' ), values.name, { hint: t( 'gapNameHint' ) } ) }
+			${ sexField( values.sex ) }
 		</details>`;
 }
 

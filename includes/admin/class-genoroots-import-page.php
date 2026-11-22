@@ -447,13 +447,14 @@ class GenoRoots_Import_Page {
 			array(
 				'title' => __( 'GenoRoots tags', 'geotour-genoroots' ),
 				'body'  => array(
-					__( 'Four extra tags carry what standard GEDCOM has no place for. Genealogy programs ignore them; GenoRoots reads them.', 'geotour-genoroots' ),
+					__( 'Five extra tags carry what standard GEDCOM has no place for. Genealogy programs ignore them; GenoRoots reads them.', 'geotour-genoroots' ),
 					array(
 						'list' => array(
 							__( '<code>_GROUP</code> on a person: a group they belong to, created if missing. One line per group; a person can be in the family they were born into and the one they married into.', 'geotour-genoroots' ),
 							__( '<code>_PERIOD</code> on a person: the historical period of their life, e.g. "Late Ottoman period / Cretan insurrections".', 'geotour-genoroots' ),
 							__( '<code>_ARTICLE</code> on a person: a page on this site about them, as an address without the domain (<code>people/eleftherios-venizelos</code>). The person\'s page then links to it.', 'geotour-genoroots' ),
-							__( '<code>_STATUS</code> on a family: how certain the link is: <code>confirmed</code>, <code>probable</code> or <code>claimed</code> (family tradition). The last two are shown next to the relation.', 'geotour-genoroots' ),
+							__( '<code>_STATUS</code> on a family: how certain the link is: <code>confirmed</code>, <code>probable</code> or <code>claimed</code> (family tradition). The last two are shown next to the relation; a claimed link is drawn dashed in the tree.', 'geotour-genoroots' ),
+							__( '<code>_PLACEHOLDER</code> on a person: an unknown person standing for generations nobody has recorded, as <code>1</code>, <code>10</code> or <code>8-12</code>, with <code>2 _BASIS</code> (<code>records</code>, <code>tradition</code>, <code>forged_charter</code>, <code>coins</code>, <code>surname</code>, <code>other</code>) and <code>2 NOTE</code> below it. A <code>NAME</code> of <code>Unknown</code> leaves it unnamed. It is drawn in the tree but never counted, searched or given a page.', 'geotour-genoroots' ),
 						),
 					),
 					array( 'pre' => "0 @I05@ INDI\n1 NAME Nikos (Psaronikos) Xylouris\n1 SEX M\n1 BIRT\n2 DATE 7 JUL 1936\n2 PLAC Anogeia, Rethymno, Crete, Greece\n1 _PERIOD Civil War and post-war / Dictatorship\n1 NOTE First paragraph of the biography…\n1 SOUR Wikipedia (Greek), «Νίκος Ξυλούρης». https://el.wikipedia.org/…\n1 _GROUP Xylouris\n1 _ARTICLE people/nikos-xylouris\n1 FAMC @F03@\n0 @F03@ FAM\n1 HUSB @I02@\n1 WIFE @I04@\n1 CHIL @I05@\n1 _STATUS confirmed" ),

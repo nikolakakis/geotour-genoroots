@@ -10,7 +10,7 @@ import { ApiError, NetworkError, get } from './api.js';
 import { cachedPerson, forgetPerson, getCollection, getRecent, getUnsent, rememberPerson, setCollection } from './store.js';
 import { cardHtml, dropSheet, errorHtml, nicknameText, sheetOpen } from './ui.js';
 import {
-	addRelative, canUpload, choosePortrait, connect, createPerson, editMarriage, editPerson,
+	addGap, addRelative, canUpload, choosePortrait, connect, createPerson, editMarriage, editPerson,
 	flushUnsent, removeLink, searchInto, showHistory, showUnsent,
 } from './flows.js';
 
@@ -186,6 +186,7 @@ function showView( view, { offline = false, stale = false } = {} ) {
 		rememberPerson( view );
 	}
 	const p = view.person;
+	const gap = p.placeholder; // unknown generations
 	const number = /^I(\d+)$/.exec( p.gedcom_id || '' );
 	const linkTo = ( card ) => `href="#/p/${ card.id }"`;
 	const remove = ( familyId, card, label ) => `<button type="button" class="gnr-ed-icon gnr-ed-icon--small" data-unlink="${ familyId }:${ card.id }" data-label="${ esc( label ) }" aria-label="${ esc( t( 'removeLink' ) ) }: ${ esc( card.name ) }">✕</button>`;
@@ -197,14 +198,16 @@ function showView( view, { offline = false, stale = false } = {} ) {
 	main().innerHTML = `
 		${ offline ? `<p class="gnr-ed-note gnr-ed-note--warn">${ esc( t( 'offline' ) ) }</p>` : '' }
 		<nav class="gnr-ed-nav"><a href="#/" class="gnr-ed-button gnr-ed-button--quiet gnr-ed-button--small">← ${ esc( t( 'backToSearch' ) ) }</a></nav>
-		<header class="gnr-ed-person">
-			<button type="button" class="gnr-ed-person__photo gnr-ed-card--${ esc( p.sex.toLowerCase() ) }" data-photo ${ canUpload() ? '' : 'disabled' } aria-label="${ esc( t( 'takePhoto' ) ) }">
-				${ p.portrait_l || p.portrait ? `<img src="${ esc( p.portrait_l || p.portrait ) }" alt="">` : '<span aria-hidden="true">📷</span>' }
+		<header class="gnr-ed-person${ gap ? ' gnr-ed-person--gap' : '' }">
+			<button type="button" class="gnr-ed-person__photo gnr-ed-card--${ esc( p.sex.toLowerCase() ) }" data-photo ${ canUpload() && ! gap ? '' : 'disabled' } aria-label="${ esc( t( 'takePhoto' ) ) }">
+				${ gap ? '<span aria-hidden="true">?</span>' : p.portrait_l || p.portrait ? `<img src="${ esc( p.portrait_l || p.portrait ) }" alt="">` : '<span aria-hidden="true">📷</span>' }
 			</button>
 			<div class="gnr-ed-person__text">
+				${ gap ? `<p class="gnr-ed-person__kind">${ esc( t( 'gapKind' ) ) }</p>` : '' }
 				<h1 class="gnr-ed-person__name">${ esc( p.name ) }</h1>
 				${ p.nickname ? `<p class="gnr-ed-person__nick">${ esc( nicknameText( p ) ) }</p>` : '' }
-				<p class="gnr-ed-person__meta">${ esc( [ p.father_name, p.years ].filter( Boolean ).join( ' · ' ) ) }</p>
+				<p class="gnr-ed-person__meta">${ esc( gap ? [ gap.span, gap.basis_label ].filter( Boolean ).join( ' · ' ) : [ p.father_name, p.years ].filter( Boolean ).join( ' · ' ) ) }</p>
+				${ gap && gap.note ? `<p class="gnr-ed-person__note">${ esc( gap.note ) }</p>` : '' }
 				<p class="gnr-ed-person__meta gnr-ed-person__meta--soft">
 					${ number ? `#${ esc( number[ 1 ] ) }` : '' }
 					${ p.draft ? `<span class="gnr-ed-badge">${ esc( t( 'draft' ) ) }</span>` : '' }
@@ -222,10 +225,11 @@ function showView( view, { offline = false, stale = false } = {} ) {
 			<button type="button" data-add="child">${ esc( t( 'addChild' ) ) }</button>
 			<button type="button" data-add="parent">${ esc( t( 'addParent' ) ) }</button>
 			<button type="button" data-add="sibling">${ esc( t( 'addSibling' ) ) }</button>
+			<button type="button" class="gnr-ed-add__gap" data-add-gap>${ esc( t( 'addGap' ) ) }</button>
 		</div>
 
 		<section class="gnr-ed-section">
-			<h2 class="gnr-ed-h">${ esc( t( 'parents' ) ) }</h2>
+			<h2 class="gnr-ed-h">${ esc( t( 'parents' ) ) }${ parents && parents.status && parents.status !== 'confirmed' ? ` <span class="gnr-ed-badge gnr-ed-badge--${ esc( parents.status ) }">${ esc( t( parents.status ) ) }</span>` : '' }</h2>
 			${ parentCards.length
 				? parentCards.map( ( c ) => related( c, parents.family_id, t( 'parents' ) ) ).join( '' )
 				: `<p class="gnr-ed-empty">${ esc( t( 'noParents' ) ) }</p>` }
@@ -258,6 +262,7 @@ function showView( view, { offline = false, stale = false } = {} ) {
 	el.querySelector( '[data-history]' ).addEventListener( 'click', () => showHistory( p.id ) );
 	el.querySelector( '[data-photo]' ).addEventListener( 'click', () => choosePortrait( current ) );
 	el.querySelectorAll( '[data-add]' ).forEach( ( b ) => b.addEventListener( 'click', () => addRelative( current, b.dataset.add ) ) );
+	el.querySelector( '[data-add-gap]' ).addEventListener( 'click', () => addGap( current ) );
 	el.querySelectorAll( '[data-marriage]' ).forEach( ( b ) => b.addEventListener( 'click', () => editMarriage( current, current.marriages[ Number( b.dataset.marriage ) ] ) ) );
 	el.querySelectorAll( '[data-unlink]' ).forEach( ( b ) => b.addEventListener( 'click', () => {
 		const [ familyId, otherId ] = b.dataset.unlink.split( ':' ).map( Number );

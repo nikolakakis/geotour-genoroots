@@ -27,14 +27,14 @@ $genoroots_collection = urldecode( $genoroots_term->slug );
 		<h2><?php esc_html_e( 'Browse alphabetically', 'geotour-genoroots' ); ?></h2>
 		<ul>
 			<?php
-			$genoroots_people = get_posts( array(
+			$genoroots_people = get_posts( GenoRoots_Placeholder::exclude( array(
 				'post_type'      => GenoRoots_Person_CPT::POST_TYPE,
 				'post_status'    => 'publish',
 				'posts_per_page' => -1,
 				'orderby'        => 'title',
 				'order'          => 'ASC',
 				'tax_query'      => array( GenoRoots_Collection_Taxonomy::tax_clause( $genoroots_collection ) ), // phpcs:ignore
-			) );
+			) ) );
 			$genoroots_page = get_term_link( $genoroots_term );
 			foreach ( $genoroots_people as $genoroots_person ) :
 				?>

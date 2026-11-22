@@ -124,7 +124,23 @@ class GenoRoots_Gedcom_Importer {
 		// GEDCOM marks the surname with slashes anywhere in the name: "Given /Surname/"
 		// (the standard) or "/Surname/ Given". Drop the marks, keep the order.
 		$title = isset( $indi['name'] ) ? trim( preg_replace( '/\s+/u', ' ', str_replace( '/', ' ', $indi['name'] ) ) ) : '';
-		$title = ( $title !== '' ) ? $title : $gedcom_id;
+		$gap   = $indi['placeholder'] ?? null;
+		if ( $gap ) {
+			// "Unknown" is how an unnamed placeholder is written; keep it unnamed,
+			// so it is shown in each page's language.
+			$title = strcasecmp( $title, GenoRoots_Gedcom_Exporter::UNKNOWN_NAME ) === 0 ? '' : $title;
+			// The NOTE that says the same in words for other programs.
+			if ( isset( $indi['notes'] ) ) {
+				$indi['notes'] = array_values( array_filter( $indi['notes'], static function ( $note ) {
+					return strpos( ltrim( $note ), GenoRoots_Gedcom_Exporter::PLACEHOLDER_NOTE ) !== 0;
+				} ) );
+				if ( ! $indi['notes'] ) {
+					unset( $indi['notes'] );
+				}
+			}
+		} else {
+			$title = ( $title !== '' ) ? $title : $gedcom_id;
+		}
 
 		$existing_id = $this->find_existing_post_by_gedcom_id( GenoRoots_Person_CPT::POST_TYPE, $this->stored_id( $gedcom_id ) );
 
@@ -172,6 +188,17 @@ class GenoRoots_Gedcom_Importer {
 		}
 		if ( isset( $indi['period'] ) ) {
 			update_field( 'period', $indi['period'], $post_id );
+		}
+		if ( $gap ) {
+			list( $min, $max ) = GenoRoots_Placeholder::span( $gap['min'], $gap['max'] );
+			update_field( 'field_genoroots_person_' . GenoRoots_Placeholder::FLAG, 1, $post_id );
+			update_field( 'field_genoroots_person_' . GenoRoots_Placeholder::MIN, $min, $post_id );
+			update_field( 'field_genoroots_person_' . GenoRoots_Placeholder::MAX, $max, $post_id );
+			update_field( 'field_genoroots_person_' . GenoRoots_Placeholder::BASIS, in_array( $gap['basis'], GenoRoots_Placeholder::BASES, true ) ? $gap['basis'] : '', $post_id );
+			update_field( 'field_genoroots_person_' . GenoRoots_Placeholder::NOTE, $gap['note'], $post_id );
+			if ( $gap['basis'] !== '' && ! in_array( $gap['basis'], GenoRoots_Placeholder::BASES, true ) ) {
+				$report['warnings'][] = sprintf( 'Person %1$s: unknown placeholder basis "%2$s"; left empty.', $gedcom_id, $gap['basis'] );
+			}
 		}
 		if ( ! empty( $indi['groups'] ) ) {
 			$this->join_groups( $post_id, $indi['groups'] );

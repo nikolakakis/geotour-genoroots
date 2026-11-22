@@ -92,12 +92,13 @@ class GenoRoots_Piwigo {
 		}
 		unset( $candidates );
 
-		$people = get_posts( array(
+		// Placeholders have no photos.
+		$people = get_posts( GenoRoots_Placeholder::exclude( array(
 			'post_type'      => GenoRoots_Person_CPT::POST_TYPE,
 			'post_status'    => 'any',
 			'posts_per_page' => -1,
 			'fields'         => 'ids',
-		) );
+		) ) );
 
 		$changes = array();
 		$linked  = 0;

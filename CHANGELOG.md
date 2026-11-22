@@ -1,5 +1,37 @@
 # Changelog
 
+## 1.3.0 — 2026-11-22
+
+- **Unknown generations (placeholders):** link two known people when the
+  people between them were never recorded: a grandson whose father is not
+  named, a family's claimed descent from a founder ten generations back, or
+  two relatives whose kinship is unknown (an unknown shared ancestor). A
+  placeholder has a span of generations (e.g. 1 or 8–12), a basis (records,
+  family tradition, forged charter, coins, surname only, other) and a note;
+  its name may stay empty and shows as "Unknown".
+- **In the tree** a placeholder is a dashed "?" card with its span and
+  basis, and the lines through it are dotted. Its panel shows the note.
+- **Claimed links look claimed:** a family whose Certainty is "claimed" is
+  drawn with dashed amber lines, and the descendant's card gets a "claimed"
+  tag; its panel says "Descent claimed, not proven".
+- **Placeholders count as nobody:** left out of group sizes and shared
+  counts, member lists, search, the A–Z lists, sitemaps (WordPress, Yoast,
+  Rank Math), the WordPress REST list of people and the "Family tree" card
+  on articles. They have no public page. The tree still draws through them.
+- **Field editor:** "+ Unknown generations" on any person: choose ancestor,
+  descendant or relative, find the other person, set span, basis, certainty
+  and note, with a live preview. Placeholders open and edit in their own
+  form. New REST route `POST /editor/gap`.
+- **Admin:** "Unknown person (placeholder)" on the person screen, a
+  "Placeholder" label in the list of people, and the span in the side box.
+- **GEDCOM:** placeholders export as `NAME Unknown` with a `_PLACEHOLDER`
+  block (span, `_BASIS`, note) and a plain-English `NOTE` for other
+  programs; the import reads them back. Bundles carry them.
+- `/focus` now returns each family's `status` and marks placeholders.
+- Fixed: in the field editor, saving a person's details or creating a
+  person left a broken screen (the answer carried the person's ID where the
+  screen expected the person).
+
 ## 1.2.0 — 2026-10-15
 
 - **Field editor** (`[genoroots_field_editor]`): edit the tree from a phone,

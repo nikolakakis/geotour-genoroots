@@ -3,7 +3,7 @@
  * GenoRoots_Gedcom_Exporter
  *
  * Writes published people and families as GEDCOM 5.5, in the same dialect
- * the importer reads (_PERIOD, _GROUP, _ARTICLE, _STATUS), so an export can
+ * the importer reads (_PERIOD, _GROUP, _ARTICLE, _STATUS, _PLACEHOLDER), so an export can
  * be imported again, on this site or another. Standard genealogy programs
  * read the standard tags and ignore the underscore ones.
  *
@@ -24,6 +24,29 @@ if ( ! defined( 'ABSPATH' ) ) {
 class GenoRoots_Gedcom_Exporter {
 
 	const LINE_MAX = 200; // characters of text per line; GEDCOM allows 255
+
+	/** NAME of a placeholder without a name. */
+	const UNKNOWN_NAME = 'Unknown';
+
+	/** Starts the NOTE written for a placeholder; the importer recognises and skips it. */
+	const PLACEHOLDER_NOTE = 'GenoRoots placeholder:';
+
+	/**
+	 * The placeholder in plain English, for programs that don't read
+	 * _PLACEHOLDER: "GenoRoots placeholder: stands for 8-12 generations not
+	 * recorded. Basis: forged charter. <note>"
+	 */
+	public static function placeholder_note( array $gap ) {
+		$span  = $gap['min'] === $gap['max'] ? (string) $gap['min'] : $gap['min'] . '-' . $gap['max'];
+		$words = self::PLACEHOLDER_NOTE . ' stands for ' . $span . ' generation' . ( $gap['max'] > 1 ? 's' : '' ) . ' not recorded.';
+		if ( $gap['basis'] !== '' ) {
+			$words .= ' Basis: ' . str_replace( '_', ' ', $gap['basis'] ) . '.';
+		}
+		if ( trim( $gap['note'] ) !== '' ) {
+			$words .= ' ' . trim( preg_replace( '/\s+/u', ' ', $gap['note'] ) );
+		}
+		return $words;
+	}
 
 	/** @var WP_Term|null */
 	private $collection;
@@ -240,9 +263,14 @@ class GenoRoots_Gedcom_Exporter {
 		$meta  = static function ( $key ) use ( $post_id ) {
 			return trim( (string) get_post_meta( $post_id, $key, true ) );
 		};
+		$gap   = GenoRoots_Placeholder::info( $post_id );
+		// A placeholder's empty name is "Unknown" in the file, in no particular language.
+		$name  = $gap && get_post_field( 'post_title', $post_id, 'raw' ) === ''
+			? self::UNKNOWN_NAME
+			: html_entity_decode( get_the_title( $post_id ), ENT_QUOTES, 'UTF-8' );
 		$lines = array(
 			'0 ' . $this->ref( $post_id ) . ' INDI',
-			'1 NAME ' . $this->one_line( html_entity_decode( get_the_title( $post_id ), ENT_QUOTES, 'UTF-8' ) ),
+			'1 NAME ' . $this->one_line( $name ),
 		);
 		if ( $meta( 'nickname' ) !== '' ) {
 			$lines[] = '2 NICK ' . $this->one_line( $meta( 'nickname' ) );
@@ -264,6 +292,18 @@ class GenoRoots_Gedcom_Exporter {
 			$this->event( 'BURI', '', $meta( 'burial_place' ) )
 		);
 
+		if ( $gap ) {
+			// For GenoRoots: _PLACEHOLDER <min>[-<max>], its basis and note.
+			$lines[] = '1 _PLACEHOLDER ' . $gap['min'] . ( $gap['max'] !== $gap['min'] ? '-' . $gap['max'] : '' );
+			if ( $gap['basis'] !== '' ) {
+				$lines[] = '2 _BASIS ' . $gap['basis'];
+			}
+			if ( trim( $gap['note'] ) !== '' ) {
+				$lines = array_merge( $lines, $this->text( 2, 'NOTE', trim( str_replace( "\r", '', $gap['note'] ) ) ) );
+			}
+			// For every other program: the same in words.
+			$lines = array_merge( $lines, $this->text( 1, 'NOTE', self::placeholder_note( $gap ) ) );
+		}
 		if ( $meta( 'period' ) !== '' ) {
 			$lines[] = '1 _PERIOD ' . $this->one_line( $meta( 'period' ) );
 		}

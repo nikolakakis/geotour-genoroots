@@ -28,7 +28,13 @@ const STRINGS = {
 	removeLens: tf( 'removeLens' ),
 	focusIn: tf( 'focusIn' ),
 	groupsOf: t( 'groups' ),
+	claimed: t( 'claimedTag' ),
+	claimedDescent: t( 'claimedDescent' ),
+	gapTitle: t( 'gapTitle' ),
 };
+
+// Certainty of a family (GenoRoots family "status") that gets its own look.
+const CLAIMED = 'claimed';
 
 const LAYOUTS = {
 	desktop: { xSpacing: 226, ySpacing: 136, scale: 1 },
@@ -175,6 +181,12 @@ export function createTreeChart( mountEl, {
 		return lens.every( ( slug ) => ( person.groups || [] ).includes( slug ) );
 	}
 
+	/** True when the person's descent from their parents is only claimed (e.g. family tradition). */
+	function isClaimedChild( personId ) {
+		const family = store.birthFamily( personId );
+		return Boolean( family && family.status === CLAIMED );
+	}
+
 	function cardInnerHtml( d ) {
 		const person = d.data.data.person;
 		const { surname, given } = splitName( person.name );
@@ -197,9 +209,32 @@ export function createTreeChart( mountEl, {
 				</svg>
 			</span>
 		` : '';
+		const claimed = isClaimedChild( person.id );
+		const claimTag = claimed ? `<span class="gnr-card__claim" title="${ escapeHtml( STRINGS.claimedDescent ) }">${ escapeHtml( STRINGS.claimed ) }</span>` : '';
+		const claimClass = claimed ? ' is-claimed' : '';
+
+		// Unknown generations: a dashed "?" card with how many and on what basis.
+		const gap = person.placeholder;
+		if ( gap ) {
+			return `
+				<div class="card-inner gnr-card gnr-card--gap${ claimClass }${ lensClass }">
+					${ miniTree }
+					${ chip( hidden.up, 'up', STRINGS.moreUp ) }
+					${ claimTag }
+					<span class="gnr-card__gap-mark" aria-hidden="true">?</span>
+					<span class="gnr-card__text">
+						<span class="gnr-card__given">${ escapeHtml( person.name ) }</span>
+						<span class="gnr-card__years">${ escapeHtml( gap.span ) }</span>
+						${ gap.basis_label ? `<span class="gnr-card__basis">${ escapeHtml( gap.basis_label ) }</span>` : '' }
+					</span>
+					${ chip( hidden.down, 'down', STRINGS.moreDown ) }
+				</div>
+			`;
+		}
 
 		return `
-			<div class="card-inner gnr-card gnr-card--${ sex }${ lensClass }${ person.portrait ? ' has-photo' : '' }">
+			<div class="card-inner gnr-card gnr-card--${ sex }${ claimClass }${ lensClass }${ person.portrait ? ' has-photo' : '' }">
+				${ claimTag }
 				${ miniTree }
 				${ chip( hidden.up, 'up', STRINGS.moreUp ) }
 				${ person.portrait ? `<img class="gnr-card__photo" src="${ escapeHtml( person.portrait ) }" alt="" loading="lazy" draggable="false">` : '' }
@@ -222,7 +257,12 @@ export function createTreeChart( mountEl, {
 		const person = d.data.data.person;
 		cardEl.setAttribute( 'tabindex', '0' );
 		cardEl.setAttribute( 'role', 'button' );
-		cardEl.setAttribute( 'aria-label', [ person.name, lifespan( person ) ].filter( Boolean ).join( ', ' ) );
+		cardEl.setAttribute( 'aria-label', [
+			person.name,
+			person.placeholder ? person.placeholder.span : lifespan( person ),
+			person.placeholder ? person.placeholder.basis_label : '',
+			isClaimedChild( person.id ) ? STRINGS.claimedDescent : '',
+		].filter( Boolean ).join( ', ' ) );
 		cardEl.onkeydown = ( event ) => {
 			if ( event.key === 'Enter' || event.key === ' ' ) {
 				event.preventDefault();
@@ -268,11 +308,20 @@ export function createTreeChart( mountEl, {
 		const years = lifespan( person );
 		const places = [ person.birth_place, person.death_place ].filter( Boolean );
 		const groups = onGroupsRequest ? ( person.groups || [] ) : [];
+		const gap = person.placeholder;
+		const claimed = isClaimedChild( person.id );
 		panelEl.innerHTML = `
 			<div class="gnr-tree__panel-head">
+				${ gap ? '<span class="gnr-tree__panel-gap" aria-hidden="true">?</span>' : '' }
 				${ person.portrait ? `<img class="gnr-tree__panel-photo" src="${ escapeHtml( person.portrait ) }" alt="">` : '' }
 				<div class="gnr-tree__panel-name">${ escapeHtml( person.name ) }</div>
 			</div>
+			${ gap ? `
+				<div class="gnr-tree__panel-meta gnr-tree__panel-kind">${ escapeHtml( STRINGS.gapTitle ) }</div>
+				<div class="gnr-tree__panel-meta">${ escapeHtml( [ gap.span, gap.basis_label ].filter( Boolean ).join( ' · ' ) ) }</div>
+				${ gap.note ? `<p class="gnr-tree__panel-note">${ escapeHtml( gap.note ) }</p>` : '' }
+			` : '' }
+			${ claimed ? `<div class="gnr-tree__panel-meta gnr-tree__panel-claim">${ escapeHtml( STRINGS.claimedDescent ) }</div>` : '' }
 			${ person.nickname || person.father_name ? `<div class="gnr-tree__panel-meta">${ escapeHtml( [ person.nickname ? STRINGS.nickname( person.nickname ) : '', person.father_name ].filter( Boolean ).join( ' · ' ) ) }</div>` : '' }
 			${ years ? `<div class="gnr-tree__panel-meta">${ escapeHtml( years ) }</div>` : '' }
 			${ places.length ? `<div class="gnr-tree__panel-meta">${ escapeHtml( [ ...new Set( places ) ].join( ' · ' ) ) }</div>` : '' }
@@ -282,7 +331,7 @@ export function createTreeChart( mountEl, {
 				</div>
 			` : '' }
 			<div class="gnr-tree__panel-links">
-				<a class="gnr-tree__panel-link" href="${ escapeHtml( person.url ) }">${ STRINGS.profile }</a>
+				${ person.url ? `<a class="gnr-tree__panel-link" href="${ escapeHtml( person.url ) }">${ STRINGS.profile }</a>` : '' }
 				${ person.photos_url ? `<a class="gnr-tree__panel-link" href="${ escapeHtml( person.photos_url ) }" target="_blank" rel="noopener">${ STRINGS.photos( person.photo_count ) }</a>` : '' }
 				${ person.related_url ? `<a class="gnr-tree__panel-link" href="${ escapeHtml( person.related_url ) }" title="${ escapeHtml( person.related_title ) }">${ STRINGS.readMore }</a>` : '' }
 				${ fullTreeUrlFor ? `<a class="gnr-tree__panel-link" href="${ escapeHtml( fullTreeUrlFor( person.id ) ) }">${ STRINGS.fullTree }</a>` : '' }
@@ -396,6 +445,45 @@ export function createTreeChart( mountEl, {
 		}
 	}
 
+	// ---- Links: claimed descent and unknown generations ----
+
+	const personOf = ( datum ) => ( datum && datum.data && datum.data.data ? datum.data.data.person : null );
+
+	/**
+	 * Which family a drawn link belongs to, and whether it reaches a
+	 * placeholder. family-chart's link data: spouse links join two people;
+	 * child links run between a child and their parent(s), either way round.
+	 */
+	function linkInfo( link ) {
+		let family = null;
+		let ends = [];
+		if ( link.spouse ) {
+			ends = [ link.source, link.target ];
+			family = store.coupleFamily( link.source.data.id, link.target.data.id );
+		} else {
+			const child = link.is_ancestry ? link.source : link.target;
+			const parents = link.is_ancestry ? link.target : link.source;
+			ends = [ child, ...( Array.isArray( parents ) ? parents : [ parents ] ) ];
+			family = child ? store.birthFamily( child.data.id ) : null;
+		}
+		return {
+			claimed: Boolean( family && family.status === CLAIMED ),
+			gap: ends.some( ( d ) => {
+				const person = personOf( d );
+				return Boolean( person && person.placeholder );
+			} ),
+		};
+	}
+
+	/** After every redraw: dashed lines for claimed links and for links through unknown generations. */
+	function styleLinks() {
+		select( chart.svg ).selectAll( '.links_view path.link' ).each( function ( link ) {
+			const info = linkInfo( link );
+			this.classList.toggle( 'is-claimed', info.claimed );
+			this.classList.toggle( 'is-gap', info.gap );
+		} );
+	}
+
 	// ---- Setup ----
 
 	function buildChart() {
@@ -417,7 +505,8 @@ export function createTreeChart( mountEl, {
 			.setBeforeUpdate( () => {
 				const tree = chart.store.getTree();
 				shownIds = new Set( ( tree ? tree.data : [] ).map( ( d ) => Number( d.data.id ) ) );
-			} );
+			} )
+			.setAfterUpdate( styleLinks );
 
 		const card = chart.setCardHtml()
 			.setMiniTree( false )

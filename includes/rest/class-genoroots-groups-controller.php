@@ -19,7 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 class GenoRoots_Groups_Controller {
 
-	const CACHE_KEY     = 'genoroots_groups_overview_v2'; // new suffix whenever the overview's shape changes, so a deploy never serves the old shape
+	const CACHE_KEY     = 'genoroots_groups_overview_v3'; // new suffix whenever the overview's shape changes, so a deploy never serves the old shape
 	const CACHE_VERSION = 'genoroots_groups_cache_version'; // bumped to drop every cached overview at once
 	const PER_PAGE  = 60;
 	const PORTRAITS = 8; // per group, for the circle backgrounds
@@ -38,6 +38,8 @@ class GenoRoots_Groups_Controller {
 		add_action( "edited_{$collections}", array( __CLASS__, 'flush' ) );
 		add_action( "delete_{$collections}", array( __CLASS__, 'flush' ) );
 		add_action( 'transition_post_status', array( __CLASS__, 'maybe_flush_on_status' ), 10, 3 );
+		// Edits and undos (an undo writes the database directly, without meta hooks).
+		add_action( 'genoroots_changed', array( __CLASS__, 'flush' ) );
 		// Portraits shown inside the circles.
 		foreach ( array( 'added_post_meta', 'updated_post_meta', 'deleted_post_meta' ) as $hook ) {
 			add_action( $hook, array( __CLASS__, 'maybe_flush_on_portrait' ), 10, 3 );
@@ -45,7 +47,8 @@ class GenoRoots_Groups_Controller {
 	}
 
 	public static function maybe_flush_on_portrait( $meta_id, $object_id, $meta_key ) {
-		if ( $meta_key === '_thumbnail_id' && get_post_type( $object_id ) === GenoRoots_Person_CPT::POST_TYPE ) {
+		// The portraits in the circles, and who counts (placeholders don't).
+		if ( in_array( $meta_key, array( '_thumbnail_id', GenoRoots_Placeholder::FLAG ), true ) && get_post_type( $object_id ) === GenoRoots_Person_CPT::POST_TYPE ) {
 			self::flush();
 		}
 	}
@@ -121,6 +124,8 @@ class GenoRoots_Groups_Controller {
 		$in_collection = $collection_tt_id
 			? $wpdb->prepare( " JOIN {$wpdb->term_relationships} c ON c.object_id = p.ID AND c.term_taxonomy_id = %d", $collection_tt_id )
 			: '';
+		// Placeholders (unknown generations) are nobody to count.
+		$real = GenoRoots_Placeholder::sql_not( 'p.ID' );
 
 		// Members per group.
 		// phpcs:ignore WordPress.DB.DirectDatabaseQuery,WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- aggregate, cached; $in_collection is prepared above.
@@ -128,7 +133,7 @@ class GenoRoots_Groups_Controller {
 			"SELECT r.term_taxonomy_id AS tt, COUNT(*) AS members
 			FROM {$wpdb->term_relationships} r
 			JOIN {$wpdb->term_taxonomy} x ON x.term_taxonomy_id = r.term_taxonomy_id AND x.taxonomy = %s
-			JOIN {$wpdb->posts} p ON p.ID = r.object_id AND p.post_type = %s AND p.post_status = 'publish'
+			JOIN {$wpdb->posts} p ON p.ID = r.object_id AND p.post_type = %s AND p.post_status = 'publish' AND {$real}
 			{$in_collection}
 			GROUP BY r.term_taxonomy_id",
 			$tax,
@@ -173,7 +178,7 @@ class GenoRoots_Groups_Controller {
 				ON b.object_id = a.object_id AND a.term_taxonomy_id < b.term_taxonomy_id
 			JOIN {$wpdb->term_taxonomy} xa ON xa.term_taxonomy_id = a.term_taxonomy_id AND xa.taxonomy = %s
 			JOIN {$wpdb->term_taxonomy} xb ON xb.term_taxonomy_id = b.term_taxonomy_id AND xb.taxonomy = %s
-			JOIN {$wpdb->posts} p ON p.ID = a.object_id AND p.post_type = %s AND p.post_status = 'publish'
+			JOIN {$wpdb->posts} p ON p.ID = a.object_id AND p.post_type = %s AND p.post_status = 'publish' AND {$real}
 			{$in_collection}
 			GROUP BY a.term_taxonomy_id, b.term_taxonomy_id",
 			$tax,
@@ -198,7 +203,7 @@ class GenoRoots_Groups_Controller {
 			"SELECT r.term_taxonomy_id AS tt, m.meta_value AS attachment
 			FROM {$wpdb->term_relationships} r
 			JOIN {$wpdb->term_taxonomy} x ON x.term_taxonomy_id = r.term_taxonomy_id AND x.taxonomy = %s
-			JOIN {$wpdb->posts} p ON p.ID = r.object_id AND p.post_type = %s AND p.post_status = 'publish'
+			JOIN {$wpdb->posts} p ON p.ID = r.object_id AND p.post_type = %s AND p.post_status = 'publish' AND {$real}
 			{$in_collection}
 			JOIN {$wpdb->postmeta} m ON m.post_id = p.ID AND m.meta_key = '_thumbnail_id'
 			ORDER BY p.post_title",
@@ -242,7 +247,7 @@ class GenoRoots_Groups_Controller {
 			);
 		}
 
-		$args = array(
+		$args = GenoRoots_Placeholder::exclude( array(
 			'post_type'      => GenoRoots_Person_CPT::POST_TYPE,
 			'post_status'    => 'publish',
 			'posts_per_page' => self::PER_PAGE,
@@ -250,7 +255,7 @@ class GenoRoots_Groups_Controller {
 			'orderby'        => 'title',
 			'order'          => 'ASC',
 			'tax_query'      => $tax_query, // phpcs:ignore -- the whole point of this endpoint.
-		);
+		) );
 		$q = trim( (string) $request->get_param( 'q' ) );
 		if ( $q !== '' ) {
 			$args['s'] = $q;

@@ -3,7 +3,7 @@
  * Plugin Name:       GeoTour GenoRoots
  * Plugin URI:        https://github.com/nikolakakis/geotour-genoroots
  * Description:       Family trees for WordPress: GEDCOM 5.5 import and export, a groups explorer and an interactive tree, person pages, and conversion from Genealogical Tree.
- * Version:           1.2.0
+ * Version:           1.3.0
  * Requires at least: 6.0
  * Requires PHP:      8.2
  * Author:            Manolis Nikolakakis
@@ -17,7 +17,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'GENOROOTS_VERSION', '1.2.0' );
+define( 'GENOROOTS_VERSION', '1.3.0' );
 // Bump whenever a CPT's or taxonomy's public/rewrite settings change, so
 // genoroots_maybe_flush_rewrites() re-flushes on an already-active install.
 define( 'GENOROOTS_REWRITE_VERSION', 4 ); // 4: collections
@@ -51,6 +51,7 @@ function genoroots_init() {
 	require_once GENOROOTS_PLUGIN_DIR . 'includes/content/class-genoroots-related.php';
 	require_once GENOROOTS_PLUGIN_DIR . 'includes/content/class-genoroots-dates.php';
 	require_once GENOROOTS_PLUGIN_DIR . 'includes/content/class-genoroots-changes.php';
+	require_once GENOROOTS_PLUGIN_DIR . 'includes/content/class-genoroots-placeholder.php';
 	require_once GENOROOTS_PLUGIN_DIR . 'includes/content/class-genoroots-family-ops.php';
 	require_once GENOROOTS_PLUGIN_DIR . 'includes/content/class-genoroots-search.php';
 	require_once GENOROOTS_PLUGIN_DIR . 'includes/import/class-gedcom-parser.php';
@@ -88,6 +89,7 @@ function genoroots_init() {
 	GenoRoots_Person_Admin::init();
 	GenoRoots_Relations_Admin::init();
 	GenoRoots_Ids::init();
+	GenoRoots_Placeholder::init();
 	GenoRoots_Changes::init();
 	GenoRoots_Related::init();
 	GenoRoots_Rest_Controller::init();

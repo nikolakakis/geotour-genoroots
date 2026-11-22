@@ -7,7 +7,7 @@ import { editPortrait } from './portrait.js';
 import { getDraft, getUnsent, removeUnsent, updateUnsent } from './store.js';
 import {
 	busy, cardHtml, closeSheet, errorHtml, forgetDraft, marriageFields, openSheet, personFields,
-	readForm, setSheetBody, setSheetTitle, sheetBody, toast, when, wireForm,
+	placeholderFields, readForm, setSheetBody, setSheetTitle, sheetBody, toast, when, wireForm,
 } from './ui.js';
 
 // { showView( view ), open( id, view ), reload(), refreshBadge(), currentCollection() }
@@ -18,7 +18,7 @@ export function connect( callbacks ) {
 }
 
 /** After a change was saved: show the answer, offer Undo. */
-function saved( result, { closing = true } = {} ) {
+function saved( result, { closing = true, message = '', kind = '' } = {} ) {
 	if ( closing ) {
 		closeSheet();
 	}
@@ -26,9 +26,9 @@ function saved( result, { closing = true } = {} ) {
 		app.showView( result );
 	}
 	if ( result && result.change_id ) {
-		toast( t( 'saved' ), { action: t( 'undo' ), onAction: () => undoChange( result.change_id ) } );
+		toast( message || t( 'saved' ), { action: t( 'undo' ), onAction: () => undoChange( result.change_id ), kind } );
 	} else {
-		toast( t( 'saved' ) );
+		toast( message || t( 'saved' ), { kind } );
 	}
 }
 
@@ -199,6 +199,167 @@ export function addRelative( view, relation ) {
 	}
 }
 
+// Unknown generations ---------------------------------------------------------------
+
+const GAP_KINDS = [
+	// [ kind, title key, hint key ]
+	[ 'ancestor', 'gapAncestor', 'gapAncestorHint' ],
+	[ 'descendant', 'gapDescendant', 'gapDescendantHint' ],
+	[ 'shared', 'gapShared', 'gapSharedHint' ],
+];
+
+/**
+ * Links the person to someone already in the tree across generations
+ * nobody has recorded: choose how they are related, find the other
+ * person, then say how many generations, on what basis and how sure.
+ */
+export function addGap( view ) {
+	const anchor = view.person;
+	const state = { kind: '', other: null, query: '', familyId: view.marriages.length ? view.marriages[ 0 ].family_id : 0 };
+	const key = `gap:${ anchor.id }`;
+	openSheet( { title: tf( 'gapTitleOf', anchor.name ) } );
+	kindStep();
+
+	function kindStep() {
+		setSheetTitle( tf( 'gapTitleOf', anchor.name ) );
+		const body = setSheetBody( `
+			<p class="gnr-ed-lead">${ esc( t( 'gapLead' ) ) }</p>
+			<div class="gnr-ed-choices">
+				${ GAP_KINDS.map( ( [ kind, title, hint ] ) => `
+					<button type="button" class="gnr-ed-choice" data-kind="${ kind }">
+						<span class="gnr-ed-choice__diagram gnr-ed-choice__diagram--${ kind }" aria-hidden="true">${ gapDiagram( kind ) }</span>
+						<span class="gnr-ed-choice__text">
+							<strong>${ esc( tf( title, anchor.name ) ) }</strong>
+							<span>${ esc( t( hint ) ) }</span>
+						</span>
+					</button>` ).join( '' ) }
+			</div>` );
+		body.querySelectorAll( '[data-kind]' ).forEach( ( button ) => button.addEventListener( 'click', () => {
+			state.kind = button.dataset.kind;
+			pickStep();
+		} ) );
+	}
+
+	function pickStep() {
+		const body = setSheetBody( `
+			<label class="gnr-ed-field">
+				<span class="gnr-ed-field__label">${ esc( t( state.kind === 'ancestor' ? 'gapFindAncestor' : state.kind === 'descendant' ? 'gapFindDescendant' : 'gapFindRelative' ) ) }</span>
+				<input type="search" class="gnr-ed-search__input" value="${ esc( state.query ) }" placeholder="${ esc( t( 'search' ) ) }" autocomplete="off" enterkeyhint="search">
+			</label>
+			<div class="gnr-ed-results" aria-live="polite"></div>
+			<p class="gnr-ed-note">${ esc( t( 'gapNotInTree' ) ) }</p>
+			<div class="gnr-ed-actions">
+				<button type="button" class="gnr-ed-button gnr-ed-button--quiet" data-back>${ esc( t( 'back' ) ) }</button>
+			</div>` );
+		searchInto( body.querySelector( 'input[type="search"]' ), body.querySelector( '.gnr-ed-results' ), ( card ) => {
+			state.other = card;
+			detailsStep();
+		}, anchor.id, ( q ) => {
+			state.query = q;
+		} );
+		body.querySelector( '[data-back]' ).addEventListener( 'click', kindStep );
+	}
+
+	function marriageChooser() {
+		if ( state.kind !== 'descendant' || ! view.marriages.length ) {
+			return '';
+		}
+		const options = view.marriages.map( ( m ) => [ m.family_id, m.spouse ? m.spouse.name : t( 'unknownSpouse' ) ] );
+		if ( ! view.marriages.some( ( m ) => ! m.spouse ) ) {
+			options.push( [ 0, t( 'unknownSpouse' ) ] );
+		}
+		return `
+			<div class="gnr-ed-field">
+				<span class="gnr-ed-field__label">${ esc( t( 'gapThroughMarriage' ) ) }</span>
+				<div class="gnr-ed-seg gnr-ed-seg--choice gnr-ed-seg--wrap" role="radiogroup">
+					${ options.map( ( [ id, label ] ) => `<label><input type="radio" name="family" value="${ id }"${ id === state.familyId ? ' checked' : '' }><span>${ esc( label ) }</span></label>` ).join( '' ) }
+				</div>
+			</div>`;
+	}
+
+	/** "Phokas → ? → Kallergis", as it will be drawn. */
+	function previewHtml( values ) {
+		const span = Number( values.placeholder_min ) || 1;
+		const max = Number( values.placeholder_max ) || span;
+		const label = span === max ? tn( 'gapGenerations', span ) : tf( 'gapRange', span, Math.max( span, max ) );
+		const gapCard = `<span class="gnr-ed-preview__gap">? <small>${ esc( label ) }</small></span>`;
+		const person = ( card ) => `<span class="gnr-ed-preview__person">${ esc( card.name ) }</span>`;
+		const claimed = values.status === 'claimed' ? ' is-claimed' : '';
+		if ( state.kind === 'shared' ) {
+			return `<div class="gnr-ed-preview gnr-ed-preview--shared${ claimed }">${ gapCard }<span class="gnr-ed-preview__pair">${ person( anchor ) }${ person( state.other ) }</span></div>`;
+		}
+		const [ up, down ] = state.kind === 'ancestor' ? [ state.other, anchor ] : [ anchor, state.other ];
+		return `<div class="gnr-ed-preview${ claimed }">${ person( up ) }<span class="gnr-ed-preview__line"></span>${ gapCard }<span class="gnr-ed-preview__line"></span>${ person( down ) }</div>`;
+	}
+
+	function detailsStep( values ) {
+		const draft = values || getDraft( key ) || { placeholder_min: 1, status: 'confirmed' };
+		const body = setSheetBody( `
+			<form class="gnr-ed-form" novalidate>
+				<div class="gnr-ed-preview-wrap" aria-hidden="true">${ previewHtml( draft ) }</div>
+				${ marriageChooser() }
+				${ placeholderFields( draft, { certainty: true } ) }
+				<div class="gnr-ed-form-error"></div>
+				<div class="gnr-ed-actions">
+					<button type="button" class="gnr-ed-button gnr-ed-button--quiet" data-back>${ esc( t( 'back' ) ) }</button>
+					<button type="submit" class="gnr-ed-button">${ esc( t( 'save' ) ) }</button>
+				</div>
+			</form>` );
+		const form = body.querySelector( 'form' );
+		wireForm( form, key );
+		const preview = form.querySelector( '.gnr-ed-preview-wrap' );
+		form.addEventListener( 'input', () => {
+			preview.innerHTML = previewHtml( readForm( form ) );
+		} );
+		form.querySelectorAll( 'input[name="family"]' ).forEach( ( radio ) => radio.addEventListener( 'change', () => {
+			state.familyId = Number( radio.value );
+		} ) );
+		form.querySelector( '[data-back]' ).addEventListener( 'click', pickStep );
+		form.addEventListener( 'submit', ( event ) => {
+			event.preventDefault();
+			submit( form );
+		} );
+	}
+
+	async function submit( form ) {
+		const fields = readForm( form );
+		const status = fields.status || 'confirmed';
+		delete fields.status;
+		delete fields.family;
+		const button = form.querySelector( '[type="submit"]' );
+		busy( button, true );
+		try {
+			const result = await send( 'POST', 'editor/gap', {
+				person: anchor.id,
+				other: state.other.id,
+				kind: state.kind,
+				family_id: state.kind === 'descendant' ? state.familyId : 0,
+				placeholder: fields,
+				status,
+			}, `${ tf( 'gapTitleOf', anchor.name ) }: ${ state.other.name }` );
+			forgetDraft( key );
+			// A family shared with other people keeps its own certainty: say so, keep Undo.
+			const kept = status !== 'confirmed' && result.status_kept && result.status_kept.length;
+			saved( result, kept ? { message: t( 'gapStatusKept' ), kind: 'warn' } : {} );
+		} catch ( error ) {
+			busy( button, false );
+			failed( error, form );
+		}
+	}
+}
+
+/** Small drawings for the three kinds of gap; the person on screen is filled in. */
+function gapDiagram( kind ) {
+	const node = ( x, y, cls = '' ) => `<circle cx="${ x }" cy="${ y }" r="6" class="${ cls }"/>`;
+	const line = ( x1, y1, x2, y2 ) => `<line x1="${ x1 }" y1="${ y1 }" x2="${ x2 }" y2="${ y2 }"/>`;
+	if ( kind === 'shared' ) {
+		return `<svg viewBox="0 0 48 52" width="40" height="44">${ line( 24, 14, 12, 38 ) + line( 24, 14, 36, 38 ) + node( 24, 12, 'is-gap' ) + node( 12, 40, 'is-me' ) + node( 36, 40 ) }</svg>`;
+	}
+	const top = kind === 'descendant' ? 'is-me' : '';
+	const bottom = kind === 'ancestor' ? 'is-me' : '';
+	return `<svg viewBox="0 0 48 52" width="40" height="44">${ line( 24, 10, 24, 42 ) + node( 24, 8, top ) + node( 24, 26, 'is-gap' ) + node( 24, 44, bottom ) }</svg>`;
+}
+
 function confirmStep( message, onYes ) {
 	const body = setSheetBody( `
 		<p class="gnr-ed-lead">${ esc( message ) }</p>
@@ -327,10 +488,12 @@ export function createPerson( initialName = '' ) {
 const FIELD_LABELS = {
 	name: 'name', father_name: 'fatherName', nickname: 'nickname', sex: 'sex',
 	birth_date_raw: 'birth', birth_place: 'place', death_date_raw: 'death', death_place: 'place', notes: 'notes',
+	placeholder_min: 'gapMin', placeholder_max: 'gapMax', placeholder_basis: 'gapBasis', placeholder_note: 'gapNote',
 };
 
 export function editPerson( view ) {
 	const person = view.person;
+	const gap = Boolean( person.placeholder ); // unknown generations: their own form, the name may stay empty
 	const key = `edit:${ person.id }`;
 	let version = person.version;
 	openSheet( { title: t( 'editPerson' ) } );
@@ -341,7 +504,7 @@ export function editPerson( view ) {
 		const body = setSheetBody( `
 			<form class="gnr-ed-form" novalidate>
 				${ extraHtml }
-				${ personFields( values ) }
+				${ gap ? placeholderFields( values ) : personFields( values ) }
 				<div class="gnr-ed-form-error"></div>
 				<div class="gnr-ed-actions">
 					<button type="button" class="gnr-ed-button gnr-ed-button--quiet" data-cancel>${ esc( t( 'cancel' ) ) }</button>
@@ -357,14 +520,14 @@ export function editPerson( view ) {
 		form.addEventListener( 'submit', async ( event ) => {
 			event.preventDefault();
 			const fields = readForm( form );
-			if ( ! fields.name ) {
+			if ( ! fields.name && ! gap ) {
 				form.querySelector( 'input[name="name"]' ).focus();
 				return;
 			}
 			const button = form.querySelector( '[type="submit"]' );
 			busy( button, true );
 			try {
-				const result = await send( 'POST', `editor/person/${ person.id }`, { fields, version }, `${ t( 'editPerson' ) }: ${ fields.name }` );
+				const result = await send( 'POST', `editor/person/${ person.id }`, { fields, version }, `${ t( 'editPerson' ) }: ${ fields.name || person.name }` );
 				forgetDraft( key );
 				saved( result );
 			} catch ( error ) {

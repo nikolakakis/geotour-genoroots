@@ -148,6 +148,48 @@ The capabilities, for role plugins: `edit_genoroots_people`,
 capabilities) for people and families; `manage_genoroots_groups` for groups
 and collections. Import, export and Settings need `manage_options`.
 
+## Unknown generations (placeholders)
+
+Sometimes two known people are related but the people between them were
+never recorded: a grandson whose father is not named, a family that claims
+a founder ten generations back, two relatives whose kinship is not known.
+A **placeholder** links them anyway.
+
+- A placeholder is a person marked **Unknown person (placeholder)**, with
+  how many generations it stands for (**at least / at most**, e.g. 1–1 or
+  8–12), what the link rests on (**records, family tradition, forged
+  charter, coins, surname only, other**) and a short note. The name may stay
+  empty; it is then shown as "Unknown" in the page's language.
+- **How sure the link is** stays on the families, as their **Certainty**
+  (confirmed / probable / claimed), like any other link.
+- In the **tree** it is a dashed "?" card: "Unknown · 8–12 generations ·
+  Forged charter". Lines through it are dotted. A **claimed** link is drawn
+  dashed in amber, and the descendant's card gets a "claimed" tag, so a
+  legend never looks like a fact. Click the card for the note.
+- A placeholder **counts as nobody**: not in group sizes or shared counts,
+  member lists, search, the A–Z lists, sitemaps, or the "Family tree" card
+  on articles. It has no public page (its address is a 404). The tree
+  (`/focus`) still walks through it.
+
+**In the field editor**, open either person and tap **+ Unknown
+generations**:
+
+1. Choose **An ancestor of…**, **A descendant of…** (for a descendant, also
+   through which marriage) or **A relative, kinship unknown**.
+2. Find the other person in the tree.
+3. Say how many generations, the basis, how sure, and a note. The preview
+   shows the line as it will be drawn. Save.
+
+The placeholder becomes the free parent of the younger person (or of both,
+for a shared ancestor), so that person must not have both parents recorded
+already; link it to one of the parents instead. The Certainty you choose is
+written on the new families only. A family that also holds other children
+keeps its own, and the editor says so.
+
+A placeholder can be opened and edited like anyone else. In the admin, tick
+**Unknown person (placeholder)** on a person's screen and link it with the
+Relations box.
+
 ## Field editor
 
 Put `[genoroots_field_editor]` on a page. Signed-in genealogy editors,
@@ -225,6 +267,13 @@ GenoRoots also reads its own extension tags (other programs ignore them):
 | `_PERIOD` | person | Historical period |
 | `_ARTICLE` | person | Related article, as a path on the importing site (`people/nikolaos-papadakis`) |
 | `_STATUS` | family | Certainty: `confirmed`, `probable` or `claimed` |
+| `_PLACEHOLDER` | person | Unknown generations: `1`, `10` or `8-12`; below it `2 _BASIS` (`records`, `tradition`, `forged_charter`, `coins`, `surname`, `other`) and `2 NOTE` |
+
+A placeholder is exported with `NAME Unknown` (when it has no name), the
+`_PLACEHOLDER` block, and a plain `NOTE` saying the same in words for
+other programs ("GenoRoots placeholder: stands for 8-12 generations not
+recorded. Basis: forged charter. …"). The import reads `_PLACEHOLDER` back
+and skips that `NOTE`. Bundles carry placeholders like any other field.
 
 **Re-imports are safe.** People and families are matched by ID and
 updated, never duplicated, and nothing is deleted. Notes, sources, burial,
@@ -359,7 +408,13 @@ Read-only, public, and limited to published records. Namespace
 Every route except `/focus` accepts `collection=<slug>`.
 
 The field editor uses its own routes under `/editor/`, for signed-in users
-with `edit_genoroots_people` only.
+with `edit_genoroots_people` only. `POST /editor/gap` (`person`, `other`,
+`kind`: `ancestor` | `descendant` | `shared`, `placeholder`, `status`,
+`family_id`) links two people through a new placeholder.
+
+`/focus` marks placeholders with `placeholder: { min, max, span, basis,
+basis_label, note }` (and no `url`), and gives every family its `status`.
+`/search`, `/groups` and `/members` leave placeholders out.
 
 ## Hooks
 

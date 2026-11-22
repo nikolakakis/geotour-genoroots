@@ -32,7 +32,15 @@ class GenoRoots_Family_Ops {
 		'death_date_raw' => 'text',
 		'death_place'    => 'text',
 		'notes'          => 'textarea',
+		// Placeholders (GenoRoots_Placeholder).
+		'genoroots_placeholder' => 'flag',
+		'placeholder_min'       => 'span',
+		'placeholder_max'       => 'span',
+		'placeholder_basis'     => 'basis',
+		'placeholder_note'      => 'textarea',
 	);
+
+	const STATUSES = array( 'confirmed', 'probable', 'claimed' );
 
 	const FAMILY_FIELDS = array(
 		'marriage_date_raw' => 'text',
@@ -53,7 +61,7 @@ class GenoRoots_Family_Ops {
 	 */
 	public static function create_person( array $fields, array $collections = array() ) {
 		$name = self::clean_name( $fields['name'] ?? '' );
-		if ( $name === '' ) {
+		if ( $name === '' && ! self::wants_placeholder( $fields ) ) {
 			throw new GenoRoots_Edit_Error( 'genoroots_name_required', __( 'A name is needed.', 'geotour-genoroots' ) );
 		}
 		$person_id = wp_insert_post( array(
@@ -80,7 +88,8 @@ class GenoRoots_Family_Ops {
 
 		if ( array_key_exists( 'name', $fields ) ) {
 			$name = self::clean_name( $fields['name'] );
-			if ( $name === '' ) {
+			$flag = array_key_exists( GenoRoots_Placeholder::FLAG, $fields ) ? self::wants_placeholder( $fields ) : GenoRoots_Placeholder::is( $person_id );
+			if ( $name === '' && ! $flag ) {
 				throw new GenoRoots_Edit_Error( 'genoroots_name_required', __( 'A name is needed.', 'geotour-genoroots' ) );
 			}
 			if ( $name !== get_post_field( 'post_title', $person_id, 'raw' ) ) {
@@ -105,8 +114,115 @@ class GenoRoots_Family_Ops {
 	}
 
 	// ------------------------------------------------------------------
-	// Relations
+	// Unknown generations (placeholders)
 	// ------------------------------------------------------------------
+
+	/**
+	 * Links an ancestor to a descendant through a new placeholder standing
+	 * for the generations between them: ancestor → placeholder → descendant.
+	 *
+	 * The placeholder becomes a child of the ancestor (in $family_id, one of
+	 * the ancestor's marriages, or with the other parent unknown) and a
+	 * parent of the descendant (the free place in their birth family).
+	 * $status (Certainty) is written on the families that hold only the
+	 * gap; a family that already has other people keeps its own.
+	 *
+	 * @param array $placeholder name, sex, placeholder_min, placeholder_max, placeholder_basis, placeholder_note.
+	 * @return array{placeholder:int, families:int[], status_kept:int[]}
+	 */
+	public static function add_gap( $ancestor_id, $descendant_id, array $placeholder, $status = 'confirmed', $family_id = 0 ) {
+		$ancestor_id   = self::person( $ancestor_id );
+		$descendant_id = self::person( $descendant_id );
+		if ( $ancestor_id === $descendant_id ) {
+			throw new GenoRoots_Edit_Error( 'genoroots_same_person', __( 'A person cannot be linked to themselves.', 'geotour-genoroots' ) );
+		}
+		self::require_parent_place( $descendant_id );
+		$family_id = (int) $family_id;
+		if ( $family_id && ! in_array( $family_id, self::fams( $ancestor_id ), true ) ) {
+			throw new GenoRoots_Edit_Error( 'genoroots_not_their_family', __( 'That marriage is not this person’s.', 'geotour-genoroots' ) );
+		}
+
+		$gap      = self::create_placeholder( $placeholder, self::collections_of( $descendant_id ) ?: self::collections_of( $ancestor_id ) );
+		$above    = self::add_child( $ancestor_id, $gap, $family_id, true );
+		$below    = self::add_parent( $descendant_id, $gap );
+		$families = array_values( array_unique( array( $above, $below ) ) );
+		return array( 'placeholder' => $gap, 'families' => $families, 'status_kept' => self::mark_gap( $families, $gap, $status ) );
+	}
+
+	/**
+	 * Two relatives whose kinship is unknown: a new placeholder becomes a
+	 * parent of both (the free place in each one's birth family), standing
+	 * for the unknown ancestors they share.
+	 *
+	 * @return array{placeholder:int, families:int[], status_kept:int[]}
+	 */
+	public static function add_shared_ancestor( $person_id, $relative_id, array $placeholder, $status = 'confirmed' ) {
+		$person_id   = self::person( $person_id );
+		$relative_id = self::person( $relative_id );
+		if ( $person_id === $relative_id ) {
+			throw new GenoRoots_Edit_Error( 'genoroots_same_person', __( 'A person cannot be linked to themselves.', 'geotour-genoroots' ) );
+		}
+		$famc = self::famc( $person_id );
+		if ( $famc && $famc === self::famc( $relative_id ) ) {
+			throw new GenoRoots_Edit_Error( 'genoroots_already_siblings', __( 'These two already have the same parents.', 'geotour-genoroots' ) );
+		}
+		self::require_parent_place( $person_id );
+		self::require_parent_place( $relative_id );
+
+		$gap      = self::create_placeholder( $placeholder, self::collections_of( $person_id ) );
+		$families = array( self::add_parent( $person_id, $gap ) );
+		// No birth family yet: join the placeholder's own family, so the two
+		// are drawn side by side under it.
+		$families[] = self::famc( $relative_id )
+			? self::add_parent( $relative_id, $gap )
+			: self::add_child( $gap, $relative_id, 0, true );
+		$families = array_values( array_unique( $families ) );
+		return array( 'placeholder' => $gap, 'families' => $families, 'status_kept' => self::mark_gap( $families, $gap, $status ) );
+	}
+
+	private static function create_placeholder( array $fields, array $collections ) {
+		$fields[ GenoRoots_Placeholder::FLAG ] = '1';
+		$fields += array( 'name' => '', GenoRoots_Placeholder::MIN => 1 );
+		return self::create_person( $fields, $collections );
+	}
+
+	/** Refuses before anything is created when both parents are already known. */
+	private static function require_parent_place( $person_id ) {
+		$famc = self::famc( $person_id );
+		if ( $famc && get_field( 'spouse1', $famc, false ) && get_field( 'spouse2', $famc, false ) ) {
+			throw new GenoRoots_Edit_Error(
+				'genoroots_parents_known',
+				sprintf(
+					/* translators: 1: person, 2: their parents */
+					__( '%1$s already has both parents (%2$s). Link the unknown generations to one of them instead.', 'geotour-genoroots' ),
+					self::title( $person_id ),
+					self::parents_label( $famc )
+				)
+			);
+		}
+	}
+
+	/**
+	 * Writes the Certainty on the families that hold only the gap (the
+	 * placeholder and the people it links). Returns the families that kept
+	 * their own, because other people's links are in them too.
+	 */
+	private static function mark_gap( array $families, $gap, $status ) {
+		$status = in_array( $status, self::STATUSES, true ) ? $status : 'confirmed';
+		$kept   = array();
+		foreach ( $families as $family_id ) {
+			$spouses = array_values( array_filter( array( (int) get_field( 'spouse1', $family_id, false ), (int) get_field( 'spouse2', $family_id, false ) ) ) );
+			$mark    = in_array( $gap, $spouses, true )
+				? count( $spouses ) === 1 // below the gap: kept when a known parent shares it
+				: self::children( $family_id ) === array( $gap ); // above: kept when there are other children
+			if ( $mark ) {
+				self::update_family( $family_id, array( 'status' => $status ) );
+			} else {
+				$kept[] = $family_id;
+			}
+		}
+		return $kept;
+	}
 
 	/** Marries two people: finds the couple's family or creates it. Returns the family ID. */
 	public static function add_spouse( $person_id, $spouse_id, array $marriage = array() ) {
@@ -468,13 +584,23 @@ class GenoRoots_Family_Ops {
 		}
 	}
 
+	private static function wants_placeholder( array $fields ) {
+		return ! empty( $fields[ GenoRoots_Placeholder::FLAG ] ) && $fields[ GenoRoots_Placeholder::FLAG ] !== '0';
+	}
+
 	private static function sanitize( $value, $type ) {
 		switch ( $type ) {
 			case 'sex':
 				$value = strtoupper( (string) $value );
 				return in_array( $value, array( 'M', 'F', 'U' ), true ) ? $value : null;
 			case 'status':
-				return in_array( $value, array( 'confirmed', 'probable', 'claimed' ), true ) ? $value : null;
+				return in_array( $value, self::STATUSES, true ) ? $value : null;
+			case 'flag':
+				return ( ! empty( $value ) && $value !== '0' && $value !== 'false' ) ? 1 : 0;
+			case 'span':
+				return ( $value === '' || $value === null ) ? '' : max( 1, min( GenoRoots_Placeholder::SPAN_LIMIT, (int) $value ) );
+			case 'basis':
+				return ( $value === '' || in_array( $value, GenoRoots_Placeholder::BASES, true ) ) ? (string) $value : null;
 			case 'textarea':
 				return sanitize_textarea_field( (string) $value );
 			default:

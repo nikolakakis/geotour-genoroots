@@ -322,6 +322,51 @@ class GenoRoots_Field_Editor {
 			'after'           => __( 'After', 'geotour-genoroots' ),
 			'more'            => __( 'More details', 'geotour-genoroots' ),
 
+			// Unknown generations (placeholders).
+			'addGap'            => __( '+ Unknown generations', 'geotour-genoroots' ),
+			/* translators: %s: person name */
+			'gapTitleOf'        => __( 'Unknown generations: %s', 'geotour-genoroots' ),
+			'gapLead'           => __( 'Link to someone already in the tree when the people in between were never recorded. The gap is drawn as a dashed “?” card and counts as nobody.', 'geotour-genoroots' ),
+			/* translators: %s: person name */
+			'gapAncestor'       => __( 'An ancestor of %s', 'geotour-genoroots' ),
+			'gapAncestorHint'   => __( 'Someone generations earlier, e.g. a founder the family descends from.', 'geotour-genoroots' ),
+			/* translators: %s: person name */
+			'gapDescendant'     => __( 'A descendant of %s', 'geotour-genoroots' ),
+			'gapDescendantHint' => __( 'Someone generations later, e.g. a grandson whose parent is not known.', 'geotour-genoroots' ),
+			/* translators: %s: person name */
+			'gapShared'         => __( 'A relative of %s, kinship unknown', 'geotour-genoroots' ),
+			'gapSharedHint'     => __( 'Known to be related, but not how: they get an unknown shared ancestor.', 'geotour-genoroots' ),
+			'gapFindAncestor'   => __( 'Find the ancestor', 'geotour-genoroots' ),
+			'gapFindDescendant' => __( 'Find the descendant', 'geotour-genoroots' ),
+			'gapFindRelative'   => __( 'Find the relative', 'geotour-genoroots' ),
+			'gapNotInTree'      => __( 'Not in the tree yet? Add them first as a new person, then come back here.', 'geotour-genoroots' ),
+			'gapThroughMarriage' => __( 'Through which marriage?', 'geotour-genoroots' ),
+			'gapGenerations'    => array(
+				/* translators: %d: number of generations nobody has recorded */
+				_n( '%d generation', '%d generations', 1, 'geotour-genoroots' ),
+				/* translators: %d: number of generations nobody has recorded */
+				_n( '%d generation', '%d generations', 2, 'geotour-genoroots' ),
+			),
+			/* translators: 1: fewest, 2: most generations nobody has recorded */
+			'gapRange'          => __( '%1$d–%2$d generations', 'geotour-genoroots' ),
+			'gapMin'            => __( 'Generations, at least', 'geotour-genoroots' ),
+			'gapMax'            => __( 'at most', 'geotour-genoroots' ),
+			'gapMaxHint'        => __( 'same', 'geotour-genoroots' ),
+			'gapBasis'          => __( 'Based on', 'geotour-genoroots' ),
+			'basis_records'        => __( 'Records', 'geotour-genoroots' ),
+			'basis_tradition'      => __( 'Family tradition', 'geotour-genoroots' ),
+			'basis_forged_charter' => __( 'Forged charter', 'geotour-genoroots' ),
+			'basis_coins'          => __( 'Coins', 'geotour-genoroots' ),
+			'basis_surname'        => __( 'Surname only', 'geotour-genoroots' ),
+			'basis_other'          => __( 'Other', 'geotour-genoroots' ),
+			'gapCertaintyHint'  => __( '“Claimed” draws the links dashed and tags the descendant: a legend, not a fact.', 'geotour-genoroots' ),
+			'gapNote'           => __( 'About the gap', 'geotour-genoroots' ),
+			'gapNoteHint'       => __( 'What is known, and from where', 'geotour-genoroots' ),
+			'gapNameMore'       => __( 'Name (optional)', 'geotour-genoroots' ),
+			'gapNameHint'       => __( 'Leave empty to show “Unknown”.', 'geotour-genoroots' ),
+			'gapStatusKept'     => __( 'Saved. A family with other children kept its certainty.', 'geotour-genoroots' ),
+			'gapKind'           => __( 'Unknown generations', 'geotour-genoroots' ),
+
 			'unsent'          => array(
 				_n( '%d change not sent', '%d changes not sent', 1, 'geotour-genoroots' ),
 				_n( '%d change not sent', '%d changes not sent', 2, 'geotour-genoroots' ),

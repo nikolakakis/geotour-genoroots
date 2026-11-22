@@ -20,6 +20,10 @@ $gnr-color-card-male: #6f8a9c;
 $gnr-color-card-female: #a5738a;
 $gnr-color-card-unknown: #a89f92;
 
+// Claimed descent (family Certainty "claimed") and unknown generations.
+$gnr-color-claim: var(--gnr-claim, #b7791f);
+$gnr-color-gap-bg: #f6f2ec;
+
 $gnr-radius: 10px;
 $gnr-shadow: 0 2px 8px rgba(43, 36, 32, 0.12);
 

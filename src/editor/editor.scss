@@ -877,7 +877,7 @@ html.gnr-ed-locked {
 	gap: 0.75rem;
 	max-width: calc(100vw - 2rem);
 	padding: 0.6rem 0.6rem 0.6rem 1rem;
-	border-radius: 999px;
+	border-radius: 22px; // a pill on one line, a rounded box when the text wraps
 	background: #2b2420;
 	color: #fff;
 	box-shadow: var(--ed-shadow);
@@ -1020,5 +1020,207 @@ html.gnr-ed-locked {
 				accent-color: var(--ed-accent);
 			}
 		}
+	}
+}
+
+// Unknown generations (placeholders) ----------------------------------------------------
+
+:is(.gnr-editor, .gnr-ed-sheet) {
+	--ed-claim: var(--gnr-claim, #b7791f);
+	--ed-gap-bg: #f6f2ec;
+
+	.gnr-ed-card--gap {
+		border-style: dashed;
+		border-left: 1px dashed var(--ed-unknown);
+		background: var(--ed-gap-bg);
+
+		.gnr-ed-card__avatar {
+			border: 1.5px dashed var(--ed-unknown);
+			background: #fff;
+			color: var(--ed-muted);
+			font-size: 1.15rem;
+		}
+
+		.gnr-ed-card__name {
+			font-style: italic;
+			font-weight: 500;
+		}
+	}
+
+	.gnr-ed-person--gap {
+		.gnr-ed-person__photo {
+			border: 3px dashed var(--ed-unknown);
+			background: var(--ed-gap-bg);
+			color: var(--ed-muted);
+			font-size: 2.4rem;
+			font-weight: 600;
+			cursor: default;
+		}
+
+		.gnr-ed-person__name {
+			font-style: italic;
+		}
+	}
+
+	.gnr-ed-person__kind {
+		margin: 0 0 0.15rem;
+		color: var(--ed-muted);
+		font-size: 0.72rem;
+		font-weight: 700;
+		letter-spacing: 0.06em;
+		text-transform: uppercase;
+	}
+
+	.gnr-ed-person__note {
+		margin: 0.35rem 0 0;
+		font-size: 0.9rem;
+	}
+
+	.gnr-ed-add__gap {
+		grid-column: 1 / -1;
+		border-color: var(--ed-unknown) !important;
+		background: var(--ed-gap-bg) !important;
+		color: var(--ed-ink) !important;
+	}
+
+	.gnr-ed-badge--claimed {
+		background: color-mix(in srgb, var(--ed-claim) 16%, #fff);
+		color: color-mix(in srgb, var(--ed-claim) 70%, #000);
+	}
+
+	// The three kinds of gap, as big tappable choices.
+	.gnr-ed-choices {
+		display: flex;
+		flex-direction: column;
+		gap: 0.6rem;
+	}
+
+	.gnr-ed-choice {
+		display: flex;
+		align-items: center;
+		gap: 0.9rem;
+		width: 100%;
+		min-height: 72px;
+		padding: 0.7rem 0.9rem;
+		border: 1px solid var(--ed-line);
+		border-radius: var(--ed-radius);
+		background: var(--ed-card);
+		text-align: left;
+		cursor: pointer;
+		transition: border-color 0.15s ease, box-shadow 0.15s ease;
+
+		&:hover,
+		&:focus-visible {
+			border-color: var(--ed-accent);
+			box-shadow: var(--ed-shadow);
+			outline: none;
+		}
+
+		&__diagram {
+			flex: none;
+			display: flex;
+
+			line {
+				stroke: var(--ed-line);
+				stroke-width: 2;
+			}
+
+			circle {
+				fill: #fff;
+				stroke: var(--ed-accent);
+				stroke-width: 2;
+
+				&.is-me {
+					fill: var(--ed-accent);
+				}
+
+				&.is-gap {
+					stroke: var(--ed-unknown);
+					stroke-dasharray: 2 2.5;
+				}
+			}
+		}
+
+		&__text {
+			display: flex;
+			flex-direction: column;
+			gap: 0.15rem;
+
+			span {
+				color: var(--ed-muted);
+				font-size: 0.875rem;
+			}
+		}
+	}
+
+	// Live preview: ancestor → ? → descendant, as the tree will draw it.
+	.gnr-ed-preview-wrap {
+		padding: 0.75rem;
+		border-radius: var(--ed-radius);
+		background: var(--ed-bg);
+	}
+
+	.gnr-ed-preview {
+		--link: var(--ed-line);
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+
+		&.is-claimed {
+			--link: var(--ed-claim);
+		}
+
+		&__person {
+			max-width: 100%;
+			padding: 0.3rem 0.75rem;
+			overflow: hidden;
+			border: 1px solid var(--ed-line);
+			border-radius: 10px;
+			background: var(--ed-card);
+			font-weight: 600;
+			text-overflow: ellipsis;
+			white-space: nowrap;
+		}
+
+		&__line {
+			width: 0;
+			height: 14px;
+			border-left: 2px dashed var(--link);
+		}
+
+		&__gap {
+			padding: 0.25rem 0.75rem;
+			border: 1.5px dashed var(--ed-unknown);
+			border-radius: 10px;
+			background: var(--ed-gap-bg);
+			color: var(--ed-muted);
+			font-weight: 700;
+
+			small {
+				font-weight: 500;
+			}
+		}
+
+		&--shared {
+			gap: 14px;
+		}
+
+		&__pair {
+			display: flex;
+			gap: 0.5rem;
+			justify-content: center;
+			max-width: 100%;
+			padding-top: 12px;
+			border-top: 2px dashed var(--link);
+		}
+	}
+
+	.gnr-ed-row--span {
+		align-items: end;
+	}
+
+	.gnr-ed-field--number input {
+		max-width: 8rem;
+		font-variant-numeric: tabular-nums;
 	}
 }

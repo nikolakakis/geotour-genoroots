@@ -155,6 +155,7 @@ class GenoRoots_Export_Page {
 							__( 'period, groups and related article, as <code>_PERIOD</code>, <code>_GROUP</code> and <code>_ARTICLE</code>;', 'geotour-genoroots' ),
 							__( 'the name in Latin characters, if filled in, as a second NAME;', 'geotour-genoroots' ),
 							__( 'the portrait, as a link to the image (<code>OBJE</code>/<code>FILE</code>), not the image itself.', 'geotour-genoroots' ),
+							__( 'for a placeholder (unknown generations): <code>NAME Unknown</code> when it has no name, a <code>_PLACEHOLDER</code> block with the span, basis and note, and the same in words as a <code>NOTE</code> for other programs.', 'geotour-genoroots' ),
 						),
 					),
 					__( 'For each family: the spouses, the children, the marriage, and how certain the link is (<code>_STATUS</code>). Photo-archive links and translations are not included.', 'geotour-genoroots' ),

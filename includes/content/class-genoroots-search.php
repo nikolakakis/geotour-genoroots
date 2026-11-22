@@ -18,16 +18,18 @@ class GenoRoots_Search {
 	/**
 	 * @param string $query
 	 * @param array  $args statuses (string[]), collection (term ID or 0),
-	 *                     collections (term IDs, any of), limit.
+	 *                     collections (term IDs, any of), limit,
+	 *                     placeholders (bool: include them; the editor does).
 	 * @return int[] Person IDs, best matches first.
 	 */
 	public static function people( $query, array $args = array() ) {
 		global $wpdb;
 		$args = wp_parse_args( $args, array(
-			'statuses'    => array( 'publish' ),
-			'collection'  => 0,
-			'collections' => array(),
-			'limit'       => 20,
+			'statuses'     => array( 'publish' ),
+			'collection'   => 0,
+			'collections'  => array(),
+			'limit'        => 20,
+			'placeholders' => false,
 		) );
 
 		$words = array_slice( array_filter( preg_split( '/\s+/u', trim( (string) $query ) ) ), 0, 5 );
@@ -43,6 +45,9 @@ class GenoRoots_Search {
 			$wpdb->prepare( 'p.post_type = %s', GenoRoots_Person_CPT::POST_TYPE ),
 			"p.post_status IN ('" . implode( "','", array_map( 'esc_sql', (array) $args['statuses'] ) ) . "')",
 		);
+		if ( ! $args['placeholders'] ) {
+			$where[] = GenoRoots_Placeholder::sql_not( 'p.ID' );
+		}
 
 		// The GenoRoots number alone: an exact match.
 		if ( count( $words ) === 1 && preg_match( '/^[Ii]?(\d+)$/', $words[0], $number ) ) {

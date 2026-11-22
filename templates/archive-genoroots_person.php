@@ -52,13 +52,13 @@ endif;
 		<h2><?php esc_html_e( 'Browse alphabetically', 'geotour-genoroots' ); ?></h2>
 		<ul>
 			<?php
-			$all_people = get_posts( array(
+			$all_people = get_posts( GenoRoots_Placeholder::exclude( array(
 				'post_type'      => GenoRoots_Person_CPT::POST_TYPE,
 				'post_status'    => 'publish',
 				'posts_per_page' => -1,
 				'orderby'        => 'title',
 				'order'          => 'ASC',
-			) );
+			) ) );
 			foreach ( $all_people as $person ) :
 				?>
 				<li><a href="<?php echo esc_url( add_query_arg( 'person', $person->ID, get_post_type_archive_link( GenoRoots_Person_CPT::POST_TYPE ) ) ); ?>"><?php echo esc_html( get_the_title( $person ) ); ?></a></li>

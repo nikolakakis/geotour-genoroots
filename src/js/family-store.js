@@ -125,6 +125,25 @@ export function createFamilyStore( { up = 2, down = 2 } = {} ) {
 		} ) );
 	}
 
+	/** The family a person was born into, if it is loaded. */
+	function birthFamily( personId ) {
+		const person = people.get( Number( personId ) );
+		return person && person.famc ? families.get( person.famc ) || null : null;
+	}
+
+	/** The family of exactly these two spouses, if it is loaded. */
+	function coupleFamily( spouseA, spouseB ) {
+		const a = Number( spouseA );
+		const b = Number( spouseB );
+		for ( const family of families.values() ) {
+			const pair = [ family.spouse1, family.spouse2 ];
+			if ( pair.includes( a ) && pair.includes( b ) ) {
+				return family;
+			}
+		}
+		return null;
+	}
+
 	/** Marriage year of the union between two spouses, if the date is known. */
 	function marriageYear( spouseA, spouseB ) {
 		for ( const family of families.values() ) {
@@ -140,6 +159,8 @@ export function createFamilyStore( { up = 2, down = 2 } = {} ) {
 	return {
 		load,
 		marriageYear,
+		birthFamily,
+		coupleFamily,
 		isLoaded,
 		hiddenRelatives,
 		toChartData,

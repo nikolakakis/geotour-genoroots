@@ -134,7 +134,10 @@ class GenoRoots_Relations_Admin {
 			$year   = preg_match( '/(\d{4})/', (string) get_post_meta( $person->ID, 'birth_date_raw', true ), $m ) ? ' (' . $m[1] . ')' : '';
 			$gedcom = (string) get_post_meta( $person->ID, 'gedcom_id', true );
 			$number = preg_match( '/^I(\d+)$/', $gedcom, $n ) ? ' [' . $n[1] . ']' : '';
-			$options[ (int) $person->ID ] = $person->post_title . $year . $number;
+			$name   = GenoRoots_Placeholder::is( $person->ID )
+				? get_the_title( $person ) . ' (' . GenoRoots_Placeholder::summary( $person->ID ) . ')'
+				: $person->post_title;
+			$options[ (int) $person->ID ] = $name . $year . $number;
 		}
 		return $options;
 	}
